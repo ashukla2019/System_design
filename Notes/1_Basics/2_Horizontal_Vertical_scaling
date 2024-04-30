@@ -1,1 +1,16 @@
+        Request
+Client ---------> Server
+       <---------
+        response
 
+If there are many users to interact with server on cloud, it might happen that we are not able to handle all requests.
+Solutions:
+1) Buy big machine(Vertical scaling)
+2) Buy more machines(Horizontal scaling)
+
+Horizontal scaling--------------------------------------------------------Vertical scaling
+1) Load balancing is required.                                            NA
+2) Resiliant                                                              Single point of failure
+3) Network call through RPC(slow)                                         IPC calls faster
+4) Data Inconsistency                                                     Consistency
+5) Scale well                                                             hardware limit
