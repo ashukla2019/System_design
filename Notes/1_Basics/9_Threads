@@ -1,1 +1,32 @@
+Difference between process, program and thread? Different types
 
+A program consists of instructions in any programming language.
+A process consists of instructions in machine code. A program in execution is called a process.
+Thread is the basic unit of execution or CPU utilization. 
+Scope
+This article discusses programs, processes, and threads. It also explains different types of processes.
+
+Definition
+A program is a passive entity, which is a file containing a list of instructions stored on a disk (often called an executable file). A process on the other hand is an active entity with a program counter specifying the next instruction to be executed and a set of associated resources. A program becomes a process when an executable file is loaded into memory.
+
+A thread is a basic unit of CPU utilization. It comprises a shared ID, a program counter, a register set, and a stack. It shares code section, data section, and other operating system resources such as open files and signals.
+
+Difference between process and thread
+THREAD	                                                                       PROCESS
+Threads are easier to create and terminate 	                                   Processes are not easy to create and terminate.
+Multiple threads when they are in the same process share the same address 	   Processes do not share the same address 
+It is easy to communicate between the threads 	                               To communicate between processes we need operating system intervention. 
+It takes less time in context switching.	                                     It takes more time to context switch.
+Thread is lightweight. Each thread in the process shares code, data,           The process is called a heavyweight process.
+and resources.	
+
+Types of processes: 
+There are basically two types of event-specific processes
+I/O bound process: If a program/process spends more of its time doing I/O than it spends doing computations then it is called I/O bound process.
+CPU bound process: If a program/process spends more of its time doing CPU operations (computations) and generates I/O requests infrequently then it is called CPU bound process.
+
+Summary
+The program consists of a list of instructions that gets stored on a hard disk.
+When the program goes to RAM and starts running it becomes a process.
+A thread is the smallest unit of execution managed by an operating system.
+There are two types of processes: I/O bound process and CPU bound process.
