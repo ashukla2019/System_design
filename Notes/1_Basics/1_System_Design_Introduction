@@ -1,13 +1,35 @@
-Intro:
+Introduction: Systems Design is the process of defining the architecture, components, modules, interfaces, and data for a system to 
+satisfy specified requirements. It involves translating user requirements into a detailed blueprint that guides the implementation phase.
+The goal is to create a well-organized and efficient structure that meets the intended purpose while considering factors like scalability,
+maintainability, and performance.
 
-1) Vertical scaling:
+/*
+Requests from client to server should not fail.
+We should have multiple copies of server, to avoid data inaccessiblity due to hardware failures
+Adding servers oe removing servers should be easy
+Distribut the load of servers equally
+Resquests are responded timely.
+*/
+
+Objectives of Systems Design:
+1) Practicality: We need a system that should be targetting the set of audiences(users) corresponding to which they are designing.
+2) Accuracy: Above system design should be designed in such a way it fulfills nearly all requirements around which it is designed be it functional o non-functional requirements.
+3) Completeness: System design should meet all user requirements  
+4) Efficient: The system design should be such that it should not overuse surpassing the cost of resources nor under use as it will by now we know will result in low thorough put (output) and less response time(latency).
+5) Reliability: The system designed should be in proximity to a failure-free environment for a certain period of time.  
+6) Optimization: Time and space are just likely what we do for code chunks for individual components to work in a system. 
+7) Scalable(flexibility): System design should be adaptable with time as per different user needs of customers which we know will keep on changing on time. The best example here out is the well-known firm: Nokia. It is the most important aspect while designing systems and is the result of why 1 of 100 startups succeed over the long run, the best example here out is GeeksforGeeks. 
+
+
+Terms to be used while desiging the system(Designing pizza shop):
+1) Vertical scaling: Optimise process and increase throughput using same resource{
 2) Preprocessing using cron jobs:
-3) Backup servers:
-4) Horizontal scaling:
-5) Microservices:
-6) Distributed Systems:
-7) Load Balancing:
-8) Decoupling:
-9) Logging and metrics calculation:
-10) Extensibility:
-11) Low-level system design:
+3) Backup servers:Keep backup and avoid single point of failure
+4) Horizontal scaling:Hire more resoures
+5) Microservices: Dividing work by responsibilties -> Microservices-based applications let you distribute work across multiple groups in such a way that each group can work on individual application sections without imposing additional work on the others.
+6) Distributed Systems: Need to have implemented in distributed sytem for more fault tolerant(to avoid any hardware failures)
+7) Load Balancing: To balance the load of servers, need load balancing.
+8) Decoupling: System should be decoupled to handle systems more efficiently
+9) Logging and metrics calculation: to track/root cause error occured
+10) Extensibility: system should be extensible to enhance the bussiness.
+
