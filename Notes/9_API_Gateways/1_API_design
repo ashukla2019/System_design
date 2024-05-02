@@ -1,1 +1,8 @@
+What is API design?
+API design is the process of making intentional decisions about how an API will expose data and functionality to its consumers. 
+A successful API design describes the API's endpoints, methods, and resources in a standardized specification format.
 
+The API design process benefits both consumers and producers by ensuring that APIs support business objectives while remaining easy to use,
+adaptable, testable, and well-documented. API design should occur early in the API lifecycle in order to achieve alignment among key 
+stakeholders and to help teams identify issues before they become ingrained. API design is also an important part of an effective
+API governance strategy, as it helps teams standardize API patterns that can be reused across their organization.
