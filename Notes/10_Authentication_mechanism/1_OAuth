@@ -1,1 +1,25 @@
+OAuth (Open Authorization): is an open standard protocol for authorization of an application for using user information, in general, 
+it allows a third party application access to user related info like name, DOB, email or other required data from an application like 
+Facebook, Google etc. without giving the third party app the user password. It is pronounced as
 
+oh-auth: You might have seen a “login with Google” or “login with Facebook” button on the login/signup page of a website that makes 
+easier to get using the service or website by simply logging into one of the services and grant the client application permission to 
+access your data without giving Password. This is done with the OAuth.
+
+It is designed to work with
+
+HTTP(Hyper Text Transfer Protocol)
+
+and it allows access tokens to be issued to the third party application by an authorization server with the approval from the owner. There are 3 Components in
+
+OAuth Mechanism
+OAuth Provider – This is the OAuth provider Eg. Google, FaceBook etc.
+OAuth Client – This is the website where we are sharing or authenticating the usage of our information. Eg. GeeksforGeeks etc.
+Owner – The user whose login authenticates sharing of information.
+OAuth can be implemented via google console for “Login/Sign Up with Google” on a web app.
+
+Pattern to be Followed
+Get OAuth 2.0 Client ID from Google API Console
+Next, Obtain an access token from the Google Authorization Server to access the API.
+Send the request with the access token to an API .
+Get Refresh token if longer access is required.
