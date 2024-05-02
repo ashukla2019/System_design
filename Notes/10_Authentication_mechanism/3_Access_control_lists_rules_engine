@@ -1,1 +1,17 @@
+Access Control Lists (ACLs): ACLs are lists that define the actions that can be performed on objects. 
+They can be user-based (a specific user has certain permissions), role-based (users with a particular role have certain
+permissions), or group-based (a group of users or resources have certain permissions). 
+ACLs are grouped together to form the access control matrix of the system.
 
+Rule Engines: Rule engines involve using a set of rules, often implemented as if statements, to determine whether a user or 
+resource has permission to perform an action. Rule engines are useful for handling complex authorization requirements and
+can handle multiple objects and rules efficiently. They are also helpful in centralizing common rules and allowing easy 
+rule modifications without modifying ACLs.
+
+Secret Keys: Secret keys or client keys are an additional layer of security for authentication and authorization. 
+They involve authenticating using a key or token rather than a username and password. This mechanism provides an extra
+level of security but is not considered ideal on its own.
+
+These authorization mechanisms differ in their approach and can be used depending on the specific requirements of
+the system. They help define and enforce permissions for users and resources, ensuring that only authorized actions 
+are performed.
