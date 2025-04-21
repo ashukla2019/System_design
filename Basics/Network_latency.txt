@@ -1,0 +1,17 @@
+What is Network Latency: Network latency is the delay between a request being sent and the 
+response being received. It’s typically measured in milliseconds (ms). High latency can cause delays
+in communication between users and services, leading to poor performance in web applications, 
+APIs, or microservices.
+
+Factors Affecting Network Latency:
+Propagation Delay: The time it takes for a signal to travel through the physical medium (fiber optic, copper, etc.). This is mainly determined by the distance between the client and the server.
+Example: A request from New York to Tokyo will have higher latency than from New York to Boston.
+
+Transmission Delay: The time it takes to push the data to the wire. It depends on the size of the data being sent and the bandwidth of the link.
+Example: A large image file will take longer to transmit compared to a small API request.
+
+Queuing Delay: The time data spends in queues within the network infrastructure (routers, switches). This delay is influenced by network congestion and the number of devices involved in the communication.
+Processing Delay: The time it takes for devices (routers, firewalls, load balancers) to process the data and determine where to send it next. The more devices involved, the higher the delay.
+Routing Delay: The time it takes to determine the best path for the data between the source and destination. If the routing table is not optimal or the network is congested, delays increase.
+Protocol Overhead: The overhead of protocols used for communication (TCP, HTTP, etc.). Some protocols have inherent latency, especially if they involve handshakes or retransmissions (like TCP).
+
