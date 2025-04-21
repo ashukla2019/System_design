@@ -1,0 +1,36 @@
+SQL: SQL databases are relational databases that store data in structured tables with rows and columns.
+They use SQL for querying and maintaining the database. The schema is predefined and data is stored
+in a structured format with strong ACID (Atomicity, Consistency, Isolation, Durability) properties.
+
+How It Works:
+Data is stored in tables with a predefined schema.
+
+Relationships between data entities are represented through foreign keys.
+Uses SQL to perform operations like SELECT, INSERT, UPDATE, DELETE.
+
+ACID Compliance:
+Atomicity: Each transaction is fully completed or not executed at all.
+Consistency: The database remains in a valid state before and after a transaction.
+Isolation: Transactions are isolated from each other.
+Durability: Once a transaction is committed, the changes are permanent.
+
+NO SQL:NoSQL databases are non-relational databases designed to handle large volumes of unstructured
+or semi-structured data. They offer a more flexible schema than SQL databases, allowing for high 
+scalability and easy horizontal distribution (sharding).
+
+How It Works:
+Key-Value Stores: Data is stored as a collection of key-value pairs (e.g., Redis, DynamoDB).
+Document Stores: Data is stored in flexible document formats like JSON (e.g., MongoDB, CouchDB).
+Column Family Stores: Data is stored in columns rather than rows (e.g., Cassandra, HBase).
+Graph Databases: Used for representing data in graph structures, focusing on relationships between 
+entities (e.g., Neo4j, ArangoDB).
+
+Popular NoSQL Databases:
+MongoDB (Document-based)
+Cassandra (Column-based)
+Redis (Key-Value)
+DynamoDB (Key-Value/Document)
+Couchbase (Document-based)
+Neo4j (Graph-based)
+
+When to use Sql and when to use NO Sql:
