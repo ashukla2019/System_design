@@ -1,0 +1,32 @@
+Proxy (Forward Proxy): A proxy server sits between the client and the internet. 
+It acts on behalf of the client.
+
+How it works:
+The client sends a request to the proxy.
+The proxy forwards the request to the destination server.
+The response is sent back through the proxy to the client.
+
+Use cases:
+Anonymity: Hides client IP addresses.
+Content filtering: E.g., blocking certain websites in an organization.
+Caching: Speeds up access to frequently requested content.
+Access control: Restricting what users can access.
+
+Example:
+A company uses a proxy so employees can access the internet but block social media and log activity.
+
+Reverse Proxy:A reverse proxy sits in front of web servers, acting as an intermediary on behalf of the server.
+How it works:
+The client sends a request to the reverse proxy.
+The reverse proxy decides which backend server should handle it.
+The response goes back through the reverse proxy to the client.
+
+Use cases:
+Load balancing: Distributes traffic among servers.
+SSL termination: Handles SSL encryption/decryption.
+Caching: Speeds up response time.
+Security: Hides internal server details, mitigates DDoS attacks.
+
+Example:
+Netflix uses a reverse proxy to route traffic to various microservices behind the scenes.
+
