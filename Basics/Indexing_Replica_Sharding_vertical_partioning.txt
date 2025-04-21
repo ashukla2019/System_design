@@ -1,0 +1,72 @@
+What is Indexing?
+Indexing in databases is a technique to optimize the retrieval of data. An index is a data structure 
+that allows for faster lookup of rows in a table based on specific columns. It acts like the index in 
+a book, allowing you to find information quickly without scanning the entire data set.
+
+How It Works:
+Indexes are built on columns that are frequently queried, such as primary keys, foreign keys, or 
+columns used in WHERE clauses.
+
+Indexes improve read performance by reducing the amount of data the database has to scan.
+They may come in various forms like B-trees, hash indexes, bitmap indexes, or full-text indexes depending on the database type.
+
+Pros of Indexing:
+Fast Read Operations: Significantly speeds up search operations like SELECT queries.
+Efficient Searching: Reduces the need for full table scans, especially for large datasets.
+Faster JOIN Operations: Indexes on foreign keys improve the performance of JOIN queries.
+
+Cons of Indexing:
+Slower Write Operations: Inserting, updating, or deleting data takes longer because the index must be updated too.
+Storage Overhead: Indexes take up additional storage space, which can increase disk usage.
+
+What is Replication?
+Replication is the process of duplicating data from one database server to another. This helps with data availability, redundancy, and fault tolerance. The main types of replication are master-slave replication and master-master replication.
+
+How It Works:
+Master-Slave Replication: One server (master) handles writes and propagates changes to one or more 
+read-only replicas (slaves).
+Master-Master Replication: Multiple nodes can act as masters, handling both reads and writes, and syncing data between them.
+
+Pros of Replication:
+Increased Availability: If one server goes down, the system can still function using the replica.
+Load Balancing: Read queries can be distributed across replicas, reducing the load on the master server.
+Disaster Recovery: If a database server fails, the replica can serve as a backup.
+
+Cons of Replication:
+Data Consistency: In asynchronous replication, there might be a lag between the master and replicas, leading to eventual consistency.
+Complexity: Managing replication (especially in a master-master setup) can be complex due to data conflicts
+or split-brain situations
+
+What is Sharding?
+Sharding is the process of splitting a large database into smaller, more manageable pieces called 
+"shards". Each shard is stored on a separate server or node, and together, they form the complete dataset.
+
+How It Works:
+Data is partitioned based on a shard key (a column or set of columns, such as user ID).
+Each shard contains a subset of the data and operates independently. Queries are directed to the appropriate shard based on the key.
+Sharding can be horizontal (across rows) or vertical (across columns).
+
+Pros of Sharding:
+Scalability: Allows you to scale horizontally, handling massive datasets and high traffic by distributing
+the data across multiple servers.
+Improved Performance: Each shard has less data, which can improve query performance by reducing the number
+of records to scan.
+Fault Isolation: If one shard goes down, it only affects that part of the data, leaving the rest intact.
+
+
+What is Vertical Partitioning?
+Vertical partitioning (also called columnar partitioning) refers to the practice of splitting a table
+into smaller, more manageable parts by column rather than by row.
+
+How It Works:
+Instead of storing all columns of a table in a single file, the data is split into multiple tables, each containing a subset of the columns.
+Each partition (table) is stored on a separate disk or server, improving performance by allowing quicker access to the relevant columns.
+
+Pros of Vertical Partitioning:
+Faster Query Performance: If certain queries only need access to a subset of columns, partitioning the data can reduce the amount of data being read.
+Storage Efficiency: Optimizes storage, especially for tables with many columns where only a few columns are frequently queried.
+Improved Caching: Frequently accessed columns can be cached independently.
+
+Cons of Vertical Partitioning:
+Increased Complexity: Managing multiple partitions of a table can add complexity to the database schema.
+Cross-Partition Joins: Queries that require columns from multiple partitions may become slower due to the need for joins between partitions.
