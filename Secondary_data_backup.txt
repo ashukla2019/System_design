@@ -1,0 +1,6 @@
+3-2-1 backup rule:
+1) Three Copies: The rule mandates creating at least three copies of your data. This includes the original data and at least two backup copies.
+2) Two Different Storage Types:
+The backups should be stored on two different types of storage media (e.g., a local hard drive and cloud storage).
+3) One Off-Site Copy:
+At least one copy of your data must be stored off-site (either physically or in the cloud) to protect against physical disasters or site-specific failures. 
