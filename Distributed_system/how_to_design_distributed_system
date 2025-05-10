@@ -1,3 +1,14 @@
+R: Requirement
+A: Architecture
+C: Communication protocol
+D: Data management
+S: Storage(type of DB)
+F: Fault tolerance
+S: Scalability
+S: Security
+M: Monitoring
+D: Deployment
+
 Designing a distributed system involves a series of strategic decisions to ensure scalability, fault tolerance, consistency, and maintainability. Here's a step-by-step approach to designing one:
 
 1. Define Requirements
