@@ -16,8 +16,8 @@ D: Deployment
 Designing a distributed system involves a series of strategic decisions to ensure scalability, fault tolerance, consistency, and maintainability. Here's a step-by-step approach to designing one:
 
 1. Define Requirements
-   Functional: What does the system need to   do?
-   Non-functional: Consider latency,   availability, scalability, durability, and consistency.
+   Functional: What does the system need to do?
+   Non-functional: Consider latency, availability, scalability, durability, and consistency.
 
 2. Choose an Architecture
    Client-Server: Common, simple.
