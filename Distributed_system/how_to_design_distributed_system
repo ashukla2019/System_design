@@ -1,14 +1,18 @@
 What is distributed systems:
 A distributed system is a collection of independent computers that collaborate to achieve a common goal, 
 functioning as a single unit to the end-user.
-
+ 
+RAC DS FS SMD
 R: Requirement
 A: Architecture
-C: Communication protocol
+C: Communication protocol 
+
 D: Data management
 S: Storage(type of DB)
+
 F: Fault tolerance
 S: Scalability
+
 S: Security
 M: Monitoring
 D: Deployment
