@@ -23,11 +23,11 @@ Designing a distributed system involves a series of strategic decisions to ensur
    Client-Server: Common, simple.
    Microservices: Small, independently deployable services.
    Peer-to-Peer: All nodes are equal.
-   Event-driven: Services communicate via   events.
+   Event-driven: Services communicate via events.
 
 3. Decide on Communication Protocol
    Synchronous: REST, gRPC.
-    Asynchronous: Message queues (Kafka, RabbitMQ).
+   Asynchronous: Message queues (Kafka, RabbitMQ).
 
 4. Data Management
    Data partitioning (sharding): Split data across nodes.
@@ -65,3 +65,7 @@ Designing a distributed system involves a series of strategic decisions to ensur
     Use containers (e.g., Docker)
     Orchestrate with Kubernetes
     CI/CD
+
+******************************************************************
+Containerization packages an application and its dependencies into a single, portable unit called a container,
+while orchestration manages and automates the deployment, scaling, and lifecycle of multiple containers
