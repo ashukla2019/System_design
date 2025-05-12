@@ -21,7 +21,7 @@ Designing a distributed system involves a series of strategic decisions to ensur
 
 2. Choose an Architecture
    Client-Server: Common, simple.
-   Microservices: Small, independently     deployable services.
+   Microservices: Small, independently deployable services.
    Peer-to-Peer: All nodes are equal.
    Event-driven: Services communicate via   events.
 
