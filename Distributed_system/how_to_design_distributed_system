@@ -1,3 +1,7 @@
+What is distributed systems:
+A distributed system is a collection of independent computers that collaborate to achieve a common goal, 
+functioning as a single unit to the end-user.
+
 R: Requirement
 A: Architecture
 C: Communication protocol
