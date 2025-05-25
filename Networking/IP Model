@@ -1,0 +1,69 @@
+
+The TCP/IP model (also known as the Internet Protocol Suite) is a foundational framework for communication over networks, especially the internet. It organizes networking functions into four layers, each responsible for specific tasks. Here’s an overview with key protocols and how they work together:
+
+1. Application Layer
+Purpose: Interface for end-user processes and applications to access network services.
+
+Protocols:
+HTTP/HTTPS – Web browsing
+FTP – File transfer
+SMTP/IMAP/POP3 – Email
+DNS – Domain name resolution
+Telnet/SSH – Remote login
+
+Working:
+When you visit a website, your browser uses HTTP to request content.DNS resolves the domain name to an IP address.
+These services rely on lower layers to actually send the data.
+
+2. Transport Layer
+Purpose: Ensures reliable (or efficient) delivery of data between hosts.
+
+Key Protocols:
+TCP (Transmission Control Protocol) – Reliable, connection-oriented
+
+UDP (User Datagram Protocol) – Fast, connectionless
+
+Working:
+TCP establishes a connection (3-way handshake), ensures delivery, handles retransmissions and ordering.
+
+UDP sends data without guarantees – used for streaming, gaming.
+
+Example:
+When you download a file, TCP ensures the entire file arrives intact.
+When watching a live stream, UDP ensures timely delivery (even if some data is lost).
+
+3. Internet Layer
+Purpose: Handles logical addressing and routing.
+
+Key Protocol:
+IP (Internet Protocol) – IP addressing and packet delivery
+ICMP – Diagnostics (e.g., ping)
+ARP – Maps IP addresses to MAC addresses
+
+Working:
+Your device uses an IP address to identify itself.Routers use IP to forward packets to their destination.
+
+ICMP helps detect issues like unreachable hosts.
+
+4. Network Access (Link) Layer
+Purpose: Manages physical transmission of data on the local network.
+
+Key Protocols:
+Ethernet, Wi-Fi – Data transmission
+MAC – Hardware addressing
+PPP, DSL, etc. – Other physical media protocols
+
+Working:
+Converts data into bits and sends it over cables or wireless.
+
+Uses MAC addresses for local delivery.
+
+How It All Works Together:
+When you open a website:
+
+Application Layer (HTTP) requests the page.
+Transport Layer (TCP) ensures the request and response arrive reliably.
+Internet Layer (IP) routes data across networks.
+Link Layer (Ethernet/Wi-Fi) physically transmits data.
+
+Each layer adds headers (encapsulation) as data goes down the stack, and each layer removes headers (decapsulation) as data goes up on the receiving side
