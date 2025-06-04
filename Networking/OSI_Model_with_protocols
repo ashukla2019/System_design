@@ -1,12 +1,12 @@
 OSI 7-Layer Model with Protocol Examples
-Layer	 Name	          Purpose	                                                     Examples of Protocols
-7	     Application	  Interface for applications to access network services	       HTTP, HTTPS, FTP, DNS, SMTP, POP3, IMAP, SNMP
-6	     Presentation	  Data translation, encryption, and compression	               SSL, TLS, JPEG, GIF, MPEG, ASCII, EBCDIC
-5	     Session	      Manages sessions and connections	                           NetBIOS, PPTP, RPC, SOCKS
-4	     Transport	    End-to-end communication, reliability, flow control	         TCP, UDP, SCTP
-3	     Network	      Logical addressing and routing	                             IP, ICMP, IGMP, IPsec
-2	     Data Link	    Physical addressing and error detection	Ethernet,            PPP, ARP, HDLC, MAC
-1	     Physical	      Transmission of raw bit streams over physical medium	Ethernet cables, fiber optics, Wi-Fi (physical layer), DSL
+Layer	 Name	             Purpose	                                                     Examples of Protocols
+7	     Application	     Interface for applications to access network services	       HTTP, HTTPS, FTP, DNS, SMTP, POP3, IMAP, SNMP
+6	     Presentation	     Data translation, encryption, and compression	               SSL, TLS, JPEG, GIF, MPEG, ASCII, EBCDIC
+5	     Session	         Manages sessions and connections	                             NetBIOS, PPTP, RPC, SOCKS
+4	     Transport	       End-to-end communication, reliability, flow control	         TCP, UDP, SCTP
+3	     Network	         Logical addressing and routing	                               IP, ICMP, IGMP, IPsec
+2	     Data Link	       Physical addressing and error detection	Ethernet,            PPP, ARP, HDLC, MAC
+1	     Physical	         Transmission of raw bit streams over physical medium	Ethernet cables, fiber optics, Wi-Fi (physical layer), DSL
 
 Where Does SSL/TLS Fit?
 TLS/SSL is often described as being between Layers 4 and 7:
