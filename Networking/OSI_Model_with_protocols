@@ -26,19 +26,20 @@ Link (Network Access)	    1, 2	                           Ethernet,ARP, Wi-Fi, P
 
 
 TCP (Transmission Control Protocol)
-Web Browsing:
-When you visit a website, your browser uses TCP to ensure that all the data (HTML, CSS, images, etc.) is delivered in the correct order and without any missing or corrupted information. 
-Email:
-TCP is used for sending and receiving emails, ensuring that the message and any attachments are delivered reliably and without errors. 
-File Transfer Protocol (FTP):
-FTP relies on TCP to transfer files between computers, guaranteeing that the entire file is transferred correctly and without any data corruption. 
+Web Browsing: When you visit a website, your browser uses TCP to ensure that all the data (HTML, CSS, images, etc.) 
+is delivered in the correct order and without any missing or corrupted information. 
+Email: TCP is used for sending and receiving emails, ensuring that the message and any attachments are delivered 
+reliably and without errors. 
+File Transfer Protocol (FTP): FTP relies on TCP to transfer files between computers, guaranteeing that the entire 
+file is transferred correctly and without any data corruption. 
 
 UDP (User Datagram Protocol)
-Voice over IP (VoIP):
-Applications like Skype and WhatsApp use UDP for voice calls, allowing for real-time communication even if some packets are lost. 
-Online Gaming:
-UDP is used in online multiplayer games to ensure fast and low-latency communication between players, even if some data loss occurs. 
+Voice over IP (VoIP): Applications like Skype and WhatsApp use UDP for voice calls, allowing for real-time 
+communication even if some packets are lost. 
+Online Gaming:UDP is used in online multiplayer games to ensure fast and low-latency communication between players, 
+even if some data loss occurs. 
 Streaming Media:
-Services like YouTube, Netflix, and Spotify use UDP for streaming video and audio, allowing for quicker data delivery even if some data loss occurs. 
+Services like YouTube, Netflix, and Spotify use UDP for streaming video and audio, allowing for quicker data 
+delivery even if some data loss occurs. 
 Domain Name System (DNS):
 DNS uses UDP to resolve domain names (like google.com) into IP addresses, providing fast lookup times. 
