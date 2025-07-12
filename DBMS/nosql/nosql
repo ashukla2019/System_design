@@ -1,0 +1,78 @@
+
+✅ NoSQL Database Characteristics:
+
+1) Non-relational / Schema-less:NoSQL databases do not require fixed schemas—you can store unstructured, semi-structured, or structured data.Fields can vary from one document to another (in document stores like MongoDB).
+
+2) High Scalability (Horizontal Scaling)
+Designed to scale out by adding more servers (nodes), unlike SQL databases that primarily scale up.
+
+3) High Availability and Partition Tolerance (CAP theorem)
+ Often prefer Availability + Partition    Tolerance, possibly at the cost of  Consistency.
+
+4) Support for Big Data and Real-Time Apps
+
+Excellent for handling large volumes of data, high-velocity reads/writes, and real-time analytics.
+
+5) Variety of Data Models
+NoSQL includes different types of databases:
+ Document-based (e.g., MongoDB)
+ Key-Value stores (e.g., Redis, DynamoDB)
+ Column-family (e.g., Cassandra, HBase)
+ Graph-based (e.g., Neo4j)
+
+6) Flexible Data Types and Storage
+  Can store JSON, XML, binary, blobs, etc.
+  Eventual Consistency (in many systems)
+
+Data changes may take time to propagate to all nodes. (Not strictly ACID, but can be BASE: Basically Available, Soft state, Eventually consistent.)
+
+Built-in Sharding and Replication
+
+Automatic data distribution across nodes and support for data redundancy.
+
+--------------------------------------
+🛠️ Supported Operations in NoSQL (Vary by Type)
+Here’s a general mapping of operations across common NoSQL types:
+
+Operation Type	Description	Examples
+Create
+Read
+Update
+Delete
+
+🔄 Common Data Operations by NoSQL Type
+🔹 Document Store (MongoDB, Couchbase)
+   Store JSON-like documents
+   Queries via BSON/JSON query language
+   Supports indexes, aggregation pipelines
+   Good for hierarchical data
+
+🔹 Key-Value Store (Redis, DynamoDB)
+   Simple GET/SET by key
+   Extremely fast
+   Ideal for caching, session storage
+
+🔹 Column Store (Cassandra, HBase)
+   Rows with dynamic columns grouped into         column families 
+   Great for time-series and write-heavy apps
+
+🔹 Graph DB (Neo4j, ArangoDB)
+   Store entities as nodes, relationships as edges
+   Graph queries like traversals, shortest path
+   Used in social networks, recommendation systems
+
+-----------------------------------
+🚫 What NoSQL Usually Does Not Support (Compared to SQL)
+Feature	SQL DBs	Most NoSQL DBs
+Joins	✅ Yes	❌ No / Limited
+Transactions	✅ Full ACID	⚠️ Partial / Eventual Consistency
+Schema	✅ Fixed	❌ Schema-less
+Normalization	✅ Yes	❌ Often Denormalized
+Summary
+Feature	SQL	NoSQL
+Schema	Fixed	Flexible
+Scalability	Vertical	Horizontal
+Joins	Supported	Limited
+ACID	Strong	Weaker (BASE)
+Types	Relational	Document, Key-Value, Column, Graph
+Use Case	Structured, complex queries	Big data, fast reads/writes, dynamic structure
