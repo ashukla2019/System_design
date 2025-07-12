@@ -1,0 +1,65 @@
+🔐 1. Key Exchange (K)
+✅ Purpose:
+Securely establish a shared secret key between two parties (e.g., client and server), even over an untrusted network.
+
+🛠️ Common Algorithms:
+RSA (Legacy)
+Diffie-Hellman (DH): Secure but slower.
+Elliptic Curve Diffie-Hellman (ECDHE): Faster and provides forward secrecy.
+
+🔄 Example Flow:
+Client and server agree on a method (e.g., ECDHE).
+
+They exchange public parameters.
+
+Each side computes the shared key independently.
+
+🔐 The shared key is used for symmetric encryption (see #3).
+
+----------------------------------
+
+👤 2. Authentication (A)
+✅ Purpose:
+Confirms the identity of the server (and optionally the client).
+
+Prevents man-in-the-middle attacks.
+
+🛠️ Common Algorithms:
+RSA: The server proves its identity using a certificate and private key.
+ECDSA: Elliptic Curve version; smaller, faster.
+
+📜 How It Works:
+Server sends a digital certificate (X.509).
+The client verifies the certificate against trusted Certificate Authorities (CAs).
+
+🔏 In mutual TLS, the client also provides a certificate.
+
+------------------------------------
+🔒 3. Symmetric Encryption (S)
+✅ Purpose:
+Encrypt and decrypt the actual data using the shared key.Symmetric encryption is fast and used for all data after the handshake.
+
+🛠️ Common Algorithms:
+AES-128-GCM, AES-256-CBC
+ChaCha20-Poly1305 (optimized for mobile devices)
+
+🔁 How It Works:
+Both client and server now have the same key (from key exchange).
+
+This key encrypts/decrypts all data quickly and securely.
+
+-------------------------------------
+🧾 4. Hash / MAC (H)
+✅ Purpose:
+Ensure data integrity and authentication.
+Verifies that the message was not altered in transit.
+
+🛠️ Common Algorithms:
+SHA256, SHA384, SHA1 (deprecated)
+Poly1305 (used with ChaCha20)
+
+🔎 How It Works:
+A MAC (Message Authentication Code) or hash is attached to encrypted data.
+The receiver checks it before trusting the data.
+
+✅ Some modes like GCM and Poly1305 combine encryption + integrity (called AEAD — Authenticated Encryption with Associated Data).
