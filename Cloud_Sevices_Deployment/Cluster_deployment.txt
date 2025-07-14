@@ -1,0 +1,46 @@
+
+🔹 What is a Cluster?
+A cluster is a group of interconnected nodes (computers or servers) that:
+
+Work together to run applications.
+Share workload (load balancing).
+Provide backup for each other (failover).
+Appear to users as a single system.
+
+🔹 Cluster Deployment = How the Cluster is Set Up
+Cluster deployment involves:
+
+Installing and configuring the cluster software.
+Defining how nodes communicate.
+Deploying services or containers on top of the cluster (like Kubernetes pods).
+Managing storage, networking, and security across the cluster.
+
+🔹 Types of Cluster Deployments
+High Availability (HA) Cluster
+
+Ensures services keep running even if one or more nodes fail.
+
+Example: Load balancer + redundant database nodes.
+
+Load Balancing Cluster
+Distributes user requests evenly across nodes.
+
+Improves performance and response time.
+
+Compute Cluster
+For heavy computations (e.g., scientific simulations).
+
+Nodes work in parallel.
+
+Storage Cluster
+Provides distributed, redundant storage.
+
+Example: GlusterFS, Ceph.
+
+Container Orchestration Cluster
+
+Manages containers (like Docker) using platforms like:
+Kubernetes
+Docker Swarm
+OpenShift
+
