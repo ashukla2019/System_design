@@ -46,3 +46,53 @@
         |-----------------------|
         |  Encrypted Data Blobs |
         +-----------------------+
+
+--------------------------------------------------------------------------------------------------------
+1. User Application
+This is your regular application (e.g., a database, file service, or web app) that creates or modifies data during operation.
+It doesn't directly handle backup, but its data is what ultimately needs to be backed up.
+
+2. Backup Manager
+This lives at the application layer.It triggers and manages backups based on schedules, user input, or policies (e.g., hourly snapshot, daily retention).
+
+    Responsibilities:
+    Coordinating when to take a snapshot
+    Managing how long data is retained
+    Initiating backup jobs
+
+3. FileSystem API
+Provides user space interfaces like open(), read(), write().
+This is how applications and the Backup Manager interact with the filesystem.
+It’s the bridge between the backup software and the actual files/data.
+
+4. Kernel Space
+This is where real low-level I/O happens. It consists of:
+
+   a. Virtual FileSystem (VFS): A generic abstraction layer over various filesystems (ext4, NFS, XFS, etc.).
+   Allows the Backup Manager to interact with any filesystem without needing to know specifics.
+
+   b. FileSystem Driver: Actual implementation for specific filesystems (e.g., ext4, SnapFS).
+    Handles the detailed work of reading/writing metadata and data.
+
+   c. Block I/O Layer: Converts filesystem-level operations into block-level read/write operations on disks.
+    Interfaces with physical devices like SSDs and HDDs.
+
+ 5. Storage Devices
+Where the actual data lives before it's uploaded elsewhere.
+
+   a. SSD (Metadata Storage): Often used for fast access to metadata, such as snapshot indexes, timestamps, change logs.
+
+   b. HDD (Data Snapshots): Holds point-in-time copies of actual user data.
+   Snapshots help in quick restoration and deduplication.
+
+6. Backup Uploader (Daemon/Agent)
+A background process that reads snapshots (from SSD/HDD), processes them, and sends them to a remote backup target.
+   Tasks include:
+   Optional compression to save space
+   Encryption to ensure data privacy
+   Uploading to cloud storage like Amazon S3
+
+7. Amazon S3 Bucket
+   Final destination for backup data.
+   Stores data in the form of encrypted blobs.
+   S3 is chosen for its durability, availability, and integration with backup lifecycle management (e.g., versioning, Glacier for cold storage).
