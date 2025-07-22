@@ -1,5 +1,10 @@
 
 ✅ NoSQL Database Characteristics:
+BASE: The "Anti-ACID" Model (used in many NoSQL systems)
+BASE Property	            Description
+Basically Available	      System guarantees availability, even during failures
+Soft state	               System state may change over time, even without input (due to eventual consistency)
+Eventually consistent	    Data becomes consistent over time, not instantly
 
 1) Non-relational / Schema-less:NoSQL databases do not require fixed schemas—you can store unstructured, semi-structured, or structured data.Fields can vary from one document to another (in document stores like MongoDB).
 
