@@ -78,6 +78,23 @@ RDS lets you run managed databases like MySQL, PostgreSQL, Oracle, etc.
 
 Think of RDS as database-as-a-service with backups, scaling, and patching handled for you.
 
+-------------------------------------------
+Azure services:
+Very Nice And Bright Magic Star"
+Very → Virtual Machines (EC2)
+
+Nice → Network (VNet) (VPC)
+
+And → Azure Active Directory (IAM)
+
+Bright → Blob Storage (S3)
+
+Magic → Managed Disks (EBS)
+
+Star → SQL Database (RDS)
+
+--------------------------------------
+
 ✅ Summary Table
 Service	Full Form	What It Does
 EC2	Elastic Compute Cloud	Run virtual machines
