@@ -1,6 +1,26 @@
 What are EC2 , VPC and IAM etc
 These are core AWS services you’ll encounter often when working with infrastructure, especially when deploying clusters. Here's a simplified breakdown:
 
+--------------------
+
+Every Very Intelligent Student Eats Rice"
+(First letter = service)
+
+Every → EC2 – Your virtual machine in the cloud
+
+Very → VPC – Your private network
+
+Intelligent → IAM – Permissions & access control
+
+Student → S3 – Object storage
+
+Eats → EBS – Block storage for EC2
+
+Rice → RDS – Managed relational database
+
+
+--------------------
+
 ✅ 1. EC2 (Elastic Compute Cloud) – Your Virtual Machines
 🖥️ What is it?
 EC2 is a virtual server in AWS where you can run applications, host websites, or deploy services.
