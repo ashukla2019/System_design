@@ -134,3 +134,14 @@ Data flows back up the chain until your backup software writes it to the seconda
 [Physical Storage Device]
 
 ---------------------------------------
+
+Basic Structure of file system:
+Superblock – Holds filesystem info (size, status, mount time)
+
+Block Groups – Data + metadata chunks for better locality
+
+Inodes – Store metadata for each file (permissions, timestamps, block pointers)
+
+Data Blocks – Actual file contents
+
+Journal – Logs metadata changes for crash recovery
