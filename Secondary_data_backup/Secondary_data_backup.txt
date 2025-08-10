@@ -1,4 +1,4 @@
-33-2-1 backup rule:
+3-2-1 backup rule:
 1) Three Copies: The rule mandates creating at least three copies of your data. This includes the original data and at least two backup copies.
 2) Two Different Storage Types:
 The backups should be stored on two different types of storage media (e.g., a local hard drive and cloud storage).
