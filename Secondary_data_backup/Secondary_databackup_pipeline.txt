@@ -110,3 +110,27 @@ File System Driver figures out which physical blocks store that file’s data.
 Block I/O Layer requests those sectors from the actual hardware.
 
 Data flows back up the chain until your backup software writes it to the secondary location.
+
+---------------------------------------
+
+[Backup Manager Process]
+        |
+        v
+[File System API]  <-- (syscalls: open, read, write)
+        |
+        v
+[VFS Layer]  <-- finds which FS driver to use
+        |
+        v
+[File System Driver]  <-- ext4, NTFS, etc.
+        |
+        v
+[Block I/O Layer]  <-- schedules I/O requests
+        |
+        v
+[Device Driver]  <-- talks to physical disk
+        |
+        v
+[Physical Storage Device]
+
+---------------------------------------
