@@ -96,3 +96,17 @@ A background process that reads snapshots (from SSD/HDD), processes them, and se
    Final destination for backup data.
    Stores data in the form of encrypted blobs.
    S3 is chosen for its durability, availability, and integration with backup lifecycle management (e.g., versioning, Glacier for cold storage).
+
+------------------------------------
+Insort,how it works:
+When doing secondary backup (copying data from one device to another for redundancy):
+
+Your backup app calls File System API (read()).
+
+VFS forwards that request to the correct file system driver.
+
+File System Driver figures out which physical blocks store that file’s data.
+
+Block I/O Layer requests those sectors from the actual hardware.
+
+Data flows back up the chain until your backup software writes it to the secondary location.
