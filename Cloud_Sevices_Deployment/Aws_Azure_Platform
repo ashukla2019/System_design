@@ -1,0 +1,124 @@
+Both AWS (Amazon Web Services) and Azure (Microsoft Azure) are cloud platforms that provide a wide range of services. These platforms can be grouped into categories:
+
+AWS Platform (Amazon Web Services)
+AWS is divided into service families. Major categories include:
+
+1) Compute:
+EC2 (Elastic Compute Cloud)
+Lambda (serverless)
+ECS / EKS (containers, Kubernetes)
+Elastic Beanstalk
+Lightsail
+
+2) Storage
+S3 (Simple Storage Service)
+EBS (Elastic Block Store)
+EFS (Elastic File System)
+Glacier (archival storage)
+
+3) Networking & Content Delivery
+VPC (Virtual Private Cloud)
+Route 53 (DNS)
+CloudFront (CDN)
+API Gateway
+Direct Connect
+
+4) Databases
+RDS (Relational Database Service)
+DynamoDB (NoSQL)
+Redshift (Data warehouse)
+Aurora
+ElastiCache
+
+5) Security & Identity
+IAM (Identity and Access Management)
+KMS (Key Management Service)
+Cognito
+Shield / WAF
+
+6) Monitoring & Management
+CloudWatch
+CloudTrail
+Config
+Systems Manager
+
+7) Analytics, AI & ML
+Athena
+EMR
+StageMaker
+Kinesis
+
+8) DevOps & CI/CD
+CodeBuild, CodePipeline, CodeDeploy
+CloudFormation (infrastructure as code)
+OpsWorks
+
+9) Other Services
+IoT Core
+WorkSpaces (VDI)
+AppStream
+
+Azure Platform (Microsoft Azure)
+Azure provides similar categories (names differ but functions overlap):
+
+1) Compute
+Virtual Machines (VMs)
+Azure Functions (serverless)
+Azure App Service
+AKS (Azure Kubernetes Service)
+Virtual Desktop
+
+2) Storage
+Blob Storage
+Disk Storage
+File Storage
+Archive Storage
+
+3) Networking
+Virtual Network (VNet)
+Azure Load Balancer
+Application Gateway / Front Door
+Azure CDN
+ExpressRoute
+
+4) Databases
+Azure SQL Database
+Cosmos DB (NoSQL)
+PostgreSQL / MySQL services
+Synapse Analytics (data warehouse)
+Cache for Redis
+
+5) Identity & Security
+Azure Active Directory (AAD)
+Key Vault
+Security Center / Defender
+Firewall / DDoS Protection
+
+6) Management & Monitoring
+Azure Monitor
+Log Analytics
+Application Insights
+Cost Management
+
+Analytics, AI & ML
+
+7) Azure Data Lake
+Databricks
+Cognitive Services (Vision, Speech, etc.)
+Machine Learning Studio
+
+8) DevOps & IaC
+Azure DevOps (Repos, Pipelines, Boards)
+ARM Templates / Bicep
+GitHub Actions (Microsoft owns GitHub)
+
+9) Other Services
+IoT Hub
+Logic Apps / Event Grid
+Power BI integration
+Microsoft 365 integration
+
+Key Difference
+AWS is broader and slightly older, with more services (over 200).
+
+Azure integrates tightly with Microsoft ecosystem (Windows, Active Directory, Office 365).
