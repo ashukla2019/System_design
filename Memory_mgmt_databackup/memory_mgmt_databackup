@@ -1,9 +1,5 @@
 
- PT
-You said:
 Why cpu registers are faster than cache and cache faster than main memory and main memory than secondary?
-ChatGPT said:
-Good question 👍 Let’s break this down step by step — it’s all about distance from the CPU and how the hardware is built:
 
 1. CPU Registers
 Registers are inside the CPU chip itself.
