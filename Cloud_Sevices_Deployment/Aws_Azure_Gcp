@@ -330,3 +330,19 @@ You can attach different Network Security Groups (NSGs) or Route Tables to each 
 Let’s build a small web application architecture in Azure:
 
 Virtual Network (VNet) : 10.0.0.0/16
+--------------------------------------
+
+VNet: MyApp-VNet (10.0.0.0/16)
+│
+├── Subnet: Web-Subnet (10.0.1.0/24)
+│     └── VM-Web1, VM-Web2
+│
+├── Subnet: App-Subnet (10.0.2.0/24)
+│     └── VM-App1, VM-App2
+│
+├── Subnet: DB-Subnet (10.0.3.0/24)
+│     └── Azure SQL Database
+│
+└── Subnet: Mgmt-Subnet (10.0.4.0/24)
+      └── Bastion Host / Jumpbox
+---------------------------------------
