@@ -21,6 +21,22 @@ Google Organization
                            └── Resources (VMs, Cloud SQL, Buckets) 
 
 -------------------------------------
+
+Cloud Environment (Subscription / Account / Project)
+│
+├── Resource Group / Stack / Project
+│     │
+│     ├── Virtual Network (VNet / VPC)
+│     │     ├── Subnet-Frontend
+│     │     │     └── VM / EC2 / Instance (Web)
+│     │     └── Subnet-Backend
+│     │           └── VM / EC2 / Instance (App)
+│     │
+│     ├── Database (SQL / RDS / Cloud SQL)
+│     └── Storage (Storage Account / S3 / Cloud Storage)
+
+----------------------------------------
+
 🔹 How to Remember AWS & Azure CLI Categories
 1. Think Like a Cloud Architecture Diagram
 Every cloud workload usually has these building blocks:
