@@ -4,16 +4,20 @@ Docker — Containerization Platform
 🔹 What Docker Does:
 Docker lets you:Package your app + dependencies into a container image. Run the container anywhere (local, test, or production).Ensure consistency — "works on my machine" issue solved
 
-🔹 Key Components:
-Component       	Purpose
-Docker Engine	   Core service to build and       run containers
-Dockerfile	      Blueprint for building an image
-Docker Image	    Template (read-only) used to create containers
-Docker Container	 Running instance of an image
-Docker Compose	Defines and runs multi-container apps on one host
+Docker Workflow (in correct order):
+1) Write a Dockerfile → defines how your app should be built (base image, dependencies, commands).
+
+2) Build a Docker Image → docker build -t myapp . creates an image from the Dockerfile.
+
+3) Run a Docker Container → docker run -d -p 8080:80 myapp starts a running instance of that image.
+
+4) Docker Engine → is the core service that builds and runs containers using the image.
+
 🧠 Think of Docker as:
 “How to build and run one containerized app.”
+stpes:Dockerfile ➜ Image ➜ Container (via Docker Engine)
 
+---------------------------------------
 ☸️ Kubernetes — Container Orchestration Platform
 🔹 What Kubernetes Does:
 Once you have many containers running (using Docker or other runtimes), Kubernetes helps to:
