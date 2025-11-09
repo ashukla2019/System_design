@@ -1,0 +1,55 @@
+
+
+Docker — Containerization Platform
+🔹 What Docker Does:
+Docker lets you:Package your app + dependencies into a container image. Run the container anywhere (local, test, or production).Ensure consistency — "works on my machine" issue solved
+
+🔹 Key Components:
+Component       	Purpose
+Docker Engine	   Core service to build and       run containers
+Dockerfile	      Blueprint for building an image
+Docker Image	    Template (read-only) used to create containers
+Docker Container	 Running instance of an image
+Docker Compose	Defines and runs multi-container apps on one host
+🧠 Think of Docker as:
+“How to build and run one containerized app.”
+
+☸️ Kubernetes — Container Orchestration Platform
+🔹 What Kubernetes Does:
+Once you have many containers running (using Docker or other runtimes), Kubernetes helps to:
+Deploy containers to multiple servers
+Scale them up/down automatically
+Load balance traffic between them
+Restart crashed containers
+Roll out updates safely
+
+Manage networking, storage, secrets, and configs
+
+🔹 Core Components:
+Component     	Purpose
+Pod	           Smallest deployable unit — one or more containers
+Node	          Physical/virtual machine running pods
+Cluster      	 Collection of nodes managed by Kubernetes
+Deployment	    Defines how many pods to run and update strategy
+Service.      	Exposes pods to network/load balancing
+Ingress.      	Manages external access (HTTP/HTTPS)
+kubectl	Command-line tool to interact with cluster
+
+🧠 Think of Kubernetes as:
+“How to run and manage hundreds of containers reliably.”
+
+----------------------------------------
+⚙️ How They Work Together
+Docker and Kubernetes are complementary, not competitors:
+
+You use Docker to build and package applications into containers.
+
+You use Kubernetes to run, schedule, and manage those containers across many machines.
+
+Example Workflow:
+Developer writes code → creates Dockerfile
+
+Build image → push to Docker Hub (registry)
+
+Kubernetes pulls the image → creates pods → runs them on cluster nodes
+
