@@ -1,11 +1,17 @@
-K- key exchange
-A- Authentication
-S- Symmetric Encryption
-h- Hash
 
+K – Key Exchange:
+Client and server derive a shared secret key using Diffie-Hellman.
 
+A – Authentication:
+Server sends certificate → client verifies identity.
 
-🔐 1. Key Exchange (K)
+S – Symmetric Encryption:
+Both sides use the shared key to encrypt all data (AES, ChaCha20).
+
+H – Hashing:
+Hash (HMAC/SHA) ensures data isn’t tampered with
+
+1. Key Exchange (K)
 ✅ Purpose:
 Securely establish a shared secret key between two parties (e.g., client and server), even over an untrusted network.
 
