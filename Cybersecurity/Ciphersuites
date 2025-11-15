@@ -1,3 +1,10 @@
+K- key exchange
+A- Authentication
+S- Symmetric Encryption
+h- Hash
+
+
+
 🔐 1. Key Exchange (K)
 ✅ Purpose:
 Securely establish a shared secret key between two parties (e.g., client and server), even over an untrusted network.
