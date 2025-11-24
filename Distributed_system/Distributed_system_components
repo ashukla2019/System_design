@@ -166,3 +166,12 @@ Distributed Database → scalable storage
 Object Storage → stores large files
 Monitoring → system health
 
+
+-----‐-----------------------------------------------------------------
+SUPER CLEAR COMPARISON (1 sentence each)
+
+Load Balancer → Distributes load across identical servers.
+
+Reverse Proxy → Routes requests to the correct backend service.
+
+API Gateway → Adds security, rules, monitoring, and manages microservices.
