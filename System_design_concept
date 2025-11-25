@@ -1,7 +1,57 @@
+
+1) Load Balancing
+• Definition: A method to distribute network or application traffic across multiple servers to ensure high availability, reliability, and optimal resource use.
+
+• Key Techniques:
+
+Round-Robin: Sequentially directs requests to available servers.
+Least Connections: Sends traffic to the server with the fewest active connections.
+IP Hashing: Maps requests to a specific server based on the client’s IP address.
+• Use Case: Websites with heavy traffic (e.g., e-commerce platforms) use load balancers to prevent server overload.
+
+• Tools: NGINX, HAProxy, AWS Elastic Load Balancer.
+
+‐---------------------------------------------------------------------------
+
+2. Caching
+• Definition: Storing frequently accessed data in memory to reduce latency and improve performance.
+
+• Types:
+
+Client-side Caching: Stores data locally on the client’s device.
+Server-side Caching: Uses in-memory stores like Redis or Memcached to speed up responses.
+Database Caching: Speeds up database queries by storing results.
+• Use Case: Caching improves the performance of high-traffic APIs and reduces load on databases.
+
+• Tools: Redis, Memcached, CDN (e.g., Cloudflare).
+
+‐---------------------------------------------------------------------------
+3. Database Sharding
+• Definition: Dividing a large database into smaller, faster, and more manageable pieces called shards. Each shard handles a subset of the overall data.
+
+• Approaches:
+
+Horizontal Sharding: Splits rows across different shards.
+Vertical Sharding: Splits columns into different shards.
+Geographic Sharding: Segments data based on user location.
+• Challenges: Maintaining data consistency and query routing.
+
+• Use Case: Social media platforms use sharding to handle billions of users’ data efficiently.
+
+‐---------------------------------------------------------------------------
+4. Indexing
+• Definition: A data structure that improves the speed of data retrieval operations in a database by organizing data for fast searches.
+
+• Types:
+
+Primary Index: Based on the primary key of the table.
+Secondary Index: Created on non-primary key columns.
+Composite Index: Covers multiple columns for complex queries.
 • Use Case: Indexing speeds up search operations in large datasets, like searching for products in an e-commerce database.
 
 • Tools: MySQL, PostgreSQL, Elasticsearch.
 
+‐---------------------------------------------------------------------------
 5. Message Queues
 • Definition: A mechanism for asynchronous communication between system components, allowing one component to send a message and continue processing.
 
@@ -13,6 +63,7 @@ FIFO: First-In-First-Out processing of messages.
 
 • Tools: RabbitMQ, Apache Kafka, AWS SQS.
 
+‐---------------------------------------------------------------------------
 6. Content Delivery Network (CDN)
 • Definition: A geographically distributed network of servers that deliver content to users based on their location, improving speed and reducing latency.
 
@@ -24,6 +75,8 @@ Handles traffic spikes by distributing requests across servers.
 
 • Providers: Akamai, Cloudflare, AWS CloudFront.
 
+
+‐---------------------------------------------------------------------------
 7. CAP Theorem
 • Definition: States that in a distributed system, it is impossible to simultaneously achieve Consistency, Availability, and Partition Tolerance.
 
@@ -33,6 +86,66 @@ failing service temporarily.
 
 • Use Case: Protects microservices from overloading during failures.
 
+‐---------------------------------------------------------------------------
+
+8. Replication
+• Definition: Duplicating data across multiple servers to improve availability and fault tolerance.
+
+• Types:
+
+Master-Slave Replication: Writes go to the master, and reads go to slaves.
+Multi-Master Replication: Multiple nodes handle both reads and writes.
+Peer-to-Peer Replication: All nodes have equal roles.
+• Use Case: Ensuring data availability in distributed systems, such as global databases.
+‐---------------------------------------------------------------------------
+9. Consistent Hashing
+• Definition: A technique for distributing data across nodes in a way that minimizes rebalancing when nodes are added or removed.
+
+• Use Case: Used in distributed caching systems like Memcached and distributed databases like Cassandra.
+
+‐---------------------------------------------------------------------------
+10. API Gateway
+• Definition: A single entry point for managing API calls, routing requests, and handling cross-cutting concerns like authentication and rate limiting.
+
+• Features: Request/response transformation, load balancing, security.
+
+• Use Case: Used in microservices architectures to simplify client interactions with backend services.
+
+‐---------------------------------------------------------------------------
+11. Rate Limiting
+• Definition: Restricting the number of requests a user or client can make within a specified time.
+
+• Techniques:
+
+Token Bucket.
+Leaky Bucket.
+• Use Case: Prevent abuse or DDoS attacks on APIs.
+
+‐---------------------------------------------------------------------------
+12. Data Partitioning
+• Definition: Splitting data into chunks for better performance and manageability.
+
+• Approaches: Range-based, Hash-based, List-based partitioning.
+
+• Use Case: Used in large-scale databases for improved query performance.
+
+‐---------------------------------------------------------------------------
+13. Event Sourcing
+• Definition: Storing changes to an application’s state as a sequence of events.
+
+• Benefits: Auditability, ability to reconstruct past states.
+
+• Use Case: Financial systems, where tracking every transaction is crucial.
+‐---------------------------------------------------------------------------
+
+14. Circuit Breaker
+• Definition: A design pattern to prevent cascading failures by halting calls to a failing service temporarily.
+
+• Use Case: Protects microservices from overloading during failures.
+
+‐---------------------------------------------------------------------------
+
+‐---------------------------------------------------------------------------
 15. Distributed Transactions
 • Definition: Ensuring consistency across multiple services in distributed systems.
 
