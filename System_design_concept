@@ -1,0 +1,62 @@
+• Use Case: Indexing speeds up search operations in large datasets, like searching for products in an e-commerce database.
+
+• Tools: MySQL, PostgreSQL, Elasticsearch.
+
+5. Message Queues
+• Definition: A mechanism for asynchronous communication between system components, allowing one component to send a message and continue processing.
+
+• Patterns:
+
+Publish/Subscribe: A publisher sends messages to multiple subscribers.
+FIFO: First-In-First-Out processing of messages.
+• Use Case: Decoupling services in a microservices architecture, such as processing user signups asynchronously.
+
+• Tools: RabbitMQ, Apache Kafka, AWS SQS.
+
+6. Content Delivery Network (CDN)
+• Definition: A geographically distributed network of servers that deliver content to users based on their location, improving speed and reducing latency.
+
+• Key Features:
+
+Caches static assets (images, videos, stylesheets) closer to users.
+Handles traffic spikes by distributing requests across servers.
+• Use Case: Video streaming services like Netflix use CDNs to ensure fast, uninterrupted playback.
+
+• Providers: Akamai, Cloudflare, AWS CloudFront.
+
+7. CAP Theorem
+• Definition: States that in a distributed system, it is impossible to simultaneously achieve Consistency, Availability, and Partition Tolerance.
+
+• Consistency: All nodes see the same data at the same time.
+
+failing service temporarily.
+
+• Use Case: Protects microservices from overloading during failures.
+
+15. Distributed Transactions
+• Definition: Ensuring consistency across multiple services in distributed systems.
+
+• Techniques: Two-Phase Commit, Saga Pattern.
+
+16. Proxies
+• Definition: Intermediaries that forward client requests to servers.
+
+• Types: Reverse proxies (e.g., NGINX), Forward proxies.
+
+17. Data Consistency Models
+• Definition: Defines how data changes are viewed across distributed systems.
+
+• Models: Strong consistency, Eventual consistency.
+
+18. Stateless vs. Stateful Services
+• Definition: Stateless services do not retain session data; stateful ones do.
+
+• Use Case: Stateless services scale better, while stateful services are used for transactions.
+
+19. Fault Tolerance
+• Definition: The ability of a system to continue operating even in the presence of failures.
+
+20. Scalability
+• Definition: The ability to handle increased load by adding resources.
+
+• Types: Vertical (adding resources to a server) and Horizontal (adding more servers)
