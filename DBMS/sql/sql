@@ -1,6 +1,6 @@
 
 SQL Database Characteristics and Supported Operations
-✅ Characteristics of SQL Databases:
+Characteristics of SQL Databases:
 
 1) Relational Structure: Data is stored in tables (relations) composed of rows and columns.Tables can be linked using foreign keys to maintain referential integrity.
 
@@ -13,7 +13,7 @@ SQL Database Characteristics and Supported Operations
 
    Isolation: Transactions do not interfere with each other.
 
-  Durability: Once a transaction is committed, it is permanently saved.
+   Durability: Once a transaction is committed, it is permanently saved.
 
 4) Schema-Based: SQL databases require a predefined schema, which specifies the structure of data.
 
