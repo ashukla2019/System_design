@@ -1,5 +1,5 @@
 
-✅ NoSQL Database Characteristics:
+NoSQL Database Characteristics:
 BASE: The "Anti-ACID" Model (used in many NoSQL systems)
 BASE Property	            Description
 Basically Available	      System guarantees availability, even during failures
@@ -45,7 +45,7 @@ Read
 Update
 Delete
 
-🔄 Common Data Operations by NoSQL Type
+Common Data Operations by NoSQL Type
 🔹 Document Store (MongoDB, Couchbase)
    Store JSON-like documents
    Queries via BSON/JSON query language
@@ -66,18 +66,3 @@ Delete
    Graph queries like traversals, shortest path
    Used in social networks, recommendation systems
 
------------------------------------
-🚫 What NoSQL Usually Does Not Support (Compared to SQL)
-Feature	SQL DBs	Most NoSQL DBs
-Joins	✅ Yes	❌ No / Limited
-Transactions	✅ Full ACID	⚠️ Partial / Eventual Consistency
-Schema	✅ Fixed	❌ Schema-less
-Normalization	✅ Yes	❌ Often Denormalized
-Summary
-Feature	SQL	NoSQL
-Schema	Fixed	Flexible
-Scalability	Vertical	Horizontal
-Joins	Supported	Limited
-ACID	Strong	Weaker (BASE)
-Types	Relational	Document, Key-Value, Column, Graph
-Use Case	Structured, complex queries	Big data, fast reads/writes, dynamic structure
