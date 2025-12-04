@@ -42,17 +42,11 @@ Cloud Environment (Subscription / Account / Project)
 Every cloud workload usually has these building blocks:
 
 Compute → Where apps run (VMs, containers, functions)
-
 Storage → Where data is stored (S3/Blob, disks)
-
 Network → How things connect (VPC/VNet, subnets, firewalls)
-
 Database → Specialized storage (RDS/SQL, DynamoDB/CosmosDB)
-
 Identity & Access → Who can do what (IAM/Azure AD, roles, policies)
-
 Monitoring → Logs, metrics, alerts (CloudWatch/Azure Monitor)
-
 Management → Resource groups/stacks, accounts, billing
 ---------------------------------
 2. Mnemonic Trick (C-S-N-D-I-M-M)
@@ -79,37 +73,27 @@ Azure Account (identity / login)
                            └── Resources (VMs, NICs, DBs, Storage, etc.)
 1️⃣ Azure Account
 Your identity (email or service principal).
-
 Linked to Azure Active Directory.
-
 Can own multiple subscriptions.
 
 2️⃣ Subscription
 Billing unit — all usage inside is billed here.
-
 Also defines limits (cores, storage, etc.).
-
 Example: Dev-Sub, Prod-Sub.
 
 3️⃣ Resource Group
 Logical grouping of resources for lifecycle management.
-
 Delete RG → all resources inside are deleted.
-
 Can contain: VNets, VMs, DBs, Storage accounts, etc.
 
 4️⃣ Virtual Network (VNet)
 Network boundary inside a resource group.
-
 Defines IP address space (like 10.0.0.0/16).
-
 Can connect to other VNets, on-prem, or internet.
 
 5️⃣ Subnet
 Smaller CIDR blocks inside a VNet.
-
 Segregates resources logically (e.g., Web Tier, App Tier, DB Tier).
-
 Example:
 
 10.0.1.0/24 → Web servers
@@ -120,143 +104,20 @@ Example:
 Actual services running inside the subnet.
 
 Examples:
-
 VMs (Compute)
-
 NICs (Networking)
-
 DBs (Databases)
-
 Storage Accounts (Storage)
 
-👉 A good way to remember is:
-
+A good way to remember is:
 Account → Subscription → Resource Group → VNet → Subnet → Resources
 ------------------------------------
-
-🔹 How to Remember AWS & Azure CLI Categories
-1. Think Like a Cloud Architecture Diagram
-Every cloud workload usually has these building blocks:
-
-Compute → Where apps run (VMs, containers, functions)
-
-Storage → Where data is stored (S3/Blob, disks)
-
-Network → How things connect (VPC/VNet, subnets, firewalls)
-
-Database → Specialized storage (RDS/SQL, DynamoDB/CosmosDB)
-
-Identity & Access → Who can do what (IAM/Azure AD, roles, policies)
-
-Monitoring → Logs, metrics, alerts (CloudWatch/Azure Monitor)
-
-Management → Resource groups/stacks, accounts, billing
-
-👉 If you visualize a 3-tier app (Web → App → DB), you naturally cover Compute, Network, Storage, Database. Then sprinkle Identity, Monitoring, and Management around it.
-
-2. Mnemonic Trick (C-S-N-D-I-M-M)
-Remember categories in this order:
-
-🔹 Compute
-🔹 Storage
-🔹 Network
-🔹 Database
-🔹 Identity
-🔹 Monitoring
-🔹 Management
-
-👉 Mnemonic: “Cloud Services Need Daily Integrated Managed Monitoring”
-
-
-🔹 Azure Resource Hierarchy
-Azure Account
-
-Your Azure subscription is tied to an Azure Account (email/identity).
-
-One account can have multiple subscriptions.
-
-Each subscription is like a billing and security boundary.
-
-Subscription
-
-The subscription is the container for all resources.
-
-You pay for everything inside a subscription.
-
-Example: Dev Subscription, Prod Subscription.
-
-Resource Group (RG)
-
-A logical container inside a subscription.
-
-Groups resources (VMs, VNets, Storage Accounts, Databases, etc.) that share the same lifecycle.
-
-You can deploy, manage, and delete resources as a unit.
-
-Example: MyApp-RG might contain:
-
-2 VMs
-
-1 VNet
-
-1 Subnet
-
-1 Storage Account
-
-Virtual Network (VNet)
-
-A network boundary within a resource group.
-
-Works like a VPC in AWS.
-
-Must belong to 1 resource group (but resources in other groups can still connect if allowed).
-
-Example: MyVnet inside MyApp-RG.
-
-Subnet
-
-A slice of the VNet’s address space.
-
-VMs, Databases, App Services, etc., connect into subnets.
-
-Example:
-
-10.0.0.0/16 = VNet address space
-
-10.0.1.0/24 = Subnet A (Web Tier)
-
-10.0.2.0/24 = Subnet B (DB Tier)
-
-🔗 How They Link Together
 Azure Account (identity)
    └── Subscription (billing boundary)
          └── Resource Group (logical container)
                └── Virtual Network (isolated network boundary)
                      └── Subnet (smaller IP range inside VNet)
                            └── Resources (VMs, DBs, NICs, etc.)
-🔹 Quick AWS Analogy
-Azure Subscription ≈ AWS Account
-
-Azure Resource Group ≈ AWS Tags / CloudFormation Stack (logical grouping, not billing)
-
-Azure VNet ≈ AWS VPC
-
-Azure Subnet ≈ AWS Subnet
-
-👉 So in short:
-
-You start with Account → Subscription → Resource Group.
-
-Inside RG you put a VNet → Subnet → Resources (VMs, DBs, etc.).
-
-Azure Account (identity)
-   └── Subscription (billing boundary)
-         └── Resource Group (logical container)
-               └── Virtual Network (isolated network boundary)
-                     └── Subnet (smaller IP range inside VNet)
-                           └── Resources (VMs, DBs, NICs, etc.)
-ChatGPT said:
-Exactly ✅ — you’ve nailed the hierarchy. Let me expand that with a bit more context on each level, so you can keep the picture in your head:
 
 🔹 Azure Hierarchy in Detail
 Azure Account (identity / login)
@@ -265,81 +126,57 @@ Azure Account (identity / login)
                └── Virtual Network (VNet = isolated private network space)
                      └── Subnet (smaller IP segment of VNet)
                            └── Resources (VMs, NICs, DBs, Storage, etc.)
-1️⃣ Azure Account
+---------------------------------------------
+Azure Account
 Your identity (email or service principal).
-
 Linked to Azure Active Directory.
-
 Can own multiple subscriptions.
-
-2️⃣ Subscription
+-------------------------------------------
+Subscription
 Billing unit — all usage inside is billed here.
-
 Also defines limits (cores, storage, etc.).
-
 Example: Dev-Sub, Prod-Sub.
-
-3️⃣ Resource Group
+----------------------------------------------------
+Resource Group
 Logical grouping of resources for lifecycle management.
-
 Delete RG → all resources inside are deleted.
-
 Can contain: VNets, VMs, DBs, Storage accounts, etc.
-
-4️⃣ Virtual Network (VNet)
+--------------------------------------------------------
+Virtual Network (VNet)
 Network boundary inside a resource group.
-
 Defines IP address space (like 10.0.0.0/16).
-
 Can connect to other VNets, on-prem, or internet.
-
-5️⃣ Subnet
+------------------------------------------------------------
+Subnet
 Smaller CIDR blocks inside a VNet.
-
 Segregates resources logically (e.g., Web Tier, App Tier, DB Tier).
-
 Example:
-
 10.0.1.0/24 → Web servers
-
 10.0.2.0/24 → Databases
-
-6️⃣ Resources
+------------------------------------------------------------
+Resources
 Actual services running inside the subnet.
-
 Examples:
-
 VMs (Compute)
-
 NICs (Networking)
-
 DBs (Databases)
-
 Storage Accounts (Storage)
 
-👉 A good way to remember is:
-
+A good way to remember is:
 Account → Subscription → Resource Group → VNet → Subnet → Resources
 
 -----------------------------
 🔹 What is a VNet (Virtual Network)?
 A Virtual Network (VNet) in Azure is like your private data center network inside Azure.
-
 It defines your own IP address space (using private IP ranges like 10.x.x.x, 172.x.x.x, or 192.168.x.x).
-
 It lets your Azure resources (VMs, databases, etc.) communicate securely with each other.
-
 It can connect to other VNets, on-premises networks (via VPN), or the Internet.
-
 Think of a VNet as a container for subnets and network resources.
-
+---------------------------------------------------------------------------------------------------
 🔹 What is a Subnet?
 A Subnet (sub-network) is a smaller segment of your VNet’s IP space.
-
 It divides your VNet into logical sections.
-
 Each subnet can host different resources (e.g., Web Tier, App Tier, DB Tier).
-
 You can attach different Network Security Groups (NSGs) or Route Tables to each subnet for control.
 
 🔹 Example Scenario
