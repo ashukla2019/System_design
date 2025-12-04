@@ -1,69 +1,161 @@
+OSI MODEL (7 layers)
+The OSI (Open Systems Interconnection) model is a conceptual framework that standardizes how different network systems communicate.
 
-The TCP/IP model (also known as the Internet Protocol Suite) is a foundational framework for communication over networks, especially the internet. It organizes networking functions into four layers, each responsible for specific tasks. Here’s an overview with key protocols and how they work together:
+OSI Model – Layers, Roles, Protocols
+Application Layer
+What it does: Interface for end-users and applications
+Provides network services such as email, file transfer, browsing
 
-1. Application Layer
-Purpose: Interface for end-user processes and applications to access network services.
+Examples (Protocols):
+HTTP / HTTPS
+FTP, SFTP
+SMTP, POP3, IMAP
+DNS
+Telnet, SSH
+--------------------------------------------------------------------------
+Presentation Layer
+What it does:
+Data formatting, translate, encrypt/decrypt, compress
+Turns data into readable form for Application layer
+
+Examples:
+SSL/TLS encryption
+JPEG, GIF, PNG formats
+ASCII, Unicode
+
+--------------------------------------------------------------------------------------
+Session Layer
+What it does:
+Manages sessions between two systems
+Handles authentication, session creation, maintenance, termination
+
+Examples:
+NetBIOS
+RPC (Remote Procedure Call)
+PPTP
+
+------------------------------------------------------------------------
+Transport Layer
+What it does:
+Ensures end-to-end communication
+Reliability, segmentation, flow control, error control
 
 Protocols:
-HTTP/HTTPS – Web browsing
-FTP – File transfer
-SMTP/IMAP/POP3 – Email
-DNS – Domain name resolution
-Telnet/SSH – Remote login
+TCP (reliable, connection-oriented)
+UDP (unreliable, connectionless)
+SCTP (used in telecommunication signaling)
+-----------------------------------------------------------------------------------
+Network Layer
+What it does:
+Routing, path selection
+Logical addressing (IP addresses)
+Packet forwarding
 
-Working:
-When you visit a website, your browser uses HTTP to request content.DNS resolves the domain name to an IP address.
-These services rely on lower layers to actually send the data.
+Protocols:
+IP (IPv4 / IPv6)
+ICMP (ping)
+IGMP
+Routing protocols: OSPF, BGP, EIGRP, RIP
+----------------------------------------------------------------------------------
+Data Link Layer
+What it does:
+Node-to-node communication
+Frames, MAC addresses
+Error detection (but not correction)
 
-2. Transport Layer
-Purpose: Ensures reliable (or efficient) delivery of data between hosts.
+Protocols / Technologies:
+Ethernet
+Wi-Fi (802.11)
+PPP
+ARP (Address Resolution Protocol)
+VLAN (802.1Q)
 
-Key Protocols:
-TCP (Transmission Control Protocol) – Reliable, connection-oriented
+Sub-layers:
+MAC (hardware addressing)
+LLC (flow control)
+----------------------------------------------------------------------------------------
+Physical Layer
 
-UDP (User Datagram Protocol) – Fast, connectionless
+What it does:
+Sends raw bits (0s and 1s) over the medium
+Electrical signals, fiber optics, radio waves
 
-Working:
-TCP establishes a connection (3-way handshake), ensures delivery, handles retransmissions and ordering.
+Examples:
+Ethernet cables (Cat5/Cat6)
+Fiber optic
+Hubs
+Repeaters
+Radio frequencies (Wi-Fi, Bluetooth)
 
-UDP sends data without guarantees – used for streaming, gaming.
+-----------------------------------------------------------------------------------
+PART 2 — TCP/IP MODEL (4 layers)
 
-Example:
-When you download a file, TCP ensures the entire file arrives intact.
-When watching a live stream, UDP ensures timely delivery (even if some data is lost).
+The TCP/IP model is more practical and used in real networking.
 
-3. Internet Layer
-Purpose: Handles logical addressing and routing.
+Mapping OSI to TCP/IP
+TCP/IP Layer	OSI Equivalent Layers
+Application	Application + Presentation + Session
+Transport	Transport
+Internet	Network
+Network Access	Data Link + Physical
+TCP/IP Model – Layers, Roles, Protocols
+Application Layer (Top)
+What it does:
+Same combined duties as OSI Layers 7, 6, 5
+Provides services like email, file transfer, browsing
+Protocols:
 
-Key Protocol:
-IP (Internet Protocol) – IP addressing and packet delivery
-ICMP – Diagnostics (e.g., ping)
-ARP – Maps IP addresses to MAC addresses
+HTTP(S)
+DNS
+FTP, TFTP
+SMTP, POP3, IMAP
+DHCP
+SNMP
+-----------------------------------------------------------------------------
+Transport Layer
+What it does:
+End-to-end communication
+Data segmentation and reassembly
+Protocols:
+TCP
+UDP
+--------------------------------------------------------------------------------------
+2️Internet Layer
+What it does:
+Logical addressing
+Routing packets across multiple networks
 
-Working:
-Your device uses an IP address to identify itself.Routers use IP to forward packets to their destination.
+Protocols:
+IP (IPv4 / IPv6)
+ICMP
+IGMP
+Routing protocols (OSPF / BGP / RIP)
+------------------------------------------------------------------------------------
+Network Access Layer
 
-ICMP helps detect issues like unreachable hosts.
+What it does:
+Responsible for physically sending frames
+Hardware addressing (MAC addresses)
+Protocols / Technologies:
+Ethernet
+Wi-Fi
+ARP
+PPP
+ATM
+------------------------------------------------------------------------------------------------------
+PART 3 — How Data Flows (Encapsulation/Decapsulation)
+Sender side (Top → Bottom)
 
-4. Network Access (Link) Layer
-Purpose: Manages physical transmission of data on the local network.
+Application data
+→ Transport adds TCP/UDP header
+→ Internet adds IP header
+→ Network Access adds MAC + physical signaling
+→ Sent over wire/wireless
 
-Key Protocols:
-Ethernet, Wi-Fi – Data transmission
-MAC – Hardware addressing
-PPP, DSL, etc. – Other physical media protocols
+Receiver side (Bottom → Top)
 
-Working:
-Converts data into bits and sends it over cables or wireless.
-
-Uses MAC addresses for local delivery.
-
-How It All Works Together:
-When you open a website:
-
-Application Layer (HTTP) requests the page.
-Transport Layer (TCP) ensures the request and response arrive reliably.
-Internet Layer (IP) routes data across networks.
-Link Layer (Ethernet/Wi-Fi) physically transmits data.
-
-Each layer adds headers (encapsulation) as data goes down the stack, and each layer removes headers (decapsulation) as data goes up on the receiving side
+Physical bits
+→ Data Link extracts the frame
+→ Internet extracts IP packet
+→ Transport extracts TCP/UDP segment
+→ Application layer reads final data
