@@ -1,0 +1,190 @@
+1. What is an IP? (Internet Protocol Address)
+An IP address is a unique identifier for a device on a network.
+It works like a home address—allows devices to send/receive data.
+
+Purpose:
+Identify a device
+Provide routing information
+
+Two major versions:
+IPv4 (older, widely used)
+IPv6 (newer, larger address space)
+
+2. IPv4 vs IPv6 — Differences
+➤ IPv4 (Internet Protocol version 4)
+
+32-bit address
+Written in decimal
+Format: x.x.x.x
+Example: 192.168.1.10
+Total addresses: 4.3 billion
+------------------------------------
+➤ IPv6 (Internet Protocol version 6)
+
+128-bit address
+Written in hexadecimal
+Format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx
+Example: fe80:0:0:0:abcd:1234:5678:9abc
+Total addresses: 3.4 × 10³⁸ (effectively unlimited)
+--------------------------------------------------------------
+Key Differences Table
+Feature	IPv4	IPv6
+Address size	32-bit	128-bit
+Format	Decimal (0–255)	Hexadecimal
+Example	192.168.1.1	fe80::1
+Total addresses	4.3 billion	340 undecillion
+Header size	20 bytes	40 bytes
+Security	Optional (IPSec)	Built-in IPSec
+NAT	Common	Not required
+Broadcast	Uses broadcast	No broadcast (uses multicast)
+Autoconfig	Uses DHCP	Built-in SLAAC
+
+------------------------------------------------------------------
+3. What is a Subnet?
+A subnet (sub-network) is a smaller network created inside a large network.
+
+Why subnet?
+✔ Better IP address management
+✔ Increases network security
+✔ Reduces broadcast traffic
+✔ Organizes departments (HR, IT, Finance, etc.)
+
+Example:
+192.168.1.0/24 can be split into two subnets:
+192.168.1.0/25
+192.168.1.128/25
+---------------------------------------------------------------------
+4. What is Subnet Mask?
+A subnet mask tells which part of an IP is network and which part is host.
+
+IPv4 Example
+IP:         192.168.1.10
+Subnet Mask:255.255.255.0
+
+255 values indicate network portion
+0 values indicate host portion
+
+Meaning:
+Network: 192.168.1.x
+Host: from 1 to 254
+-----------------------------------------------------------------------
+5. CIDR Notation (Classless Inter-Domain Routing)
+Short way to write subnet mask.
+
+Examples:
+CIDR	Subnet Mask
+/8	255.0.0.0
+/16	255.255.0.0
+/24	255.255.255.0
+/32	1 IP (single host)
+
+Example:
+192.168.1.10/24
+
+
+Means:
+24 bits = network part
+8 bits = host part
+-----------------------------------------------------------------------
+6. Network Address, Broadcast Address, Host Range
+
+For 192.168.1.0/24:
+Network: 192.168.1.0
+Broadcast: 192.168.1.255
+Host Range: 192.168.1.1 → 192.168.1.254
+Network & broadcast are reserved, cannot be used by devices.
+---------------------------------------------------------------------------
+7. Public vs Private IP Addresses
+Private IP
+
+Used inside LAN (local network).
+Cannot be accessed from internet.
+
+Ranges:
+10.0.0.0 – 10.255.255.255
+172.16.0.0 – 172.31.255.255
+192.168.0.0 – 192.168.255.255
+
+Example: home Wi-Fi uses 192.168.x.x
+Public IP
+Used on the Internet.
+Unique and globally routable.
+Example: 52.31.114.5
+---------------------------------------------
+8. Static vs Dynamic IP
+Static IP
+Manually assigned
+Never changes
+Used by servers, printers, routers
+
+Dynamic IP
+Assigned by DHCP server
+Changes when the device reconnects
+Used by normal devices like phones/laptops
+-----------------------------------------------------
+9. NAT (Network Address Translation)
+Allows many private IP devices to use one public IP.
+Used in routers.
+Without NAT → IPv4 would be exhausted long ago.
+----------------------------------------------------------------
+10. DHCP (Dynamic Host Configuration Protocol)
+
+Automatically assigns:
+IP address
+Subnet mask
+Gateway
+DNS
+Lease time
+
+Example process:
+Device sends DHCP Discover
+Server replies Offer
+Device Requests the IP
+
+Server sends Acknowledgement
+----------------------------------------------------------------------
+11. Gateway (Router)
+
+A gateway is a device that connects your network to another network (usually the Internet).
+Example:
+
+Default Gateway: 192.168.1.1
+All traffic to outside network is forwarded here.
+-----------------------------------------------------------------------
+12. DNS (Domain Name System)
+
+Converts domain names ↔ IP addresses.
+Example:
+google.com → 142.250.72.238
+
+Humans use names; computers use IPs.
+----------------------------------------------------------------------
+13. ICMP (Internet Control Message Protocol)
+
+Used for diagnostics.
+Commands:
+ping (checks connectivity)
+traceroute (path tracking)
+--------------------------------------------------------------------------
+14. ARP & NDP
+ARP (Address Resolution Protocol) — IPv4
+
+Maps IP → MAC address
+NDP (Neighbor Discovery Protocol) — IPv6
+Replaces ARP, DHCP, ICMP Router Discovery
+--------------------------------------------------------------------------------
+Quick Summary (Easy Revision)
+Concept	Meaning
+IP	Address for each device
+IPv4	32-bit, 4 billion addresses
+IPv6	128-bit, huge space
+Subnet	Small network inside bigger network
+Subnet Mask	Divides network vs host
+CIDR	Short mask notation (/24)
+Private IP	LAN-only
+Public IP	Internet-facing
+NAT	Many devices share one public IP
+DHCP	Auto-assign IPs
+DNS	Domain → IP
+ARP/NDP	IP ↔ MAC
+Gateway	Router to external networks
