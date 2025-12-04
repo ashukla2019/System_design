@@ -1,0 +1,122 @@
+Networking Devices & Their OSI Layer
+
+Below is the most accurate mapping used in networking (Cisco/CompTIA standard).
+
+1. Hub
+
+OSI Layer: Layer 1 – Physical
+
+What it does:
+Sends incoming data to all ports
+No filtering
+No understanding of MAC/IP addresses
+Very outdated
+
+Key point: Works with bits only.
+--------------------------------------------------------------------
+2. Repeater
+
+OSI Layer: Layer 1 – Physical
+
+What it does:
+Amplifies and regenerates signals
+Extends cable distance
+Key point: Boosts weak signals, no filtering.
+-----------------------------------------------------------------------
+3. Bridge
+
+OSI Layer: Layer 2 – Data Link
+
+What it does:
+Divides network into segments
+Uses MAC addresses
+Reduces collisions
+Key point: Smarter than a hub.
+---------------------------------------------------------------------------------
+4. Switch (most important Layer 2 device)
+
+OSI Layer: Layer 2 – Data Link
+
+What it does:
+Forwards frames based on MAC address table (CAM table)
+Creates separate collision domains
+Supports VLANs
+Faster and more secure than hubs
+
+Note:
+Some switches operate at Layer 3 too (called Layer-3 switches / multilayer switches).
+------------------------------------------------------------------------------------------
+5. Router
+OSI Layer: Layer 3 – Network
+
+What it does:
+Uses IP addresses
+Performs routing (path selection)
+Connects different networks (LAN → WAN → Internet)
+Divides broadcast domains
+Runs routing protocols (RIP, OSPF, BGP)
+
+Key point: Moves packets between networks.
+-----------------------------------------------------------------------
+6. Layer-3 Switch (Multilayer Switch)
+
+OSI Layer: Layer 2 + Layer 3
+
+What it does:
+Works as a switch (MAC based switching)
+AND as a router (IP routing)
+Used in enterprise LANs
+Faster than normal routers (ASIC-based routing)
+-------------------------------------------------------------------
+7. Access Point (Wireless AP)
+
+OSI Layer: Layer 2 – Data Link
+
+What it does:
+Connects wireless devices to wired network
+Works like a wireless switch
+Uses 802.11 protocol
+Key point: Converts Wi-Fi ↔ Ethernet.
+--------------------------------------------------------------------------
+8. Modem (Modulator/Demodulator)
+OSI Layer: Layer 1 – Physical
+
+What it does:
+Converts analog ↔ digital signals
+Used for DSL, Cable, and Fiber links
+Connects home network to ISP
+---------------------------------------------------------------------------------
+9. Firewall
+
+OSI Layer:
+Traditionally Layer 3 & Layer 4
+Modern NGFW (Next-Gen): Layer 3–7
+
+What it does:
+Filters traffic (IP, Port, Protocol)
+Protects networks
+Can inspect packets deeply (Layer 7 filtering)
+--------------------------------------------------------------
+10. Gateway
+OSI Layer: Layer 4–7 (varies by implementation)
+
+What it does:
+Connects different types of networks
+Usually your home router is a gateway
+Translates protocols (VoIP, email, etc.)
+----------------------------------------------------------------------------------
+11. NIC – Network Interface Card
+OSI Layer: Layer 1 & Layer 2
+What it does:
+Physical connection to network
+Has the MAC address
+Converts data to signals
+------------------------------------------------------------------------------
+12. Load Balancer
+OSI Layer:
+Layer 4 (TCP-based load balancing)
+Layer 7 (Application-level load balancing)
+
+What it does:
+Distributes traffic across servers
+Used in web servers, APIs, cloud systems
