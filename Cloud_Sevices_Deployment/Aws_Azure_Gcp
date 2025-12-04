@@ -6,19 +6,19 @@ Azure Account (identity)
                            └── Resources (VMs, DBs, NICs, etc.)
 
 ---------------------------------
-AWS Organization (optional)
-   └── AWS Account
-         └── VPC (Virtual Private Cloud)
-               └── Subnet
-                     └── Resources (EC2, RDS, S3, etc.)
+AWS Organization (optional, for multi-account management)
+   └── AWS Account (security + billing boundary)
+         └── VPC (virtual network boundary)
+               └── Subnet (AZ-specific)
+                     └── Resources (EC2, RDS, ENIs, ALB, etc.)
 ---------------------------------
 
-Google Organization
+Google Organization (optional)
    └── Billing Account
-         └── Project
+         └── Project (main isolation + IAM boundary)
                └── VPC Network
                      └── Subnet
-                           └── Resources (VMs, Cloud SQL, Buckets) 
+                           └── Resources (VMs, Cloud SQL, buckets)
 
 -------------------------------------
 
