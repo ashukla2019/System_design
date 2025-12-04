@@ -74,3 +74,211 @@ UNION / INTERSECT / EXCEPT
 GROUP BY, HAVING, ORDER BY
 Subqueries and nested SELECTs
 
+
+----------------------------------------------------------------------------------------------------------   
+
+Example Tables
+Table: Customers
+id	name
+1	Alice
+2	Bob
+3	Carol
+
+Table: Orders
+id	customer_id	item
+1	1	Book
+2	1	Pen
+3	2	Laptop
+-----------------------------------------------------------------------------------------------
+INNER JOIN
+Keeps only matching rows in both tables.
+
+Query
+SELECT Customers.name, Orders.item
+FROM Customers
+INNER JOIN Orders ON Customers.id = Orders.customer_id;
+
+Result
+name	item
+Alice	Book
+Alice	Pen
+Bob	Laptop
+
+Carol has no orders → excluded.
+
+---------------------------------------------------------------------------
+LEFT JOIN
+Keeps ALL rows from the left table, even if no match.
+
+Query
+SELECT Customers.name, Orders.item
+FROM Customers
+LEFT JOIN Orders ON Customers.id = Orders.customer_id;
+
+Result
+name	item
+Alice	Book
+Alice	Pen
+Bob	Laptop
+Carol	NULL
+
+Carol is included, item is NULL.
+
+--------------------------------------------------------------------------------
+RIGHT JOIN
+Keeps ALL rows from the right table, even if no match.
+
+Query
+SELECT Customers.name, Orders.item
+FROM Customers
+RIGHT JOIN Orders ON Customers.id = Orders.customer_id;
+
+Result
+Same as INNER JOIN here (because every order has a matching customer).
+
+----------------------------------------------------------------------------
+FULL OUTER JOIN
+Keeps ALL rows from both tables.
+
+If an order existed for a non-existent customer, it would show too.
+Example (conceptual)
+SELECT Customers.name, Orders.item
+FROM Customers
+FULL OUTER JOIN Orders ON Customers.id = Orders.customer_id;
+
+Result (with our data)
+name	item
+Alice	Book
+Alice	Pen
+Bob	Laptop
+Carol	NULL
+
+(If Orders had an order with customer_id = 999, it would appear with name = NULL)
+
+-------------------------------------------------------------------------------
+SELF JOIN
+Table joined with itself.
+
+Example: list pairs of customers where one has a greater id.
+
+SELECT A.name AS person1, B.name AS person2
+FROM Customers A
+JOIN Customers B ON A.id < B.id;
+
+Result
+person1	person2
+Alice	Bob
+Alice	Carol
+Bob	Carol
+
+----------------------------------------------------------------------------------------------------------------
+UNION / INTERSECT / EXCEPT
+Let’s use two simple sets:
+
+Table: A
+value
+1
+2
+3
+Table: B
+value
+2
+3
+4
+UNION
+Combines rows → removes duplicates.
+
+SELECT value FROM A
+UNION
+SELECT value FROM B;
+
+
+Result:
+
+value
+1
+2
+3
+4
+
+---------------------------------------------------------------------------------------
+INTERSECT
+Only values present in BOTH tables.
+
+SELECT value FROM A
+INTERSECT
+SELECT value FROM B;
+
+Result:
+
+value
+2
+3
+EXCEPT (or MINUS)
+
+Values in A that are not in B.
+
+SELECT value FROM A
+EXCEPT
+SELECT value FROM B;
+
+Result:
+
+value
+1
+
+-------------------------------------------------------------------------------
+GROUP BY, HAVING, ORDER BY
+
+Using the Orders table:
+
+id	customer_id	item
+1	1	Book
+2	1	Pen
+3	2	Laptop
+GROUP BY
+
+Group rows and compute aggregates.
+
+SELECT customer_id, COUNT(*) AS total_orders
+FROM Orders
+GROUP BY customer_id;
+
+
+Result:
+
+customer_id	total_orders
+1	2
+2	1
+HAVING
+
+Filter on aggregated values (WHERE cannot do this).
+
+SELECT customer_id, COUNT(*) AS total_orders
+FROM Orders
+GROUP BY customer_id
+HAVING COUNT(*) > 1;
+
+
+Result:
+
+customer_id	total_orders
+1	2
+
+Only customers with more than 1 order.
+
+ORDER BY
+
+Sort results.
+
+SELECT name
+FROM Customers
+ORDER BY name DESC;
+
+
+Result:
+
+name
+Carol
+Bob
+Alice
