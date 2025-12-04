@@ -1,4 +1,3 @@
-
 NoSQL Database Characteristics:
 BASE: The "Anti-ACID" Model (used in many NoSQL systems)
 BASE Property	            Description
@@ -6,20 +5,21 @@ Basically Available	      System guarantees availability, even during failures
 Soft state	               System state may change over time, even without input (due to eventual consistency)
 Eventually consistent	    Data becomes consistent over time, not instantly
 
-1) Non-relational / Schema-less:NoSQL databases do not require fixed schemas—you can store unstructured, semi-structured, or structured data.Fields can vary from one document to another (in document stores like MongoDB).
+1) Non-relational/Schema-less:NoSQL databases do not require fixed schemas—you can store unstructured, semi-structured, 
+   or structured data.Fields can vary from one document to another (in document stores like MongoDB).
 
 2) High Scalability (Horizontal Scaling)
-Designed to scale out by adding more servers (nodes), unlike SQL databases that primarily scale up.
+   Designed to scale out by adding more servers (nodes), unlike SQL databases that primarily scale up.
 
 3) High Availability and Partition Tolerance (CAP theorem)
- Often prefer Availability + Partition    Tolerance, possibly at the cost of  Consistency.
+   Often prefer Availability + Partition    Tolerance, possibly at the cost of  Consistency.
 
 4) Support for Big Data and Real-Time Apps
 
 Excellent for handling large volumes of data, high-velocity reads/writes, and real-time analytics.
 
-5) Variety of Data Models
-NoSQL includes different types of databases:
+5) Variety of Data Models:
+ NoSQL includes different types of databases:
  Document-based (e.g., MongoDB)
  Key-Value stores (e.g., Redis, DynamoDB)
  Column-family (e.g., Cassandra, HBase)
@@ -30,13 +30,11 @@ NoSQL includes different types of databases:
   Eventual Consistency (in many systems)
 
 Data changes may take time to propagate to all nodes. (Not strictly ACID, but can be BASE: Basically Available, Soft state, Eventually consistent.)
-
 Built-in Sharding and Replication
-
 Automatic data distribution across nodes and support for data redundancy.
 
 --------------------------------------
-🛠️ Supported Operations in NoSQL (Vary by Type)
+Supported Operations in NoSQL (Vary by Type)
 Here’s a general mapping of operations across common NoSQL types:
 
 Operation Type	Description	Examples
