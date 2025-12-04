@@ -1,30 +1,19 @@
- OAuth (Open Authorization)
+OAuth (Open Authorization)
 Use Case: Grants third-party apps access to a user's resources without exposing passwords.
 
 Example: A calendar app uses OAuth to access your Google Calendar.
-
 Components:
-
 Resource Owner: The user.
-
 Client: The app requesting access.
-
 Authorization Server: Issues tokens (e.g., Google, GitHub).
-
 Resource Server: API/resource provider (e.g., Google Calendar API).
-
 Does not handle authentication directly, though OpenID Connect (OIDC) builds on OAuth for that.
-
+-----------------------------------------------------------------------------------------------------------
 📌 SAML (Security Assertion Markup Language)
 Use Case: Enterprise Single Sign-On (SSO).
-
 Example: A corporate user logs into Salesforce via Microsoft Azure AD.
-
 Components:
-
 Identity Provider (IdP): Authenticates the user (e.g., Azure AD).
-
 Service Provider (SP): The app the user wants to access (e.g., Salesforce).
-
 SAML Assertion: XML document with user identity and attributes, digitally signed.
 
