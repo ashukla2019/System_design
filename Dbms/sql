@@ -17,6 +17,12 @@ Characteristics of SQL Databases:
 
 4) Schema-Based: SQL databases require a predefined schema, which specifies the structure of data.
 
+schema is a logical container that defines the structure of the database — what tables exist, what columns they have, what types of data they store, and how they are related.
+
+id INT PRIMARY KEY
+name VARCHAR(50)
+age INT
+
 5) Data Integrity Constraints:Enforces rules like NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY, CHECK.
 
 6) Support for TransactionsMultiple operations can be grouped into a transaction that is either fully executed or rolled back.
@@ -28,7 +34,7 @@ Characteristics of SQL Databases:
 9) Concurrency Control:SQL databases handle multiple users by implementing locks and concurrency protocols.
 
 ----------------------------------------
-🛠️ Supported SQL Operations
+Supported SQL Operations
 1. Data Definition Language (DDL)
 Used to define and modify database structures:
 
