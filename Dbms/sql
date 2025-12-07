@@ -44,6 +44,51 @@ ALTER	Modify existing database objects
 DROP	Delete database objects
 TRUNCATE	Quickly remove all records from a table (no rollback)
 
+1. ALTER
+Used to modify an existing table’s structure.
+
+Add a column
+Delete a column
+Modify a column type
+Add constraints
+Drop constraints
+Rename table or column
+
+✔️ Examples:
+➤ Add a column
+ALTER TABLE employees ADD salary INT;
+➤ Drop a column
+ALTER TABLE employees DROP COLUMN salary;
+➤ Modify datatype
+ALTER TABLE employees MODIFY name VARCHAR(200);
+➤ Add a constraint
+ALTER TABLE employees ADD CONSTRAINT emp_email_unique UNIQUE(email);
+-----------------------
+2. DROP
+Completely deletes a table or database from the system.
+
+✔️ Removes structure + all data
+✔️ Cannot be rolled back in many cases
+✔️ Frees space completely
+
+✔️ Example:
+➤ Drop a table
+DROP TABLE employees;
+➤ Drop a database
+DROP DATABASE company_db;
+After DROP — the table is gone forever.
+----------------------------
+3. TRUNCATE
+Deletes all rows from a table but keeps the table structure.
+
+✔️ Very fast (uses DDL, not row-by-row delete)
+✔️ Resets auto-increment counter
+✔️ Cannot be rolled back in most databases
+✔️ Keeps the table & its columns
+
+
+----------------------------------------
+
 2. Data Manipulation Language (DML)
 Used to manipulate data within tables:
 
