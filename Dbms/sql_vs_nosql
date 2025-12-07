@@ -1,13 +1,4 @@
-hatGPT
-You said:
-Why sql is called relational database
-ChatGPT said:
-SQL databases are called Relational Databases because they are based on the Relational Model invented by Dr. E. F. Codd in 1970.
-The term “relational” does NOT come from relationships between tables, but from relations, which is the mathematical word for a table.
-
-Here is the real meaning, explained clearly:
-
-✅ Why SQL Databases Are “Relational”
+Why SQL Databases Are “Relational”
 1. They use the Relational Model (mathematical concept)
 A relation = a table
 A tuple = a row
@@ -17,13 +8,9 @@ So a Relational Database Management System (RDBMS) is one that stores data in re
 
 2. Data is organized in tables with key constraints
 Relational DBs use:
-
 Primary keys (unique identifier)
-
 Foreign keys (to maintain referential integrity)
-
 Unique constraints
-
 Check constraints
 
 Indexes
