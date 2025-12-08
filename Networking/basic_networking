@@ -126,6 +126,23 @@ Host ID → .10
 Subnet mask → 255.255.255.0
 All hosts in same subnet share same network ID, but unique host IDs.
 
+IPv6 Address:
+128 bits = 16 bytes (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334)
+
+Divided into:
+Network Prefix: Identifies the network/subnet (similar to Network ID in IPv4)
+Interface ID: Identifies the device (host) in that network
+
+Example:
+For 2001:0db8:85a3:0000:0000:8a2e:0370:7334/64
+Network Prefix → 2001:0db8:85a3:0000::/64
+Interface ID → ::8a2e:0370:7334
+Prefix length → /64 (similar to subnet mask in IPv4, indicates first 64 bits for network)
+
+Notes:
+IPv6 uses hexadecimal notation separated by colons.
+Leading zeros in a block can be omitted (e.g., 0370 → 370).
+Consecutive blocks of zeros can be compressed using :: (only once per address).
 --------------------------------------
 IP Address Classes
 Class        Range        Default Subnet Mask        Network/Host Split        Usage
@@ -245,1109 +262,135 @@ Physical        Bits        Electrical / Optical signals
 🔁 Decapsulation Process (Receiver Side)
 The reverse process — each layer removes its header and passes the remaining data up the stack until the application receives the original.       
 -----------------------------------------------------------------------------------------------------------------------
-Below is a clean, direct, complete version of your networking guide with all missing essential topics added:
-✔ Topologies
-✔ Subnetting (deep)
-✔ CIDR
-✔ NAT types
-✔ VLAN, STP
-✔ ARP, DHCP, DNS working
-✔ TCP 3-way handshake & 4-way termination
-✔ Routing types
-✔ Switching process
-✔ OSI vs TCP/IP
-✔ MTU, fragmentation
-✔ Broadcast/Multicast/Unicast
-✔ Network Security basics
-✔ Additional devices
-✔ End–to–end data flow summary
-
-I merged your content and added everything missing.
-
-Complete Networking Guide (Updated + Missing Parts Added)
-🔹 What is Networking?
-Networking connects two or more devices so they can communicate, share data, and access resources using wired or wireless media.
-
-🔹 OSI Model (7-Layer Detailed Overview)
-1. Application Layer
-Provides services to user applications.
-Protocols: HTTP/HTTPS, DNS, SMTP, IMAP, FTP, DHCP APIs
-
-2. Presentation Layer
-Handles encryption, compression, encoding.
-Protocols: SSL/TLS, JPEG, MPEG
-
-3. Session Layer
-Handles sessions, synchronisation.
-Protocols: RPC, NetBIOS, PPTP
-
-4. Transport Layer
-Reliable or fast data delivery.
-Protocols: TCP, UDP
-
-TCP Features:
-
-Connection-oriented
-
-3-way handshake
-
-Reliable (ACK, sequence numbers)
-
-Congestion control
-
-UDP Features:
-
-No connection
-
-Fast, no guarantee
-
-Used in DNS, VoIP, streaming
-
-5. Network Layer
-Routing and logical addressing.
-Protocols: IP, ICMP, ARP, RIP, OSPF, BGP
-
-6. Data Link Layer
-Frames, MAC addresses, error detection.
-Protocols: Ethernet, PPP
-
-7. Physical Layer
-Electrical/optical signals, cables, bits.
-
-🔹 TCP 3-Way Handshake (Very Important)
-SYN → Client to server
-
-SYN+ACK → Server
-
-ACK → Client
-
-🔹 TCP 4-Way Termination
-FIN
-
-ACK
-
-FIN
-
-ACK
------------------------------------------------------------------
-🔹 TCP vs UDP
-Feature	TCP	UDP
-Reliability	Yes	No
-Speed	Slower	Faster
-Ordering	Yes	No
-Use Cases	Web, Email	DNS, Gaming, VoIP
-🔹 ARP, DHCP, DNS Working (Missing earlier)
-ARP (Address Resolution Protocol)
-Maps IP → MAC inside LAN.
-
-DHCP (Dynamic Host Configuration Protocol)
-Provides IP, subnet mask, gateway, DNS dynamically.
-
-DORA:
-
-Discover
-
-Offer
-
-Request
-
-Acknowledge
-
-DNS (Domain Name System)
-Converts domain → IP.
-Query flow: Resolver → Root → TLD → Authoritative server.
-
-🔹 IP Addressing (Complete)
-IPv4 Address Structure
-32-bit
-Example: 192.168.1.10
-
-Network ID + Host ID
-Subnet Mask defines the split.
-
-CIDR Notation
-/24 means first 24 bits = Network
-Common masks:
-
-CIDR	Hosts
-/30	2 hosts
-/29	6 hosts
-/24	254 hosts
-/16	65k hosts
-🔹 Subnetting (Missing earlier)
-Example: 192.168.10.0/24
-You want 4 subnets → Need +2 bits
-New mask: /26
-Subnet ranges:
-
-192.168.10.0 – 63
-
-192.168.10.64 – 127
-
-192.168.10.128 – 191
-
-192.168.10.192 – 255
-
-🔹 Routing Concepts (Missing earlier)
-Static Routing
-Manually configured.
-
-Dynamic Routing
-Routers learn automatically.
-
-RIP → Distance vector
-
-OSPF → Link-state
-
-BGP → Internet routing
-
-Routing Table Example
-Destination  Gateway   Interface
-0.0.0.0/0    192.168.1.1   eth0
-10.0.0.0/24  0.0.0.0       eth1
-🔹 Switching Concepts (Missing earlier)
-Switch works in Layer 2.
-
-Switching Types
-Store and forward
-
-Cut-through
-
-Fragment-free
-
-CAM Table
-Maps:
-
-MAC → Port
-STP (Spanning Tree Protocol)
-Prevents loops in switched networks.
-
-🔹 VLAN (Very Important)
-VLAN logically separates networks inside a switch.
-
-Example:
-
-VLAN 10 → Staff
-
-VLAN 20 → Guest
-
-802.1Q tagging adds VLAN ID to frames.
-
-🔹 NAT (Network Address Translation) — Missing
-1. SNAT (Source NAT)
-Private → Public IP translation.
-
-2. DNAT
-Public → Private mapping (used in port forwarding).
-
-3. PAT / NAPT
-Many private IPs → One public IP using ports.
-
-🔹 Network Topologies (Missing)
-1. Bus
-Single cable. Simple but outdated.
-
-2. Star
-Central switch/hub.
-
-3. Ring
-Circular structure.
-
-4. Mesh
-Every node connected to every node.
-
-5. Hybrid
-Enterprise networks use this.
-
-🔹 IPv6 Basics (Missing)
-128-bit
-No NAT required.
-Example: 2001:db8::1
-
-🔹 Unicast, Broadcast, Multicast (Missing)
-Unicast → One-to-one
-Broadcast → One-to-all
-Multicast → One-to-group
-Used heavily in streaming.
-
-🔹 MTU & Fragmentation (Important)
-MTU = 1500 bytes (Ethernet)
-If packet > MTU → Fragmentation at routers.
-
-🔹 Network Security Basics (Missing)
-Firewall (L3/L4)
-
-IPS/IDS
-
-VPN
-
-ACLs (Access Control Lists)
-
-Zero Trust Policies
-
-🔹 Complete Networking Devices Table (Expanded)
-Device	Layer	Function
-Hub	Physical	Broadcasts to all
-Switch	Layer 2	MAC-based forwarding
-L3 Switch	Layer 3	IP routing + switching
-Router	Layer 3	Connects networks
-Bridge	Layer 2	Network segmentation
-Gateway	All	Protocol translation
-Access Point	Layer 2	Wireless connectivity
-Modem	Physical	Converts analog ↔ digital
-Firewall	L3/L4	Security filtering
-Load Balancer	L4/L7	Distributes traffic
-IDS/IPS	7	Detect/prevent attacks
-Proxy	7	Application-layer control
-🔹 OSI vs TCP/IP Model
-OSI	TCP/IP
-7 layers	4 layers
-Conceptual	Real-world
-Strict separation	Combined functions
-TCP/IP Layers:
-
-Application
-
-Transport
-
-Internet
-
-Network Access
-
-🔹 Full Encapsulation Flow (Sender)
-Application Data
-↓
-HTTP Header + Data
-↓
-TCP Header + HTTP Data
-↓
-IP Header + TCP Segment
-↓
-MAC Header + IP Packet
-↓
-Bits → Wire/WiFi
-Receiver removes each header (decapsulation reverse).
-
-❓ Want Me to Draw the Full Diagram?
-I can draw a complete encapsulation + headers + binary representation diagram or create a PDF.
-
-Tell me:
-
-Diagram only
-
-Diagram + examples
-
-PDF version
-
-You said:
-Can you provide all in details and sequences?
-ChatGPT said:
-Below is the most complete, structured, detailed, and sequential explanation of computer networking, covering OSI model, TCP/IP model, encapsulation/decapsulation, IP addressing, subnetting, routing, switching, devices, topologies, protocols, communication types, error control, flow control, NAT, DHCP, DNS, and more.
-
-This will give you a full networking guide for system design.
-
-✅ Complete Networking Guide (Basics → Advanced)
-1️⃣ What is Networking?
-Networking is the process of connecting two or more devices so they can:
-
-✔ Share data
-✔ Communicate
-✔ Share hardware (printers, storage)
-✔ Access internet or internal services
-
-Data travels using wired (Ethernet, fiber) or wireless (Wi-Fi, Bluetooth, 5G) technology.
-
-2️⃣ How Networking Works (Step-by-Step)
-Networking follows layered architecture. The most important model is:
-
-🔵 OSI Model — 7 Layers (Bottom → Top)
-Layer 1 — Physical Layer
-What it does:
-Transmits raw electrical/optical/radio signals (0s & 1s)
-
-Responsibilities:
-
-Bit transmission
-
-Voltages, modulation
-
-Cable types (UTP, fiber)
-
-Wi-Fi signals
-
-NIC hardware
-
-Devices: Hub, Repeater, Cables, Transceiver
-
-Layer 2 — Data Link Layer
-What it does:
-Moves frames between devices on the same LAN. Uses MAC addresses.
-
-Responsibilities:
-
-Framing
-
-Error detection (CRC)
-
-MAC addressing
-
-Flow control
-
-Switch forwarding
-
-Protocols: Ethernet, PPP, HDLC, Frame Relay
-Devices: Switch, Bridge
-
-Outputs: Frames (MAC + Data)
-
-Layer 3 — Network Layer
-What it does:
-Provides routing between networks using IP addresses.
-
-Responsibilities:
-
-Routing
-
-Logical addressing (IPv4/IPv6)
-
-Packet forwarding
-
-Fragmentation
-
-Path selection
-
-Protocols: IPv4, IPv6, ICMP, ARP, OSPF, BGP, RIP
-Devices: Router, Layer 3 Switch
-
-Outputs: Packets (IP header + data)
-
-Layer 4 — Transport Layer
-What it does:
-Responsible for end-to-end communication.
-
-Responsibilities:
-
-Segmentation & Reassembly
-
-Ports (HTTP:80, DNS:53, SSH:22)
-
-Reliability (TCP)
-
-Connection-oriented/less
-
-Protocols:
-
-TCP → reliable, ordered, slow
-
-UDP → fast, connectionless (DNS, streaming)
-
-Outputs: Segments (TCP/UDP + data)
-
-Layer 5 — Session Layer
-What it does:
-Manages sessions/connections between applications.
-
-Responsibilities:
-
-Session creation
-
-Session maintenance
-
-Authentication
-
-Dialog control
-
-Graceful disconnect
-
-Protocols: NetBIOS, RPC, PPTP, NFS
-
-Layer 6 — Presentation Layer
-What it does:
-Formats, encrypts, compresses data.
-
-Responsibilities:
-
-Encryption (SSL/TLS)
-
-Compression
-
-Encoding (JPEG, MP3, MP4)
-
-Serialization (JSON, XML)
-
-Layer 7 — Application Layer
-What it does:
-Provides services directly to user applications.
-
-Examples:
-
-Web browsing → HTTP/HTTPS
-
-Email → SMTP, IMAP, POP3
-
-File transfer → FTP, SFTP
-
-DNS → Name resolution
-
-DHCP → IP assignment
-
-3️⃣ TCP/IP Model (Real-World Model)
-Equivalent of OSI:
-
-OSI Layer	TCP/IP Layer
-Application	Application
-Presentation	Application
-Session	Application
-Transport	Transport
-Network	Internet
-Data Link	Network Access
-Physical	Network Access
-4️⃣ Data Flow — Encapsulation & Decapsulation
-Sender Side — Encapsulation
-Application Layer → Adds application header
-
-Transport Layer → Adds TCP/UDP header
-
-Network Layer → Adds IP header
-
-Data Link Layer → Adds MAC header & Trailer
-
-Physical Layer → Sends bits/signals
-
-Receiver Side — Decapsulation
-Bits → Frame → Packet → Segment → Data → Delivered to application
-
-5️⃣ Detailed Data Unit Progression
-Layer	Data Unit	What is added
-7,6,5 Application	Data	HTTP/TLS
-4 Transport	Segment	TCP/UDP + Ports
-3 Network	Packet	IP Header
-2 Data Link	Frame	MAC Header + CRC
-1 Physical	Bits	Voltages/Signals
-6️⃣ MAC Address vs IP Address
-MAC	IP
-48-bit address	32-bit IPv4 / 128-bit IPv6
-Assigned by manufacturer	Assigned by network/admin
-Used within LAN	Used across networks
-Data Link layer	Network layer
-Example MAC: AA:BB:CC:11:22:33
-Example IP: 192.168.1.10
-
-7️⃣ ARP (Address Resolution Protocol)
-Converts IP → MAC
-
-Example:
-PC wants to send to 192.168.1.20:
-
-Broadcast ARP request
-
-Target replies with MAC
-
-Communication begins
-
-8️⃣ IP Addressing and Subnetting
-IPv4 Structure
-32 bits → 4 octets
-Example: 192.168.1.10
-
-Subnet Mask
-Example: /24 = 255.255.255.0
-Network ID: 192.168.1.0
-Host Range: .1 – .254
-Broadcast: .255
-
-9️⃣ IP Classes
-Already provided earlier; adding usage:
-
-Class	Range	Hosts	Usage
-A	1.0.0.0–126.0.0.0	16M	Large orgs
-B	128.0.0.0–191.255.0.0	65K	Universities
-C	192.0.0.0–223.255.255.0	254	Small networks
-D	224.0.0.0–239	–	Multicast
-E	240.0.0.0–255	–	R&D
-🔟 Network Devices (Full List & OSI Layer)
-Device	OSI Layer	Function
-Hub	1	Broadcasts all traffic
-Repeater	1	Signal regeneration
-NIC	1	Connects device to network
-Switch	2	MAC-based forwarding
-Bridge	2	Divides LAN
-WAP	2	Wi-Fi extension
-Router	3	Routes packets
-L3 Switch	3	Switching + Routing
-Firewall	3/4/7	Filters traffic
-Gateway	All	Converts protocols
-Load Balancer	4/7	Distributes traffic
-Proxy	7	Caching, filtering
-1️⃣1️⃣ Network Topologies
-Topology	Description	Pros	Cons
-Bus	Single cable	Simple	Failure stops all
-Star	Central switch	Reliable	Costly
-Ring	Circular	Predictable	One break stops all
-Mesh	Fully connected	Fault tolerant	Expensive
-Hybrid	Mixture	Flexible	Complex
-1️⃣2️⃣ Types of Communication
-Unicast → one-to-one
-
-Broadcast → one-to-all
-
-Multicast → one-to-many (group)
-
-Anycast → nearest node receives
-
-1️⃣3️⃣ Routing (In Detail)
-Routers decide best path.
-
-Routing Types:
-Static Routing
-
-Dynamic Routing
-
-Routing Protocols:
-OSPF → link-state
-
-RIP → distance vector
-
-BGP → internet-level routing
-
-EIGRP (Cisco)
-
-Routing Table Contains:
-Destination network
-
-Next-hop
-
-Interface
-
-Metric
-
-Route source
-
-1️⃣4️⃣ Switching (In Detail)
-Switch uses MAC address table.
-
-Switching Types:
-Store and Forward
-
-Cut Through
-
-Fragment Free
-
-VLAN (Virtual LAN)
-Used to separate networks logically.
-
-Trunk ports carry multiple VLANs via 802.1Q tagging.
-
-1️⃣5️⃣ NAT (Network Address Translation)
-Converts private IP → public IP
-
-Types:
-Static NAT
-
-Dynamic NAT
-
-PAT (Port Address Translation)
-
-Used in home routers and cloud VPCs.
-
-1️⃣6️⃣ DHCP (Dynamic Host Configuration Protocol)
-Assigns:
-
-IP address
-
-Subnet mask
-
-Gateway
-
-DNS
-
-Process: DORA
-
-Discover
-
-Offer
-
-Request
-
-Acknowledge
-
-1️⃣7️⃣ DNS (Domain Name System)
-Converts domain → IP.
+Below are the topics required for networking:
+1. Network Topologies
+Purpose: Defines how devices are physically or logically connected.
+
+Topology	                Description	                                        
+Bus	                     Single backbone cable	                                          
+Star	                    All nodes connect to central hub/switch	            
+Ring	                    Nodes connected in a circular path	Equal access, no collisions	
+Mesh	                    Every node connects to every other node	High redundancy, reliable	Expensive, complex
+Hybrid	                  Combination of topologies	Flexible	Can be complex to design
+
+---------------------------------------------------------------------------------------------------------------
+2. Subnetting (Deep)
+Purpose: Divides a network into smaller logical subnets.
+IPv4 Example:
+IP: 192.168.10.0/24
+Subnet mask: 255.255.255.0
+
+Number of subnets formula: 2ⁿ (n = number of borrowed bits)
+Number of hosts formula: 2ʰ – 2 (h = host bits)
 
 Steps:
+Determine subnet mask or prefix.
+Calculate number of subnets and hosts per subnet.
+Assign subnet IDs and host ranges.
+IPv6 Subnetting: Uses prefix lengths (commonly /64). Each subnet can support 2⁶⁴ hosts.
+--------------------------------------------------------------------------------------------------------
+3. CIDR (Classless Inter-Domain Routing)
+Replaces traditional classful addressing.
+
+Uses prefix notation: IP/prefix (e.g., 192.168.1.0/24).
+Efficient IP allocation, reduces wasted addresses.
+
+Example:
+/24 → 256 addresses
+/26 → 64 addresses
+------------------------------------------------------------------------------------------------------
+4. NAT Types
+Purpose: Maps private IP addresses to public IPs for internet access.
+NAT Type	Description
+Static NAT	One-to-one mapping between private and public IP
+Dynamic NAT	Private IPs mapped to pool of public IPs
+PAT (NAT Overload)	Multiple private IPs use a single public IP with different ports
+-----------------------------------------------------------------------------------------------------
+5. VLAN & STP
+VLAN (Virtual LAN): Segments a physical network into logical networks.
+Reduces broadcast domains, improves security.
+STP (Spanning Tree Protocol): Prevents loops in Ethernet networks.
+Blocks redundant paths and ensures one active path.
+----------------------------------------------------------------------------------------
+6. ARP, DHCP, DNS Working
+
+ARP (Address Resolution Protocol): Maps IP → MAC on local network.
+DHCP (Dynamic Host Configuration Protocol): Assigns IP, subnet mask, gateway dynamically.
+DNS (Domain Name System): Resolves domain names → IP addresses.
+
+Flow Example (DHCP):
+DHCP Discover → broadcast
+DHCP Offer → server response
+DHCP Request → client accepts
+DHCP ACK → server confirms
+-----------------------------------------------------------------------------------
+7. TCP 3-Way Handshake & 4-Way Termination
+3-Way Handshake (Connection Establishment):
+SYN → Client requests connection
+SYN-ACK → Server acknowledges
+ACK → Client confirms
+
+4-Way Termination (Connection Close):
+FIN → Initiator closes
+ACK → Receiver acknowledges
+FIN → Receiver closes
+ACK → Initiator acknowledges
+---------------------------------------------------------------------------------
+8. Routing Types
+Static Routing: Manually configured routes.
+Dynamic Routing: Routes learned automatically via protocols (RIP, OSPF, BGP).
+Default Route: Route used if no specific match is found.
+---------------------------------------------------------------------------
+9. Switching Process
+Switch learns MAC addresses → builds MAC table.
+Frames are forwarded based on destination MAC.
+Floods unknown destinations to all ports.
+--------------------------------------------------------------------------
+10. OSI vs TCP/IP
+OSI Layer	TCP/IP Layer	Key Function
+Application	Application	Network services to apps
+Presentation	Application	Formatting, encryption
+Session	Application	Connection management
+Transport	Transport	End-to-end delivery (TCP/UDP)
+Network	Internet	Logical addressing, routing
+Data Link	Network Access	Frames, MAC addresses
+Physical	Network Access	Raw bit transmission
+-------------------------------------------------------------------------
+11. MTU & Fragmentation
+
+MTU (Maximum Transmission Unit): Largest packet size a network can handle.
+Fragmentation: Splits packets exceeding MTU.
+IPv4: Routers can fragment.
+IPv6: Hosts must fragment; routers do not.
+---------------------------------------------------------------
+12. Broadcast / Multicast / Unicast
+Type	Description
+Unicast	One-to-one
+Broadcast	One-to-all on subnet
+Multicast	One-to-many (specific group)
+--------------------------------------------------------------------
+13. Network Security Basics
+Firewalls: Filter traffic
+IDS/IPS: Detect/prevent attacks
+VPN: Secure remote access
+Encryption: Protects data integrity and confidentiality
+----------------------------------------------------------------------
+14. Additional Devices
+Device	Function
+Hub	Simple repeater, no filtering
+Switch	MAC-based frame forwarding
+Router	IP-based packet routing
+Bridge	Connects 2 LANs
+Access Point	Wireless network access
+Repeater	Extends signal
+---------------------------------------------------------------------------
+15. End-to-End Data Flow Summary
+Application generates data → TCP/UDP segments
+TCP/UDP adds headers → hands to IP
+IP adds source/destination addresses → packet
+Data Link adds MAC addresses → frame
+Physical layer converts to signals → sent over medium
+Receiver reverses steps → data delivered to application
 
-Query → Resolver
 
-Root server
 
-TLD server
-
-Authoritative server
-
-Returns IP
-
-1️⃣8️⃣ Error Control & Flow Control
-Error Control
-Parity
-
-Checksum
-
-CRC
-
-ARQ (Automatic Repeat Request)
-
-Flow Control
-Stop and Wait
-
-Sliding Window
-
-Congestion Control (TCP)
-
-1️⃣9️⃣ Advanced Topics (For System Design)
-CDNs
-
-Load Balancers
-
-Reverse Proxy
-
-API Gateway
-
-TLS Handshake
-
-Zero Trust Networks
-
-VPN (IPsec, OpenVPN)
-
-Firewalls (L3, L7, WAF)
-
-SDN (Software Defined Networking)
-
-Cloud VPC Networking
-
-🔚 Final Question for You
-Would you like me to turn this into:
-
-📘 PDF
-🧠 Mindmap
-📊 Diagram-based notes
-📝 Interview Q&A version
-💻 System Design networking guide
-
-Just tell me which format you want.
-
-You said:
-Mindmap
-ChatGPT said:
-Your complete networking mindmap has been created!
-If you'd like, I can now:
-
-✅ Add diagrams
-✅ Add OSI packets with headers
-✅ Add TCP handshake, DNS resolution, ARP flow
-✅ Add subnetting examples (/24, /30, /16)
-✅ Add routing table examples
-✅ Add VLAN & trunking diagram
-✅ Add TCP vs UDP comparison
-✅ Add real-world architectures (Enterprise LAN, Cloud VPC, DC)
-✅ Convert this mindmap into PDF
-
-Tell me what you'd like to add or enhance!
-
-You said:
-Yes
-ChatGPT said:
-Your mindmap is ready in the canvas!
-If you want, I can expand it, add diagrams, add more advanced networking topics, or create a PDF version.
-
-Just tell me:
-
-“Add more details”
-
-“Add diagrams”
-
-“Add TCP/IP model comparison”
-
-“Add routing + switching deep dive”
-
-“Add subnetting examples”
-
-“Add firewall/NAT/load balancer details”
-
-Or anything else you want included.
-
-You said:
-Need all
-ChatGPT said:
-Networking Mindmap
-
-Comprehensive Networking Mindmap (Full Detailed + Sequential)
-1. Introduction to Networking
-Definition: Networking connects devices to share data and resources.
-
-Purpose: Communication, file sharing, remote access, internet.
-
-Components: Devices, media, protocols, services.
-
-Transmission Types:
-
-Wired: Ethernet, Fiber optic, Coaxial.
-
-Wireless: Wi-Fi, Bluetooth, NFC.
-
-Network Types:
-
-LAN: Small area.
-
-WAN: Large geographic area.
-
-MAN: Metropolitan region.
-
-PAN: Personal area.
-
-CAN: Campus.
-
-SAN: Storage.
-
-2. OSI Model (Open Systems Interconnection)
-A 7-layer architecture explaining data flow.
-
-2.1 Application Layer (Layer 7)
-User-facing network services.
-
-Functions:
-
-Application access
-
-Identity management
-
-Data generation
-
-Protocols: HTTP, HTTPS, DNS, FTP, SMTP, DHCP, SNMP.
-
-2.2 Presentation Layer (Layer 6)
-Data formatting, translation.
-
-Functions:
-
-Encryption (SSL/TLS)
-
-Compression (ZIP, MPEG)
-
-Encoding (ASCII, Unicode)
-
-Formats: JPEG, PNG, GIF, MP3, MP4.
-
-2.3 Session Layer (Layer 5)
-Manages sessions between applications.
-
-Functions:
-
-Session creation
-
-Authentication
-
-Checkpointing
-
-Protocols: RPC, NetBIOS, PPTP.
-
-2.4 Transport Layer (Layer 4)
-End-to-end communication.
-
-Functions:
-
-Segmentation
-
-Flow control
-
-Reliability
-
-Error control
-
-Protocols:
-
-TCP → Reliable
-
-UDP → Fast, No guarantee
-
-Important: Ports (HTTP-80, DNS-53, HTTPS-443).
-
-2.5 Network Layer (Layer 3)
-Logical addressing and routing.
-
-Functions:
-
-Path selection
-
-Packet forwarding
-
-Protocols: IPv4, IPv6, ICMP, ARP, OSPF, RIP, BGP.
-
-Device: Router.
-
-2.6 Data Link Layer (Layer 2)
-Physical addressing via MAC.
-
-Functions:
-
-Frame formation
-
-Error detection (CRC)
-
-Protocols: Ethernet, PPP, HDLC.
-
-Devices: Switch, Bridge.
-
-2.7 Physical Layer (Layer 1)
-Transmission of binary bits.
-
-Media: Fiber, Copper, Radio waves.
-
-Devices: Hub, Repeater, Cables, NIC.
-
-3. Encapsulation & Decapsulation
-Sender Side
-Application → Data
-
-Transport → Data → Segment
-
-Network → Segment → Packet
-
-Data Link → Packet → Frame
-
-Physical → Frame → Bits
-
-Receiver Side
-Bits → Frame → Packet → Segment → Data → Application output
-
-4. TCP/IP Model (Alternate To OSI)
-Application Layer (Application + Presentation + Session)
-
-Transport Layer (TCP/UDP)
-
-Internet Layer (IP, ICMP)
-
-Network Access Layer (Data Link + Physical)
-
-5. Networking Devices
-Layer 1 Devices
-Hub → Broadcasts to all
-
-Repeater → Signal booster
-
-Layer 2 Devices
-Switch → Uses MAC, forwards frames
-
-Bridge → Divides LAN
-
-Access Point → Wireless connectivity
-
-Layer 3 Devices
-Router → Forwards packets using IP
-
-Firewall → Controls traffic (Layer 3/4)
-
-Multi-layer Devices
-Gateway → Converts protocols
-
-Load Balancer
-
-Proxy/Reverse Proxy
-
-6. IP Addressing
-IPv4
-32-bit
-
-Format: A.B.C.D
-
-Types:
-
-Public
-
-Private
-
-Binary representation
-
-IPv6
-128-bit
-
-Hexadecimal format
-
-No need for NAT
-
-Private IP Ranges
-Class A: 10.0.0.0/8
-
-Class B: 172.16.0.0/12
-
-Class C: 192.168.0.0/16
-
-IP Classes
-A: Large networks
-
-B: Medium
-
-C: Small
-
-D: Multicast
-
-E: Research
-
-7. Subnetting
-Splits network into smaller segments.
-
-Steps:
-
-Determine number of hosts/subnets
-
-Decide mask
-
-Calculate:
-
-Network ID
-
-Broadcast ID
-
-Host range
-
-CIDR Notation: /8, /16, /24, etc.
-
-8. Routing
-Routing = Finding best path.
-
-Types:
-Static
-
-Dynamic
-
-Dynamic Routing Protocols
-Distance Vector: RIP
-
-Link State: OSPF
-
-Path Vector: BGP
-
-Routing Concepts
-Routing Table
-
-Next Hop
-
-Metric
-
-Administrative Distance
-
-9. Switching Concepts
-MAC address learning
-
-Forwarding table (CAM table)
-
-Collision domains
-
-Broadcast domains
-
-VLANs
-
-Trunking (802.1Q)
-
-10. Wireless Networking
-Wi-Fi Standards: 802.11a/b/g/n/ac/ax
-
-Frequency bands: 2.4 GHz, 5 GHz, 6 GHz
-
-Encryption: WPA2, WPA3
-
-SSID, BSSID, Channels
-
-11. Network Security
-Firewalls (Stateful/Stateless)
-
-IDS/IPS
-
-VPN: IPsec, SSL
-
-ACLs
-
-Proxy servers
-
-DDoS protection
-
-12. NAT (Network Address Translation)
-Converts private IPs → Public IP
-
-Types:
-
-Static NAT
-
-Dynamic NAT
-
-PAT (Port Address Translation)
-
-13. Load Balancing
-Distributes traffic across servers.
-
-Types:
-
-L4 Load Balancing
-
-L7 Load Balancing
-
-Algorithms:
-
-Round Robin
-
-Least Connections
-
-IP Hash
-
-14. Advanced Networking
-SDN (Software Defined Networking)
-
-Cloud Networking (VPC, Subnets)
-
-Containers Networking (Docker, Kubernetes)
-
-Zero Trust Networking
-
-QoS (Quality of Service)
-
-15. Troubleshooting Tools
-ping
-
-traceroute
-
-nslookup
-
-dig
-
-ipconfig / ifconfig
-
-netstat
-
-tcpdump
-
-wireshark
-
-16. Real-World Data Flow Example
-Browser sends HTTP request
-
-Request encapsulated → TCP → IP → Frame
-
-Switch forwards frame
-
-Router forwards packet
-
-Server receives, decapsulates
-
-Response returned back
-
-17. Summary
-Networking involves layers, addresses, devices, protocols.
-
-OSI explains how data moves.
-
-TCP/IP is real-world model.
-
-IP addressing/subnetting is foundation.
-
-Switching and routing enable communication.
-
-Security protects the network
