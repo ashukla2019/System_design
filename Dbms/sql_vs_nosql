@@ -5,7 +5,7 @@ A tuple = a row
 An attribute = a column
 
 So a Relational Database Management System (RDBMS) is one that stores data in relations (tables) and is operated using set theory + predicate logic.
-
+----------------------------------------------------------------------------------------
 2. Data is organized in tables with key constraints
 Relational DBs use:
 Primary keys (unique identifier)
@@ -13,10 +13,8 @@ Foreign keys (to maintain referential integrity)
 Unique constraints
 Check constraints
 
-Indexes
-
-These rules ensure accuracy, consistency, integrity — the core idea of relational databases.
-
+Indexes: These rules ensure accuracy, consistency, integrity — the core idea of relational databases.
+-----------------------------------------------------------------------------------------
 3. Relationships between tables are defined logically
 Because the model uses keys, tables can be connected:
 
@@ -27,7 +25,7 @@ Because the model uses keys, tables can be connected:
 many → many
 
 But this is not the reason it’s called relational — this is just a feature that relational design enables.
-
+-----------------------------------------------------------------------------------------
 4. SQL is based on relational algebra & relational calculus
 SQL lets you query data using operations from relational algebra, such as:
 
@@ -42,7 +40,7 @@ GROUP BY (aggregation)
 UNION, INTERSECT, MINUS
 
 These operations treat tables as sets — this is why relational DBs are extremely powerful for querying.
-
+--------------------------------------------------------------------------------
 5. RDBMS guarantees ACID properties
 Relational DB design enforces:
 
@@ -56,22 +54,17 @@ Durability
 
 These make SQL databases reliable for financial, banking, enterprise systems.
 
-✔️ Summary in One Line
+Summary in One Line
 SQL databases are called relational because:
 
-➡️ They store data as relations (tables) and use mathematical relational theory to manage and query it.
+They store data as relations (tables) and use mathematical relational theory to manage and query it.
 
 If you want, I can also explain:
-✔️ Why NoSQL databases are non-relational
-✔️ When to use SQL vs NoSQL
-✔️ How relationships actually work in RDBMS (PK/FK diagrams)
+ Why NoSQL databases are non-relational
+ When to use SQL vs NoSQL
+ How relationships actually work in RDBMS (PK/FK diagrams)
 
-You said:
-Yes
-ChatGPT said:
-Great — here is the full, clear comparison explaining why SQL is relational, why NoSQL is non-relational, and when to use each.
-
-✅ 1. Why SQL Is Relational
+1. Why SQL Is Relational
 SQL DBs (MySQL, PostgreSQL, Oracle, SQL Server) follow:
 
 ➤ Relational Model = Data stored in relations (tables)
@@ -102,7 +95,7 @@ Data integrity
 
 This is why banks, hospitals, inventory systems rely on SQL.
 
-❌ 2. Why NoSQL Is Non-Relational
+2. Why NoSQL Is Non-Relational
 NoSQL = “Not Only SQL” → it doesn’t use the relational model, and often:
 
 ➤ No tables
@@ -121,7 +114,7 @@ Graph databases (Neo4j)
 
 These structures are not based on relations, so they are non-relational.
 
-📌 3. SQL vs NoSQL: When to Use Which?
+3. SQL vs NoSQL: When to Use Which?
 ✔️ Use SQL When:
 You need ACID transactions
 
