@@ -1,4 +1,111 @@
+Networking Basics – Mindmap Diagram
+Networking
+│
+├── 1. Types of Networks
+│     ├── PAN
+│     ├── LAN
+│     ├── MAN
+│     └── WAN
+│
+├── 2. Network Topologies
+│     ├── Bus
+│     ├── Star
+│     ├── Ring
+│     ├── Mesh
+│     └── Hybrid
+│
+├── 3. OSI Model (7 Layers)
+│     ├── Application (L7)
+│     │      ├── HTTP/HTTPS
+│     │      ├── DNS
+│     │      ├── FTP/SFTP
+│     │      └── Email protocols
+│     ├── Presentation (L6)
+│     │      ├── Encryption (SSL/TLS)
+│     │      ├── Compression
+│     │      └── Encoding
+│     ├── Session (L5)
+│     │      ├── Session creation
+│     │      └── Session termination
+│     ├── Transport (L4)
+│     │      ├── TCP
+│     │      ├── UDP
+│     │      └── Port numbers
+│     ├── Network (L3)
+│     │      ├── IP addressing
+│     │      ├── Routing
+│     │      └── Protocols (RIP/OSPF/BGP)
+│     ├── Data Link (L2)
+│     │      ├── MAC address
+│     │      ├── Framing
+│     │      └── Error detection
+│     └── Physical (L1)
+│            ├── Bits
+│            ├── Cables
+│            └── Signals
+│
+├── 4. TCP/IP Model
+│     ├── Application
+│     ├── Transport
+│     ├── Internet
+│     └── Network Access
+│
+├── 5. Encapsulation / Decapsulation
+│     ├── Application → Data
+│     ├── Transport → Segment
+│     ├── Network → Packet
+│     ├── Data Link → Frame
+│     └── Physical → Bits
+│
+├── 6. Networking Devices
+│     ├── Hub (L1)
+│     ├── Repeater (L1)
+│     ├── Switch (L2)
+│     ├── Bridge (L2)
+│     ├── Router (L3)
+│     ├── Gateway (L5-7)
+│     ├── Access Point
+│     └── Firewall
+│
+├── 7. IP Addressing
+│     ├── IPv4 (32-bit)
+│     ├── IPv6 (128-bit)
+│     ├── Network ID & Host ID
+│     ├── Classes (A, B, C, D, E)
+│     ├── Private IP ranges
+│     └── Subnet mask (CIDR)
+│
+├── 8. Subnetting
+│     ├── Why Subnet?
+│     ├── CIDR notation (/24 /16 /30)
+│     ├── Hosts formula
+│     └── Subnet calculations
+│
+├── 9. Ports & Protocols
+│     ├── HTTP – 80
+│     ├── HTTPS – 443
+│     ├── DNS – 53
+│     ├── DHCP – 67/68
+│     ├── SSH – 22
+│     └── FTP – 20/21
+│
+├── 10. Address Resolution
+│     ├── ARP (IP → MAC)
+│     └── DNS (Domain → IP)
+│
+├── 11. Transmission Media
+│     ├── Copper cables (Cat5e/6/7)
+│     ├── Fiber optics
+│     └── Wireless (Wi-Fi/Bluetooth)
+│
+└── 12. Network Services
+       ├── NAT
+       ├── DHCP
+       ├── VPN
+       ├── Firewall rules
+       └── Load balancing
 
+--------------------------------------------------------------------------------------------------------------------------
 How Networking Works — Layer by Layer (OSI Model)
 Networking follows the OSI (Open Systems Interconnection) model — a 7-layer conceptual model describing how data moves from a sender to a receiver.
 
@@ -391,6 +498,7 @@ IP adds source/destination addresses → packet
 Data Link adds MAC addresses → frame
 Physical layer converts to signals → sent over medium
 Receiver reverses steps → data delivered to application
+-------------------------------------------------------------------------------
 
 
 
