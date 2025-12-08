@@ -1,0 +1,33 @@
+SQL Database Characteristics and Supported Operations
+Characteristics of SQL Databases:
+
+1) Relational Structure: Data is stored in tables (relations) composed of rows and columns.Tables can be linked using foreign keys to maintain referential integrity.
+
+2) Structured Query Language (SQL):SQL is the standard language used to interact with relational databases.
+
+3) ACID Properties:
+   Atomicity: All operations in a transaction   are completed; otherwise, none are.
+
+   Consistency: The database remains in a valid state before and after transactions.
+
+   Isolation: Transactions do not interfere with each other.
+
+   Durability: Once a transaction is committed, it is permanently saved.
+
+4) Schema-Based: SQL databases require a predefined schema, which specifies the structure of data.
+
+schema is a logical container that defines the structure of the database — what tables exist, what columns they have, what types of data they store, and how they are related.
+
+id INT PRIMARY KEY
+name VARCHAR(50)
+age INT
+
+5) Data Integrity Constraints:Enforces rules like NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY, CHECK.
+
+6) Support for TransactionsMultiple operations can be grouped into a transaction that is either fully executed or rolled back.
+
+7) Normalized Data:Data is typically normalized to reduce redundancy and improve consistency.
+
+8) Scalability:Vertical scaling (more CPU/RAM) is commonly used. Horizontal scaling is limited compared to NoSQL.
+
+9) Concurrency Control:SQL databases handle multiple users by implementing locks and concurrency protocols.
