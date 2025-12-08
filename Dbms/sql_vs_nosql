@@ -17,41 +17,28 @@ Indexes: These rules ensure accuracy, consistency, integrity — the core idea o
 -----------------------------------------------------------------------------------------
 3. Relationships between tables are defined logically
 Because the model uses keys, tables can be connected:
-
 1 → 1
-
 1 → many
-
 many → many
-
 But this is not the reason it’s called relational — this is just a feature that relational design enables.
 -----------------------------------------------------------------------------------------
 4. SQL is based on relational algebra & relational calculus
 SQL lets you query data using operations from relational algebra, such as:
 
 SELECT (projection)
-
 WHERE (selection)
-
 JOIN (Cartesian product + filtering)
-
 GROUP BY (aggregation)
-
 UNION, INTERSECT, MINUS
-
 These operations treat tables as sets — this is why relational DBs are extremely powerful for querying.
 --------------------------------------------------------------------------------
 5. RDBMS guarantees ACID properties
 Relational DB design enforces:
 
 Atomicity
-
 Consistency
-
 Isolation
-
 Durability
-
 These make SQL databases reliable for financial, banking, enterprise systems.
 
 Summary in One Line
