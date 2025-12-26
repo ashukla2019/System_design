@@ -1,1 +1,83 @@
+1. Cloud Fundamentals
+
+    Deployment Models: Public (Azure), Private (Azure Stack), and Hybrid (Azure Arc).
+    Service Models:
+        IaaS: Infrastructure (Azure Virtual Machines, Disk Storage).
+        PaaS: Platform (Azure App Service) where you only manage code.
+        SaaS: Finished software (Microsoft 365, Dynamics 365).
+    Global Infrastructure: Azure is divided into Regions (e.g., East US) and Availability Zones (AZs) (unique physical locations within a region with independent power/cooling).
+----------------------------------------------------------------------------------------------------
+2. Compute Services (The Brain)
+
+    Azure Virtual Machines (VMs): Resizable virtual servers. Pricing models: Pay-as-you-go (On-demand), Reserved Instances (up to 72% savings), and Spot Instances (using unused capacity at deep discounts).
+    Azure Functions: Serverless compute (Logic/Code) that runs only when triggered (like AWS Lambda).
+    Azure App Service: An HTTP-based service for hosting web applications, REST APIs, and mobile backends (like Elastic Beanstalk).
+------------------------------------------------------------------------------------------------------
+3. Storage & Databases (The Memory)
+
+    Azure Blob Storage: Scalable object storage for unstructured data (like AWS S3).
+    Azure Managed Disks: Persistent block storage for Azure VMs (like AWS EBS).
+    Databases:
+        Azure SQL Database: Managed relational database based on SQL Server (like RDS).
+        Cosmos DB: Globally distributed, multi-model NoSQL database (like DynamoDB).
+        Azure Database for MySQL/PostgreSQL: Fully managed community versions of relational engines.
+------------------------------------------------------------------------------------------------
+4. Networking & Content Delivery
+
+    Azure VNet (Virtual Network): Your private network in Azure. Key components: Subnets, Route Tables, and Network Security Groups (NSGs).
+    Azure DNS: Hosting service for DNS domains that provides name resolution.
+    Azure Content Delivery Network (CDN): Global solution for delivering high-bandwidth content.
+    Azure Load Balancer: Delivers high availability and network performance to your applications by distributing traffic.
+-------------------------------------------------------------------------------------------------
+5. Security & Management
+
+    Microsoft Entra ID (formerly Azure AD): Identity and access management. Controls users and permissions.
+    Azure Monitor: Collects and analyzes telemetry to maximize the availability of your apps (like CloudWatch).
+    Azure Activity Log: Provides insight into subscription-level events (who did what in your account, like CloudTrail).
+    Azure Trust Center: Your portal for security, privacy, and compliance documentation (like AWS Artifact).
+-----------------------------------------------------------------------------------------------------------------------------------
+The Azure Step-by-Step Hierarchy (The Hotel Analogy)
+Step 1: The Azure Tenant & Subscription (The Hotel Chain)
+
+    Analogy: The parent brand (e.g., Hilton Worldwide).
+    What happens here: You handle the high-level identity (Tenant) and the billing account (Subscription).
+    Expert Rule: You cannot create a resource without a valid Subscription.
+
+Step 2: The Resource Group (The Project Folder/Cart)
+
+    Analogy: A "Luggage Cart." Before you enter the hotel, you put all related items on one cart.
+    What happens here: Logical grouping. You put your web server, database, and network into one Group.
+    Expert Rule: Every Azure resource must live in exactly one Resource Group. If you delete the cart, everything on it is deleted.
+
+Step 3: The Region (The City)
+
+    Analogy: Choosing the hotel location in "Dubai" or "Paris."
+    Expert Rule: You choose the Region based on where your users are to reduce lag (latency).
+
+Step 4: The VNet & Subnet (The Building & Floors)
+
+    Analogy: The VNet is the Building; the Subnet is the Floor.
+        Public Subnet: The Lobby/Reception.
+        Private Subnet: The secure back-office or vault.
+    Expert Rule: Use Network Security Groups (NSG) to act as the "Security Guard" for each floor.
+
+Step 5: The Resource (The Furniture)
+
+    Analogy: The Virtual Machine (Guest) or SQL Database (The Safe).
+    Expert Rule: The resource gets a Private IP from the Subnet it is sitting in.
+
+The Full "Logic Chain" in One Sentence:
+
+    "My Azure Subscription owns a Resource Group, which contains a VNet (Building) inside a Region (City), divided into Subnets (Floors) to hold my Virtual Machines (Guests)."
+
+Summary Table for 2025 Mastery
+Layer
+	Technical Name	Purpose
+Level 1	Tenant / Subscription	Identity and Billing.
+Level 2	Resource Group	Mandatory logical container for management.
+Level 3	VNet	Your private network boundary.
+Level 4	Subnet	IP range within a VNet for isolation.
+Level 5	Resource	VMs, Databases, Web Apps.
+Important Distinction (Blob Storage):
+Just like S3, Azure Blob Storage is a "Regional" service. While you manage it through a Storage Account, it does not strictly need to be inside a Subnet to exist—it is accessed via a URL.
 
