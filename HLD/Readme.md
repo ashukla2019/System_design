@@ -70,7 +70,6 @@ Crucial for developers, architects, and product managers because it allows them 
    Algorithms: token bucket, leaky bucket
 ---------------------------------------------------------------------------------------
  5. Storage
-
    Block: low latency (DBs)
    Object: scalable (media)
    File: shared storage
