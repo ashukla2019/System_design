@@ -1,0 +1,30 @@
+A Forward Proxy is a server that sits between clients and the internet, sending requests on behalf of the client.
+Client → Forward Proxy → Internet (Servers)
+
+What a Forward Proxy Does
+1. Hides the Client
+External servers see the proxy’s IP, not the client’s
+Provides privacy and anonymity
+
+
+2. Access Control
+Blocks or allows websites
+Enforces company or school policies
+
+3. Caching
+Stores frequently requested content
+Speeds up access
+Reduces bandwidth usage
+
+4. Content Filtering & Security
+Malware protection
+Blocks unsafe or inappropriate sites
+Inspects traffic (especially in enterprises)
+
+
+Who Uses a Forward Proxy
+Clients explicitly configure it
+Common in:
+Corporate networks
+Schools
+Privacy tools
