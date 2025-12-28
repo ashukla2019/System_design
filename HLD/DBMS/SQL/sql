@@ -1,0 +1,76 @@
+
+SQL Database Characteristics and Supported Operations
+Characteristics of SQL Databases:
+
+1) Relational Structure: Data is stored in tables (relations) composed of rows and columns.Tables can be linked using foreign keys to maintain referential integrity.
+
+2) Structured Query Language (SQL):SQL is the standard language used to interact with relational databases.
+
+3) ACID Properties:
+   Atomicity: All operations in a transaction   are completed; otherwise, none are.
+
+   Consistency: The database remains in a valid state before and after transactions.
+
+   Isolation: Transactions do not interfere with each other.
+
+   Durability: Once a transaction is committed, it is permanently saved.
+
+4) Schema-Based: SQL databases require a predefined schema, which specifies the structure of data.
+
+5) Data Integrity Constraints:Enforces rules like NOT NULL, UNIQUE, PRIMARY KEY, FOREIGN KEY, CHECK.
+
+6) Support for TransactionsMultiple operations can be grouped into a transaction that is either fully executed or rolled back.
+
+7) Normalized Data:Data is typically normalized to reduce redundancy and improve consistency.
+
+8) Scalability:Vertical scaling (more CPU/RAM) is commonly used. Horizontal scaling is limited compared to NoSQL.
+
+9) Concurrency Control:SQL databases handle multiple users by implementing locks and concurrency protocols.
+
+----------------------------------------
+🛠️ Supported SQL Operations
+1. Data Definition Language (DDL)
+Used to define and modify database structures:
+
+Command	Description
+CREATE	Create databases, tables, indexes, views
+ALTER	Modify existing database objects
+DROP	Delete database objects
+TRUNCATE	Quickly remove all records from a table (no rollback)
+
+2. Data Manipulation Language (DML)
+Used to manipulate data within tables:
+
+Command	Description
+SELECT	Retrieve data
+INSERT	Add new records
+UPDATE	Modify existing records
+DELETE	Remove records
+
+3. Data Control Language (DCL)
+Used to control access to data:
+
+Command	Description
+GRANT	Provide user access privileges
+REVOKE	Remove user access privileges
+
+4. Transaction Control Language (TCL)
+Used to manage transactions:
+
+Command	Description
+BEGIN / START TRANSACTION	Begin a transaction
+COMMIT	Save changes made during the transaction
+ROLLBACK	Undo changes since the last commit
+SAVEPOINT	Set a point within a transaction to roll back to
+
+5. Joins and Queries
+SQL supports powerful querying through:
+
+INNER JOIN
+LEFT/RIGHT JOIN
+FULL OUTER JOIN
+SELF JOIN
+UNION / INTERSECT / EXCEPT
+GROUP BY, HAVING, ORDER BY
+Subqueries and nested SELECTs
+
