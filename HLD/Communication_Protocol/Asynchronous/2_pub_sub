@@ -1,0 +1,23 @@
+What Pub/Sub Means
+Publisher → emits an event
+Broker / Topic → distributes the event
+Subscribers → receive copies of the event
+
+----------------------------------------------------------------
+Core Components
+1. Publisher
+Produces events (facts that something happened)
+Example: OrderCreated, UserSignedUp
+
+2. Topic (or Channel)
+Logical stream of events
+Events are sent to a topic, not directly to consumers
+
+3. Subscribers
+Services or apps interested in those events
+Each subscriber gets its own copy
+Event Distribution Flow
+Event occurs
+Publisher publishes to a topic
+Broker fans out the event
+Subscribers consume independently
