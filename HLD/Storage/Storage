@@ -1,0 +1,76 @@
+1. Block Storage — Low Latency (Databases)
+Definition:
+Stores data in fixed-size blocks
+Each block can be accessed independently
+Typically used with SAN (Storage Area Network)
+
+Use Cases:
+Databases (SQL, NoSQL)
+Virtual machine disks
+Applications needing fast random access
+
+Pros:
+✅ Very low latency
+✅ High performance (IOPS-heavy workloads)
+
+Cons:
+❌ Complex management
+❌ Lacks file-level metadata
+
+----------------------------------------------------------------------------------------
+2. Object Storage — Scalable (Media & Large Files)
+Definition:
+Stores data as objects with metadata and unique ID
+Accessed via APIs (HTTP/REST)
+Designed for massive scalability
+
+Use Cases:
+Media files (images, videos)
+Backups, logs, archives
+Cloud storage (AWS S3, Google Cloud Storage)
+
+Pros:
+✅ Highly scalable
+✅ Metadata-rich
+✅ Easy replication
+
+Cons:
+❌ Higher latency than block storage
+❌ Not ideal for small random reads/writes
+
+---------------------------------------------------------------------------------------
+3. File Storage — Shared Storage
+Definition:
+Stores data in hierarchical file systems
+Accessed via NFS, SMB/CIFS
+
+Use Cases:
+Shared team directories
+Enterprise file servers
+NAS (Network Attached Storage)
+
+Pros:
+✅ Familiar interface (files/folders)
+✅ Good for shared access
+
+Cons:
+❌ Limited scalability
+❌ Less performant for databases
+--------------------------------------------------------------------------------------------
+4. Backup & Disaster Recovery (DR)
+Key Metrics
+RPO (Recovery Point Objective): Max data loss tolerated
+
+Example: RPO = 1 hour → backups every hour
+RTO (Recovery Time Objective): Max time to restore service
+
+Example: RTO = 30 minutes → system back online in ≤30 min
+Backup Types
+
+Full → entire dataset
+Incremental → only changes since last backup
+Differential → changes since last full backup
+DR Strategies
+Onsite backup
+Offsite replication
+Cloud disaster recovery
