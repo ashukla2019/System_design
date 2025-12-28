@@ -1,1 +1,31 @@
+Scaling Strategies
+Horizontal Scaling (Scale Out)
+Add more nodes/machines to a system
+Distributes load across multiple servers
+Often used in web servers, microservices, databases
 
+Pros:
+✅ Can scale almost indefinitely
+✅ Improves fault tolerance (redundancy)
+
+Cons:
+❌ More complex infrastructure (load balancing, data consistency)
+
+Example:
+Adding more web servers behind a load balancer
+
+----------------------------------------------------------------------
+Vertical Scaling (Scale Up)
+Upgrade a single machine with more resources (CPU, RAM, disk)
+Easier to implement initially
+
+Pros:
+✅ Simple to implement
+✅ No need to modify application for multiple nodes
+
+Cons:
+❌ Limited by hardware capacity
+❌ Single point of failure
+
+Example:
+Upgrading a database server from 16GB RAM → 64GB RAM
