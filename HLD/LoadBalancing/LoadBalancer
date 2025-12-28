@@ -1,1 +1,69 @@
+1. What is a Load Balancer?
+A load balancer is a system or device that distributes incoming network or application traffic across multiple servers to:
+Improve availability
+Increase performance
+Prevent any single server from being overwhelmed
+Goal: Make applications scalable, reliable, and fast.
+----------------------------------------------------------------------------------
+2. How a Load Balancer Works
+Client sends a request to the application (e.g., https://example.com)
+Request goes to load balancer instead of a specific server
+Load balancer chooses a server based on algorithm
+Request is forwarded to the selected server
+Server processes the request and returns the response through the load balancer
+Load balancer monitors server health → avoids sending traffic to unhealthy nodes
 
+Client → Load Balancer → Server 1
+                           Server 2
+                           Server 3
+---------------------------------------------------------------------------------------
+3. Types of Load Balancers
+A. Based on Layer
+Type	OSI Layer	Function
+Layer 4 (Transport)	TCP/UDP	Routes traffic based on IP and port
+Layer 7 (Application)	HTTP/HTTPS	Routes traffic based on URL, cookies, headers, content
+
+B. Deployment Types
+Hardware Load Balancer → Physical appliance, very fast, expensive
+Software Load Balancer → Runs on servers (NGINX, HAProxy)
+Cloud Load Balancer → Provided by cloud providers (AWS ELB, Azure LB)
+---------------------------------------------------------------------------------------------
+4. Load Balancing Algorithms
+1. Round Robin
+Requests are sent in order to each server
+Simple, works if servers are similar
+------------------------------------------------------------------------
+2. Least Connections
+Sends request to the server with fewest active connections
+Good for servers with different load capacities
+--------------------------------------------------------------------------
+3. IP Hash
+Hash of client IP decides server
+Useful for session persistence (sticky sessions)
+---------------------------------------------------------------------------------
+4. Weighted Round Robin / Least Connections
+Servers have weights based on capacity
+More powerful servers handle more requests
+--------------------------------------------------------------------------------
+5. Random
+Randomly distributes requests
+Simple, but may be uneven
+-----------------------------------------------------------------------------
+5. Where Load Balancers Are Used
+Web servers (scalable websites)
+APIs and microservices
+Database read replicas
+Cloud services (highly available architectures)
+Gaming servers, streaming platforms
+-------------------------------------------------------------------------------------
+6. What Happens If Load Balancers Didn’t Exist?
+One server receives all traffic → overload, slow response
+Downtime if server fails → no automatic failover
+No scaling → hard to handle spikes in traffic
+Poor user experience → latency, failed requests
+----------------------------------------------------------------------------------------
+7. Key Benefits
+Scalability: Add/remove servers without downtime
+High Availability: Detect and bypass failed servers
+Performance: Distribute load evenly
+Flexibility: Choose routing algorithms per traffic type
