@@ -1,0 +1,33 @@
+A Reverse Proxy is a server that sits in front of backend servers and receives client requests on their behalf, 
+mainly to protect, manage, and optimize servers.
+
+Client → Reverse Proxy → Backend Servers
+
+How a Reverse Proxy Protects Servers
+1. Hides Backend Servers
+Clients never see real server IPs
+Reduces attack surface
+Prevents direct access
+
+2. Load Balancing
+Distributes traffic across multiple servers
+Prevents overload and downtime
+
+3. DDoS Protection
+Absorbs and filters malicious traffic
+Rate limiting and traffic shaping
+
+4. SSL/TLS Termination
+Handles HTTPS encryption/decryption
+Reduces CPU load on backend servers
+
+5. Web Application Firewall (WAF)
+Blocks common attacks:
+SQL injection
+XSS
+Path traversal
+
+6. Caching
+Serves cached content
+Reduces backend requests
+Improves performance
