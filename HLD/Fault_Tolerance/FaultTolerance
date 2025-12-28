@@ -1,0 +1,56 @@
+1. Fault Tolerance & Reliability
+High Availability (HA)
+Ensures the system is always accessible, even if some components fail
+Achieved by redundancy and no single point of failure (SPOF)
+Example: multiple web servers behind a load balancer
+
+Fault Tolerance
+System can continue operating correctly even when some components fail
+Achieved via replication, failover mechanisms, and self-healing systems
+Example: database replicas take over if primary fails
+
+Reliability
+Likelihood that a system runs without failure over time
+Measured as uptime percentage or mean time between failures (MTBF)
+High reliability = fewer failures
+
+Consensus (Leader Election)
+Used in distributed systems to agree on a single source of truth
+
+Example: Raft protocol
+Elects a leader among nodes
+Ensures consistent writes across replicas
+Critical for fault-tolerant databases and distributed coordination
+---------------------------------------------------------------------------
+2. Failure Handling Strategies
+Health Checks
+Periodic checks on system components
+Detects unhealthy nodes/services
+Example: Kubernetes liveness and readiness probes
+
+Failover
+Automatic switching to a backup or replica when a node fails
+Ensures minimal downtime
+Example: primary database fails → replica becomes primary
+
+Retry + Backoff
+Retry failed operations automatically
+Exponential backoff prevents overloading services
+Example: API request fails → retry after 1s, 2s, 4s, …
+
+Circuit Breakers
+Prevents repeated requests to a failing service
+Opens the circuit when failure threshold is reached
+Example: stops sending requests to a crashed microservice for 30s
+
+-------------------------------------------------------------------
+
+High availability → system accessible always
+
+Fault tolerance → system continues despite failures
+
+Reliability → system rarely fails
+
+Consensus → nodes agree on a leader or value
+
+Failure handling → health checks, failover, retries, circuit breakers
