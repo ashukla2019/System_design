@@ -1,0 +1,2 @@
+A distributed database stores data across multiple nodes or servers instead of a single machine.
+Goal: High availability, scalability, and fault tolerance.
