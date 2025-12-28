@@ -1,2 +1,74 @@
 A distributed database stores data across multiple nodes or servers instead of a single machine.
 Goal: High availability, scalability, and fault tolerance.
+
+------------------------------------------------------------------------------------  
+2. Replication — Availability
+Replication means copying data across multiple nodes.
+
+Purpose
+If one node fails → data is still available
+Improves read performance (can read from replicas)
+
+Types
+Master-Slave: writes go to master, reads can go to slaves
+Master-Master: multiple nodes can handle writes (conflict resolution needed)
+
+Pros
+✅ High availability
+✅ Fault tolerance
+✅ Read scaling
+
+Cons
+❌ Potential consistency issues
+❌ More storage required
+
+------------------------------------------------------------------------------------- 
+
+Sharding — Scalability
+Sharding means splitting data across multiple nodes.
+
+Purpose
+Handles large datasets that don’t fit on one server
+Each node stores only a subset of data (shard)
+
+Example
+User IDs 1–1000 → Shard 1
+User IDs 1001–2000 → Shard 2
+
+Pros
+✅ Horizontal scalability
+✅ Faster writes & reads per shard
+
+Cons
+❌ Complex queries across shards
+❌ Rebalancing shards is hard
+--------------------------------------------------------------------------------------
+CAP Theorem — Choose 2 of 3
+In a distributed system, you can only fully achieve 2 out of 3:
+
+C	A	P
+Consistency: All nodes see the same data at the same time	Availability: System always responds	Partition Tolerance: 
+System works even if nodes can’t communicate
+Implications
+
+CA (Consistency + Availability) → Fails if network partition occurs
+CP (Consistency + Partition Tolerance) → May reject requests during partition
+AP (Availability + Partition Tolerance) → Data may be inconsistent temporarily
+-------------------------------------------------------------------------------------
+How Replication & Sharding Fit
+Replication → improves availability, can affect consistency
+Sharding → improves scalability, may affect query complexity
+
+Both must consider CAP trade-offs
+
+Real-World Examples
+Cassandra → AP (eventual consistency, highly available)
+MongoDB → CP (configurable)
+MySQL Replication → CA (single master, replicas)
+Redis Cluster → CP or AP depending on config
+
+Summary
+Replication → high availability, fault tolerance
+Sharding → horizontal scalability
+CAP Theorem → can only fully achieve 2/3 (Consistency, Availability, Partition Tolerance)
+Consistency → choose strong (accurate) or eventual (fast, available)
