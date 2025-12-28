@@ -1,0 +1,44 @@
+1. Authentication (AuthN) — Who You Are
+Purpose: Verify the identity of a user or system
+
+Examples:
+Username/password
+Multi-factor authentication (MFA)
+OAuth/OpenID Connect tokens
+Key Point: Confirms identity, but does not determine permissions.
+---------------------------------------------------------------------------
+2. Authorization (AuthZ) — What You Can Access
+Purpose: Determine permissions for a user/system after authentication
+Examples:
+Role-based access control (RBAC)
+Attribute-based access control (ABAC)
+ACLs (Access Control Lists)
+Key Point: AuthZ happens after AuthN.
+---------------------------------------------------------------------------
+3. SSL/TLS — Encrypt Data in Transit
+SSL/TLS encrypts communication between clients and servers
+Ensures:
+Confidentiality – data cannot be read by attackers
+Integrity – data not tampered
+Authentication – server identity verified via certificate
+Example: HTTPS websites, secure API calls
+------------------------------------------------------------------------------
+4. mTLS (Mutual TLS) — Service-to-Service Trust
+Mutual TLS extends TLS by authenticating both client and server
+Used in microservices or service-to-service communication
+Ensures:
+Only trusted services can communicate
+Encrypted communication
+Example: Service A calls Service B securely, both verify each other’s certificate
+--------------------------------------------------------------------------------------
+5. SSDLC — Security in All Phases
+Secure Software Development Life Cycle
+Integrates security practices throughout development, not just at the end
+
+Phases:
+Requirements & Design → threat modeling
+Implementation → secure coding, code reviews
+Testing → static/dynamic analysis, penetration testing
+Deployment → hardened configurations
+Maintenance → patching, monitoring
+Goal: Build security by design, not as an afterthought
