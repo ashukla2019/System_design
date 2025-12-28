@@ -1,0 +1,53 @@
+1. Normalization — Reduce Redundancy
+Normalization is the process of organizing data to eliminate duplication and improve data integrity.
+
+Goals
+Avoid duplicate data
+Prevent update anomalies
+Ensure consistency
+
+How It Works
+Split data into related tables
+Use primary keys and foreign keys
+
+Example
+Instead of:
+Orders(order_id, customer_name, customer_email)
+
+Normalization:
+Customers(customer_id, name, email)
+Orders(order_id, customer_id)
+
+Pros
+✅ Less storage
+✅ Data consistency
+✅ Easier updates
+
+Cons
+❌ More joins
+❌ Slower reads in complex queries
+
+--------------------------------------------------------------------------------
+2. Denormalization — Faster Reads
+Denormalization intentionally adds redundancy to improve read performance.
+
+Goals
+Reduce joins
+Speed up queries
+Optimize for read-heavy workloads
+
+How It Works
+Duplicate frequently accessed data
+Store precomputed or aggregated values
+
+Example
+Orders(order_id, customer_name, customer_email)
+
+Pros
+✅ Faster read queries
+✅ Simpler queries
+
+Cons
+❌ Data duplication
+❌ Risk of inconsistency
+❌ More complex writes
