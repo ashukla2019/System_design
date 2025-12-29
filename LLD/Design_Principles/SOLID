@@ -1,0 +1,188 @@
+*******************************************SOLID principal********************************
+S- Single-responsiblity Principle
+O- Open-closed Principle
+L- Liskov Substitution Principle
+I- Interface Segregation Principle
+D- Dependency Inversion Principle
+
+Cohesion: refers to what the class (or module) can do. 
+Low cohesion would mean that the class does a great variety of actions - it is broad, 
+unfocused on what it should do. 
+High cohesion means that the class is focused on what it should be doing.
+
+coupling, it refers to how related or dependent two classes/modules are toward each other. 
+For low coupled classes, changing something major in one class should not affect the other. 
+High coupling would make it difficult to change and maintain your code.
+
+Single responsibility principle: 
+High cohesion: Responsibility over single purpose.
+One class should take single responsibility. 
+
+Advantages of SRP:
+Maintainability
+Testability
+Loose coupling
+
+//User's login and registration and log an error and send mail for successful login.
+class processFile
+{
+public:
+	void downloadFile(string location);
+	void parseFile(File file);
+	void persistData(Data data);
+};
+
+
+--------------------------------------------------------------------------------------------
+
+Open/Closed principals: Open for extension but closed for modification.
+Classes/functions must be opened for extension but closed for modification.
+Abstract interfaces:
+problematic code:
+enum pizza 
+{
+   Dominos,
+   Mozo              //If we add more vendors... will modify code getOrder
+};
+
+class Pizza 
+{
+public:
+	getOrder(string pizza_type)
+   {
+       switch (pizza_type) 
+	   {
+           case Domino's :
+               preparePizza();
+           case Mozo :
+               preparePizza();
+       }
+   }
+};
+
+solution:
+class Pizza 
+{
+public:
+	preparePizza() = 0;
+};
+
+class mozo: Pizza
+{
+public:
+	preparePizza()
+	{
+	}
+};
+
+class Dominos: Pizza
+{
+public:
+	preparePizza()
+	{
+	}
+};
+---------------------------------------------------------------------------------------
+Liskov substitution principal:
+ It states that objects of a superclass should be able to be replaced with objects of a subclass without affecting the correctness of the program. In other words, a subclass should be able to be substituted for its parent class without causing any errors or unexpected behavior.
+class Bird {
+    public:
+        virtual void fly() = 0;
+};
+
+class Crow : public Bird {
+    public:
+        void fly() override {
+            cout << "Crow is flying" << endl;
+        }
+};
+
+class Ostrich : public Bird {
+    public:
+        void fly() override {
+            throw runtime_error("Penguins can't fly");
+        }
+};
+Now, let’s suppose that we have a function that takes a Bird object and makes it fly.
+
+void makeBirdFly(Bird& bird) {
+  bird.fly();
+}
+According to the LSP, we should be able to pass any Bird subclass object to this function without affecting the correctness of the program. For example, we should be able to pass an Eagle object, a Penguin object, or an Ostrich object to this function.
+
+Eagle eagle;
+Ostrich ostrich;
+
+makeBirdFly(crow); // okay, eagle can fly
+makeBirdFly(ostrich); // error, ostrich can't fly
+As we can see, passing a Penguin or an Ostrich object to this function would result in an error because they cannot fly. Therefore, these classes do not adhere to the same behavior as their parent class, Bird, and violate the LSP.
+-----------------------------------------------------------------------------------------------
+Interface segregation:
+No client should be forced to depend on methods it does not use. ISP splits interfaces that are very large into smaller and more specific ones so that clients will only have to know about the methods that are of interest to them.
+
+problem:
+class printer //Abstract class
+{
+	void print()=0;
+	void scan() =0;
+	void fax()=0;        //this is not usable for client myprinter
+	
+};
+
+class myprinter: public printer
+{
+	
+};
+
+Solution:
+We should have two abstract classes:
+class printer //Abstract class
+{
+	void print()=0;
+	void scan() =0;
+	
+};
+
+class Fax //Abstract class
+{
+	void fax()=0;       
+	
+};
+-----------------------------------------------------------------------------------------------
+Dependency inversion principal:
+low coupling. High level module should not depend on low level module. 
+Both should depend on abstract interfaces/classes not on the concrete classes.
+
+Problematic code:
+class mycloud
+{
+public:
+	void upload(string filepath);
+};
+
+class fileUploader
+{
+public:
+		fileUploader(mycloud& mcl); //it depends on myCloud which is wrong...should depend on abstraction.
+};
+
+//Correction:
+class cloud
+{
+public:
+	void upload(string filepath)=0;
+};
+
+class mycloud:public cloud
+{
+public:
+	void upload()
+	{
+		cout<<""<<endl;
+	}
+};
+class fileUploader
+{
+public:
+		fileUploader(cloud& cl); 
+};
