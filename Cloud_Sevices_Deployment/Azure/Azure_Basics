@@ -80,4 +80,10 @@ Level 4	Subnet	IP range within a VNet for isolation.
 Level 5	Resource	VMs, Databases, Web Apps.
 Important Distinction (Blob Storage):
 Just like S3, Azure Blob Storage is a "Regional" service. While you manage it through a Storage Account, it does not strictly need to be inside a Subnet to exist—it is accessed via a URL.
+---------------------------------
 
+Subscription
+ └── Resource Group
+      └── Virtual Network (Region-specific)
+           └── Subnets
+                └── VMs/NICs/LoadBalancers
