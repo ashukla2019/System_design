@@ -1,0 +1,56 @@
+"Don't Repeat Yourself" (DRY) is a software development principle that encourages developers to avoid duplicating code in a system.
+    When developers adhere to the DRY principle, they aim to create reusable components, functions, or modules that can be utilized in various parts of the codebase.
+    This not only makes the code more maintainable but also minimizes the chances of errors since changes or updates only need to be made in one location.
+    DRY is closely related to the concept of modular programming and the creation of functions, classes, or modules that encapsulate specific functionality.
+    An alternative principle, the Single Responsibility Principle or SRP, is often mentioned in conjunction with DRY. SRP suggests that a module, class, or function should have only one reason to change, further emphasizing the need for focused, modular, and reusable code.
+    Together, DRY and SRP contribute to creating more robust and maintainable software systems.
+--------------------------------------------------------------------------------------------------------------
+Approaches to Resolving Duplication by DRY:
+    Create Functions or Methods: Identify repeated logic and encapsulate it in functions or methods that can be called from multiple locations.
+    Use Classes and Inheritance: For more complex scenarios, use classes and inheritance to create reusable components that share common functionality.
+    Extract Constants or Configurations: If certain constants or configurations are repeated, centralize them to a single source to avoid redundancy.
+    Modularization: Break down the code into modular components, each responsible for a specific task. This promotes reusability and modularity.
+---------------------------------------------------------------------------------------------------
+The key features of the "Don't Repeat Yourself" (DRY) principle in software development include:
+    Code Reusability: DRY encourages developers to write code in a way that minimizes redundancy. Instead of duplicating code, developers should create reusable components, functions, or modules that can be shared and applied in multiple parts of the codebase.
+    Maintenance and Updates: By adhering to DRY, developers reduce the likelihood of errors and bugs that can arise from inconsistent updates. Since a particular piece of logic or knowledge exists in only one place, any changes or enhancements can be made in a centralized location, making maintenance more efficient.
+    Readability: DRY contributes to code readability by eliminating unnecessary repetition. When developers follow the principle, it becomes easier for others (or even themselves) to understand and navigate the codebase since there are fewer instances of similar or identical code scattered throughout.
+    Consistency: DRY promotes consistency in the codebase. When a specific functionality is encapsulated in a single location, it ensures that all instances of that functionality behave consistently. This is crucial for creating reliable and predictable software.
+    Reduced Development Time: By reusing code instead of rewriting it, developers can significantly reduce the time and effort required for development. This is particularly valuable when building large and complex software systems, as it streamlines the development process.
+    Facilitates Collaboration: It becomes easier for multiple developers to work on different parts of the system without interfering with each other.
+    Avoidance of Copy-Paste Errors: DRY minimizes the need for copy-pasting by encouraging the creation of reusable units of code, reducing the risk of introducing errors.
+    Testability: Makes it simpler to write unit tests and ensure that changes do not inadvertently affect unrelated parts of the system.
+---------------------------------------------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Without DRY
+bool validate_email_format_1(const string& email) {
+    
+    // Validation logic
+    if (email.find("@") != string::npos && email.find(".") != string::npos) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool validate_email_format_2(const string& email) {
+    // Validation logic
+    if (email.find("@") != string::npos && email.find(".") != string::npos) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// With DRY
+bool validate_email_format(const string& email) {
+    // Validation logic
+    if (email.find("@") != string::npos && email.find(".") != string::npos) {
+        return true;
+    } else {
+        return false;
+    }
+}
