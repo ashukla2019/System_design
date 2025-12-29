@@ -1,0 +1,155 @@
+1️⃣ Class Diagram
+
+Shows main components and their relationships:
+
+┌───────────────────┐
+│      Client       │
+└───────────────────┘
+          │
+          ▼
+┌───────────────────┐
+│   LoadBalancer    │
+├───────────────────┤
+│ -servers: List    │
+│ -algorithm: str   │
+├───────────────────┤
+│ +routeRequest()   │
+│ +healthCheck()    │
+└───────────────────┘
+     ▲       ▲
+     │       │
+     │       │
+┌───────────┐ ┌─────────────┐
+│ RateLimiter│ │  Server     │
+├───────────┤ ├─────────────┤
+│ -limit    │ │ -id         │
+│ -bucket   │ │ -load       │
+├───────────┤ │ -sessions   │
+│ +allow()  │ │ +process()  │
+└───────────┘ └─────────────┘
+          ▲
+          │
+          │
+ ┌───────────────────┐
+ │ ConsistentHashRing │
+ ├───────────────────┤
+ │ -nodes: List       │
+ │ -hashFunc()        │
+ ├───────────────────┤
+ │ +getNode(key)      │
+ └───────────────────┘
+
+
+Explanation:
+
+Client sends request.
+
+LoadBalancer routes it using algorithm (Round Robin, Least Connections, Consistent Hashing).
+
+RateLimiter checks request quota.
+
+Server processes allowed requests.
+
+ConsistentHashRing determines server for key-based routing (e.g., session or cache).
+
+2️⃣ Sequence Diagram
+
+Shows flow of a single request:
+
+Client      LoadBalancer       RateLimiter        ConsistentHashRing        Server
+   │              │                 │                     │                 │
+   │  Request     │                 │                     │                 │
+   │────────────▶ │                 │                     │                 │
+   │              │ check request   │                     │                 │
+   │              │──────────────▶  │                     │                 │
+   │              │                 │ allowed?            │                 │
+   │              │                 │──────────────▶      │                 │
+   │              │                 │                     │ getNode(key)    │
+   │              │                 │                     │──────────────▶  │
+   │              │                 │                     │     Server      │
+   │              │                 │                     │◀────────────── │
+   │              │ route to server │                     │                 │
+   │              │────────────────▶│                     │                 │
+   │              │                 │                     │                 │
+   │              │                 │                     │ process request │
+   │              │                 │                     │──────────────▶  │
+   │              │                 │                     │  Response       │
+   │              │◀────────────────│                     │                 │
+   │◀──────────── │                 │                     │                 │
+
+
+Explanation:
+
+Client sends request.
+
+Load balancer forwards request to RateLimiter.
+
+If allowed, the request uses Consistent Hashing to pick the server.
+
+Server processes the request and responds back through load balancer.
+
+3️⃣ Activity Diagram
+
+Flow of handling requests including rate limiting:
+
+   [Start]
+      │
+      ▼
+  Receive Request
+      │
+      ▼
+Check Rate Limit?
+ ┌───────────────┐
+ │ Allowed?      │
+ └─────┬─────────┘
+   Yes │ No
+       ▼
+   Reject Request
+       │
+       ▼
+       End
+   Yes
+       │
+       ▼
+Determine Server via Load Balancer
+       │
+       ▼
+Apply Consistent Hashing? (if key-based routing)
+       │
+       ▼
+Forward Request to Server
+       │
+       ▼
+Server Processes Request
+       │
+       ▼
+Return Response to Client
+       │
+       ▼
+      [End]
+
+
+Explanation:
+
+Shows decision points: rate limiting, consistent hashing, forwarding.
+
+Visualizes the request lifecycle in your system.
+
+4️⃣ Optional: Consistent Hash Ring Diagram
+Hash Ring (0 - 360 degrees):
+
+       0
+       │
+       │
+Node A 50°─────►Key 1
+       │
+Node B 150°────►Key 2
+       │
+Node C 300°────►Key 3
+       │
+      360/0
+
+
+Keys are assigned to the next node clockwise.
+
+Adding Node D (200°) only remaps keys between 150°–200° → minimal movement.
