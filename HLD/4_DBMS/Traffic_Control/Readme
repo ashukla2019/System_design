@@ -1,0 +1,45 @@
+Rate Limiting
+Definition: Rate limiting is a technique used to control how many requests a client or user can make to a system within 
+a given time window. It helps prevent abuse, protects backend resources, and ensures fair usage. Rate limiting is commonly
+applied to APIs, login endpoints, web servers under heavy traffic, and cloud services to avoid excessive resource consumption.
+------------------------------------------------------------------------
+Algorithms:
+1. Token Bucket: Tokens are added to a bucket at a fixed rate. Each incoming request consumes a token. If the bucket is empty, 
+the request is rejected. This method allows short bursts of traffic while still enforcing the overall rate limit. 
+It requires accurate time tracking to manage the tokens correctly.
+
+2. Leaky Bucket: Requests enter a queue (the bucket) and are processed at a fixed rate. If the bucket overflows, excess requests
+are discarded or delayed. This smooths out bursts in traffic and ensures a steady flow of requests to the system.
+
+Usage in System Design: Rate limiting is often applied at the API gateway or load balancer level, either per user, per IP, or per API key. In distributed systems, shared counters or distributed token buckets may be used to enforce limits across multiple servers. Rate limiting helps protect the system from overload while maintaining fairness and reliability.
+
+             ┌─────────────┐
+             │   Client    │
+             └─────┬──────┘
+                   │ Request
+                   ▼
+             ┌─────────────┐
+             │ API Gateway │
+             │ / Load      │
+             │ Balancer    │
+             └─────┬──────┘
+                   │
+                   ▼
+        ┌───────────────────────┐
+        │ Rate Limiter           │
+        │ - Token Bucket /       │
+        │   Leaky Bucket         │
+        └─────┬─────────────────┘
+           Allowed │ Rejected
+                  ▼
+        ┌─────────────┐
+        │   Server    │
+        └─────────────┘
+
+Explanation:
+Client sends a request to the API or application.
+The request first hits the API Gateway / Load Balancer.
+The Rate Limiter checks if the request can proceed:
+If allowed (enough tokens or bucket not full) → request goes to the server.
+If not allowed → request is rejected or delayed.
+Server processes allowed requests and responds to the client.
