@@ -29,26 +29,31 @@ Software Load Balancer → Runs on servers (NGINX, HAProxy)
 Cloud Load Balancer → Provided by cloud providers (AWS ELB, Azure LB)
 ---------------------------------------------------------------------------------------------
 4. Load Balancing Algorithms
-1. Round Robin
-Requests are sent in order to each server
-Simple, works if servers are similar
-------------------------------------------------------------------------
-2. Least Connections
-Sends request to the server with fewest active connections
-Good for servers with different load capacities
---------------------------------------------------------------------------
-3. IP Hash
-Hash of client IP decides server
-Useful for session persistence (sticky sessions)
----------------------------------------------------------------------------------
-4. Weighted Round Robin / Least Connections
-Servers have weights based on capacity
-More powerful servers handle more requests
---------------------------------------------------------------------------------
-5. Random
-Randomly distributes requests
-Simple, but may be uneven
------------------------------------------------------------------------------
+      1. Round Robin
+      Requests are sent in order to each server
+      Simple, works if servers are similar
+      ------------------------------------------------------------------------
+      2. Least Connections
+      Sends request to the server with fewest active connections
+      Good for servers with different load capacities
+      --------------------------------------------------------------------------
+      3. IP Hash
+      Hash of client IP decides server
+      Useful for session persistence (sticky sessions)
+      ---------------------------------------------------------------------------------
+      4. Consistent Hashing
+         - Hash of key determines server on a hash ring
+         - Minimizes reassignment of keys when servers are added/removed
+         - Useful for distributed caches, sharded databases, and session stickiness
+      ------------------------------------------------------------------------------------
+      5. Weighted Round Robin / Least Connections
+      Servers have weights based on capacity
+      More powerful servers handle more requests
+      --------------------------------------------------------------------------------
+      6. Random
+      Randomly distributes requests
+      Simple, but may be uneven
+  ---------------------------------------------------------------------------------
 5. Where Load Balancers Are Used
 Web servers (scalable websites)
 APIs and microservices
