@@ -671,12 +671,6 @@ How routing actually works step-by-step
 
 VPC design for system design interviews
 
-Just tell me 👍
-
-You said:
-Cidr
-ChatGPT said:
-📌 What is CIDR?
 CIDR (Classless Inter-Domain Routing) is a way to define a range of IP addresses using a network prefix instead of old fixed classes (A, B, C).
 
 It is written as:
