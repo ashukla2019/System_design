@@ -140,7 +140,7 @@ Attached to VNet/VPC
 
 Think of it as:
 
-🚪 Main city gate to the internet
+Main city gate to the internet
 
 ---------------------------------
 
@@ -164,7 +164,7 @@ Translation example
 10.0.1.5  → 52.12.34.8 (public NAT IP)
 Think of NAT as:
 
-📞 Caller ID changer
+Caller ID changer
 
 NAT diagram
 Private Subnet
@@ -177,8 +177,8 @@ NAT Gateway (Public IP)
 Internet
 NAT vs Internet Gateway
 Feature	NAT	Internet Gateway
-Inbound	❌	✅
-Outbound	✅	✅
+Inbound	
+Outbound	
 Used for	Private subnet	Public subnet
 
 ---------------------------------
@@ -256,3 +256,17 @@ Cost
 Control
 
 Prevent inbound attacks
+‐---‐--------------------------------------------------------
+
+Internet
+   │
+ [ IGW ]
+   │
+Public Subnet
+   ├── Load Balancer
+   └── NAT Gateway
+        │
+        ▼
+   Private Subnet
+      ├── App Server
+      └── Database
