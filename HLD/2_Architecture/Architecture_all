@@ -115,9 +115,7 @@ High throughput systems
 
 Example
 Kafka-based systems
-
 AWS SNS + SQS
-
 Stock trading systems
 
 -----------------------------------
@@ -183,7 +181,6 @@ Cons
 
 When to use
 Legacy systems
-
 Small internal apps
 
 Example
@@ -212,13 +209,10 @@ Cons
 
 When to use
 Cloud applications
-
 REST APIs
-
 Microservices
 
 Example
 JWT-based authentication
-
 RESTful APIs
 
