@@ -1,9 +1,4 @@
 
-You said:
-Monolithic architecture, microservice, event driven, serverless, statefull, statelesss architecture 
-ChatGPT said:
-Below is a clear, system-design–oriented explanation of each architecture style you mentioned, with definitions, internal behavior, pros/cons, and real-world usage. This is written to build complete conceptual clarity, not just exam definitions.
-
 1️⃣ Monolithic Architecture
 What it is
 All application components are built, deployed, and scaled as a single unit.
@@ -37,11 +32,8 @@ Cons
 
 When to use
 Small applications
-
 MVPs
-
 Early-stage startups
-
 Teams with limited DevOps maturity
 
 Example
@@ -59,11 +51,8 @@ Application is split into small, independent services, each handling a single bu
 [ Notification Service ]
 Characteristics
 Independently deployable
-
 Each service has its own database
-
 Communicate via HTTP/gRPC/events
-
 Decentralized governance
 
 Pros
@@ -80,18 +69,13 @@ Cons
 
 When to use
 Large systems
-
 High-traffic applications
-
 Multiple teams
-
 Rapid feature evolution
 
 Example
 Netflix
-
 Amazon backend
-
 Kubernetes-based systems
 -----------------------------------
 3️⃣ Event-Driven Architecture (EDA)
@@ -125,11 +109,8 @@ Cons
 
 When to use
 Real-time systems
-
 Analytics pipelines
-
 Microservices communication
-
 High throughput systems
 
 Example
@@ -145,9 +126,7 @@ What it is
 You write functions, cloud provider handles:
 
 Servers
-
 Scaling
-
 Availability
 
 API Gateway → Lambda → DynamoDB
@@ -155,7 +134,6 @@ Characteristics
 Event-triggered execution
 
 No server management
-
 Pay per execution
 
 Stateless by default
@@ -174,16 +152,12 @@ When to use
 Event-driven workloads
 
 APIs
-
 Background jobs
-
 Infrequent tasks
 
 Example
 AWS Lambda
-
 Azure Functions
-
 Google Cloud Functions
 -----------------------------------
 5️⃣ Stateful Architecture
