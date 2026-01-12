@@ -11,11 +11,8 @@ All application components are built, deployed, and scaled as a single unit.
    Single Deployable App
 Characteristics
 Single codebase
-
 Single deployment
-
 Tight coupling between modules
-
 One failure can affect the whole system
 
 Pros
