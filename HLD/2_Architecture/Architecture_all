@@ -122,3 +122,5 @@ Async workflows	        Event-driven
 Spiky traffic	          Serverless
 Cloud native	           Stateless
 Legacy apps	            Stateful
+--------------------------
+Cloud-native systems are stateless because stateless services can scale, recover, and deploy independently without breaking user requests.
