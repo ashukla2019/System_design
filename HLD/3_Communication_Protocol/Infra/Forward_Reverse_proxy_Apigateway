@@ -1,0 +1,23 @@
+
+Forward Proxy
+Definition: Proxy in front of clients
+Flow: Client → Proxy → Server
+Use: Control outgoing traffic
+Example: Corporate proxy, VPN
+
+Reverse Proxy
+Definition: Proxy in front of servers
+Flow: Client → Proxy → Servers
+Use: Route & protect incoming traffic
+Example: NGINX, HAProxy, ALB
+
+API Gateway
+Definition: Reverse proxy for APIs/microservices
+Flow: Client → Gateway → Services
+Use: Auth, rate-limit, route APIs
+Example: AWS API Gateway, Kong
+
+One-line Difference
+Forward Proxy → hides clients
+Reverse Proxy → hides servers
+API Gateway → manages APIs
