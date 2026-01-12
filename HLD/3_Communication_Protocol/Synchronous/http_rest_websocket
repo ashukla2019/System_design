@@ -1,0 +1,84 @@
+
+1️⃣ HTTP
+Definition
+HTTP is a stateless request–response protocol used for communication between client and server.
+
+How it works
+Client sends request → Server processes → Server sends response → Connection ends (usually).
+
+Key idea
+One request → one response
+Use cases
+Web pagesAPIs
+
+File downloads
+Standard client-server communication
+
+Example
+Browser requesting a webpage or calling /login.
+----------------------
+2️⃣ REST (Representational State Transfer)
+Definition
+REST is an architectural style built on top of HTTP for designing APIs using standard HTTP methods.
+
+How it works
+
+Resources identified by URLs
+
+Uses HTTP verbs:
+GET → read
+POST → create
+PUT/PATCH → update
+DELETE → remove
+
+Stateless communication
+
+Key idea
+Structured way to design HTTP APIs
+
+Use cases
+Backend APIs
+Microservices communication
+CRUD-based systems
+
+Example
+GET /users/1
+POST /orders
+
+Important interview line:
+
+“REST is not a protocol; it’s a design style that uses HTTP.”
+-------------------------
+3️⃣ WebSockets
+Definition
+WebSocket is a full-duplex, persistent communication protocol over a single TCP connection.
+
+How it works
+
+Initial HTTP handshake
+Connection upgrades to WebSocket
+Client and server can send messages anytime
+
+Key idea
+Real-time, two-way communication
+
+Use cases
+Chat applications
+Live notifications
+Online gaming
+Stock price updates
+
+Example
+WhatsApp chat, live score updates.
+
+🔁 Core Differences (Very Important)
+Aspect	HTTP	REST	WebSockets
+Type	Protocol	Architectural style	Protocol
+Connection	Short-lived	Short-lived	Persistent
+Communication	Request–response	Request–response	Bi-directional
+Real-time	❌	❌	✅
+Stateless	Yes	Yes	Can be stateful
+🧠 Memory Hooks (Easy Recall)
+HTTP → How messages are sent
+REST → How APIs are designed
+WebSocket → Real-time two-way talk
