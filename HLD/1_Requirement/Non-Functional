@@ -1,28 +1,34 @@
-Non-Functional Requirements (Short)
-1️⃣ Latency
-Response time of the system.
-Measured in ms (P50, P95, P99)
-Lower latency = better user experience
----------------------------------
-2️⃣ Scalability
+Non-Functional Requirements:
+S-> Scalability
+C-> Consistency
+A-> Availability
+L-> Latency
+D-> Durability
+
+1) Scalability
 Ability to handle increased load (users/traffic/data).
 Vertical: bigger machine
 Horizontal: more machines
----------------------------------
-3️⃣ Availability
-Uptime of the system.
-Measured in % (99.9%, 99.99%)
-Achieved via redundancy & failover
----------------------------------
-4️⃣ Durability
-Guarantee that data is not lost once written.
-Achieved using replication, backups
-Example: S3 (11 nines durability)
----------------------------------
-5️⃣ Consistency
+
+2) Consistency
 All users see the same data at the same time.
 Strong vs Eventual consistency
 Trade-off with availability (CAP theorem)
 
-One-line memory trick 🧠
+3) Availability
+Uptime of the system.
+Measured in % (99.9%, 99.99%)
+Achieved via redundancy & failover
+
+4) Latency
+Response time of the system.
+Measured in ms (P50, P95, P99)
+Lower latency = better user experience
+
+5) Durability
+Guarantee that data is not lost once written.
+Achieved using replication, backups
+Example: S3 (11 nines durability)
+
+One-line memory trick
 Latency = Speed | Scalability = Growth | Availability = Uptime | Durability = Data Safety | Consistency = Same Data
