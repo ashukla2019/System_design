@@ -46,11 +46,7 @@ Example: stops sending requests to a crashed microservice for 30s
 -------------------------------------------------------------------
 
 High availability → system accessible always
-
 Fault tolerance → system continues despite failures
-
 Reliability → system rarely fails
-
 Consensus → nodes agree on a leader or value
-
 Failure handling → health checks, failover, retries, circuit breakers
