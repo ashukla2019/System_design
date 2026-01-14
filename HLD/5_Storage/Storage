@@ -10,12 +10,12 @@ Virtual machine disks
 Applications needing fast random access
 
 Pros:
-✅ Very low latency
-✅ High performance (IOPS-heavy workloads)
+Very low latency
+High performance (IOPS-heavy workloads)
 
 Cons:
-❌ Complex management
-❌ Lacks file-level metadata
+Complex management
+Lacks file-level metadata
 
 ----------------------------------------------------------------------------------------
 2. Object Storage — Scalable (Media & Large Files)
@@ -30,13 +30,13 @@ Backups, logs, archives
 Cloud storage (AWS S3, Google Cloud Storage)
 
 Pros:
-✅ Highly scalable
-✅ Metadata-rich
-✅ Easy replication
+Highly scalable
+Metadata-rich
+Easy replication
 
 Cons:
-❌ Higher latency than block storage
-❌ Not ideal for small random reads/writes
+Higher latency than block storage
+Not ideal for small random reads/writes
 
 ---------------------------------------------------------------------------------------
 3. File Storage — Shared Storage
@@ -50,12 +50,12 @@ Enterprise file servers
 NAS (Network Attached Storage)
 
 Pros:
-✅ Familiar interface (files/folders)
-✅ Good for shared access
+Familiar interface (files/folders)
+Good for shared access
 
 Cons:
-❌ Limited scalability
-❌ Less performant for databases
+Limited scalability
+Less performant for databases
 --------------------------------------------------------------------------------------------
 4. Backup & Disaster Recovery (DR)
 Key Metrics
