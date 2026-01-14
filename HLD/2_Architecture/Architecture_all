@@ -1,11 +1,8 @@
-1️⃣ Monolithic Architecture
-Definition
-A single application where UI, business logic, and data access are tightly coupled and deployed as one unit.
+1) Monolithic Architecture: A single application where UI, business logic, and data access are tightly coupled and deployed as one unit.
 
-How it works
-One codebase → one build → one deployment → one runtime.
+How it works: One codebase → one build → one deployment → one runtime.
 
-Use case
+Use case:
 Small to medium applications
 Early-stage products
 Simple business logic
@@ -13,9 +10,7 @@ Simple business logic
 Example
 E-commerce app where user login, product catalog, orders, and payments run in one application.
 ---------------------------------
-2️⃣ Microservices Architecture
-Definition
-Application is split into independent services, each responsible for one business capability, communicating over the network.
+2) Microservices Architecture: Application is split into independent services, each responsible for one business capability, communicating over the network.
 
 How it works
 Each service has:
@@ -35,9 +30,7 @@ Order Service
 Payment Service
 Inventory Service
 -------------------------------
-3️⃣ Event-Driven Architecture (EDA)
-Definition
-System components communicate by producing and consuming events instead of direct calls.
+3) Event-Driven Architecture (EDA): System components communicate by producing and consuming events instead of direct calls.
 
 How it works
 Producer emits an event
@@ -55,9 +48,7 @@ Inventory Service updates stock →
 Notification Service sends email →
 Analytics Service logs data
 ----------------------
-4️⃣ Serverless Architecture
-Definition
-Application runs using cloud-managed execution, without managing servers; logic executes as functions.
+4️) Serverless Architecture: Application runs using cloud-managed execution, without managing servers; logic executes as functions.
 
 How it works
 Trigger (HTTP, event, schedule)
@@ -74,10 +65,8 @@ AWS Lambda handling:
 API requests
 File uploads
 Cron jobs
------------------------
-5️⃣ Stateful Architecture
-Definition
-Application stores client state (session data) on the server.
+---------------------------------------------------------------------
+5) Stateful Architecture: Application stores client state (session data) on the server.
 
 How it works
 Same user must hit the same server to continue the session.
@@ -88,10 +77,8 @@ Session-heavy workflows
 
 Example
 Web server storing user session in server memory.
-----☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆
-6️⃣ Stateless Architecture
-Definition
-Application does not store client state; each request is independent.
+---------------------------------------------------------------------
+6️) Stateless Architecture: Application does not store client state; each request is independent.
 
 How it works
 State is stored externally (DB, cache, token).
@@ -115,12 +102,12 @@ Stateless	         Server forgets client
 
 --------------------------------------
 Architecture Selection Cheat Sheet
-Scenario.             	 Architecture
+Scenario.             	Architecture
 MVP / low traffic	      Monolithic
 Large scalable system	  Microservices
 Async workflows	        Event-driven
 Spiky traffic	          Serverless
-Cloud native	           Stateless
+Cloud native	          Stateless
 Legacy apps	            Stateful
 --------------------------
 Cloud-native systems are stateless because stateless services can scale, recover, and deploy independently without breaking user requests.
