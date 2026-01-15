@@ -58,6 +58,21 @@ Supported SQL Operations:
 	Command	Description
 	GRANT	Provide user access privileges
 	REVOKE	Remove user access privileges
+
+1) GRANT SELECT, INSERT
+ON users
+TO app_user;
+Meaning:
+app_user can read and insert data into users table.
+
+2) REVOKE
+Definition: Removes previously granted privileges.
+
+REVOKE INSERT
+ON users
+FROM app_user;
+Meaning:
+app_user can no longer insert data.
 ---------------------------------------------------
 4. Transaction Control Language (TCL): Used to manage transactions:
 
