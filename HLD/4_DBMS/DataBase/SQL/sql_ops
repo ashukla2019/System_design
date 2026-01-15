@@ -81,6 +81,36 @@ app_user can no longer insert data.
 	COMMIT	Save changes made during the transaction
 	ROLLBACK	Undo changes since the last commit
 	SAVEPOINT	Set a point within a transaction to roll back to
+
+Core TCL Commands
+1️⃣ COMMIT
+Definition: Permanently saves all changes in the current transaction.
+
+COMMIT;
+Meaning:
+All INSERT / UPDATE / DELETE since last commit are made permanent.
+
+2️⃣ ROLLBACK
+Definition: Undoes all changes since the last COMMIT.
+
+ROLLBACK;
+Meaning:
+Database returns to the previous consistent state.
+
+3️⃣ SAVEPOINT
+Definition: Creates a checkpoint inside a transaction.
+
+SAVEPOINT sp1;
+4️⃣ ROLLBACK TO SAVEPOINT
+ROLLBACK TO sp1;
+Meaning:
+Undo changes after sp1, keep earlier changes.
+
+5️⃣ SET TRANSACTION
+Definition: Controls transaction behavior (isolation, read/write).
+
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
 ----------------------------------------------------------------
 5. Joins and Queries: SQL supports powerful querying through:
 
