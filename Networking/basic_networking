@@ -1,11 +1,20 @@
-Networking Basics – Mindmap Diagram
-Networking
+Networking = connecting two or more devices to exchange data.
+
+Why we need networking
+Networking allows:
+Sending messages (WhatsApp, email)
+Browsing the internet
+Sharing files and printers
+Accessing servers and databases
+Cloud services (AWS, Azure, GCP)
+
+Networking:
 │
 ├── 1. Types of Networks
-│     ├── PAN
-│     ├── LAN
-│     ├── MAN
-│     └── WAN
+│     ├── PAN: Bluetooth, Hotspot
+│     ├── LAN: Home, Office
+│     ├── MAN: Citywide
+│     └── WAN: Internet
 │
 ├── 2. Network Topologies
 │     ├── Bus
