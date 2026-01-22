@@ -8,111 +8,203 @@ Sharing files and printers
 Accessing servers and databases
 Cloud services (AWS, Azure, GCP)
 
-Networking:
+Networking
 │
 ├── 1. Types of Networks
-│     ├── PAN: Bluetooth, Hotspot
-│     ├── LAN: Home, Office
-│     ├── MAN: Citywide
-│     └── WAN: Internet
+│     ├── PAN (Personal Area Network)
+│     │      → Very small network around a person (few meters)
+│     │      → Used for device-to-device communication
+│     │      → Examples: Bluetooth, Mobile Hotspot, Smartwatch
+│
+│     ├── LAN (Local Area Network)
+│     │      → Network within a limited area (room/building)
+│     │      → High speed, privately owned
+│     │      → Examples: Home Wi-Fi, Office network
+│
+│     ├── MAN (Metropolitan Area Network)
+│     │      → Covers a city or large campus
+│     │      → Connects multiple LANs
+│     │      → Example: City-wide ISP network
+│
+│     └── WAN (Wide Area Network)
+│            → Covers large geographical areas (countries/world)
+│            → Uses public/private telecom links
+│            → Example: Internet
 │
 ├── 2. Network Topologies
 │     ├── Bus
+│     │      → All devices share a single backbone cable
+│     │      → Cheap but failure-prone
+│
 │     ├── Star
+│     │      → All devices connect to a central switch/hub
+│     │      → Easy to manage, widely used
+│
 │     ├── Ring
+│     │      → Devices connected in a circular manner
+│     │      → Data travels in one direction
+│
 │     ├── Mesh
+│     │      → Devices interconnected with multiple paths
+│     │      → High redundancy and fault tolerance
+│
 │     └── Hybrid
+│            → Combination of two or more topologies
+│            → Example: Star + Mesh in enterprises
 │
 ├── 3. OSI Model (7 Layers)
 │     ├── Application (L7)
-│     │      ├── HTTP/HTTPS
-│     │      ├── DNS
-│     │      ├── FTP/SFTP
-│     │      └── Email protocols
+│     │      → Interface for user applications
+│     │      → Protocols: HTTP/HTTPS, FTP, SMTP, DNS
+│
 │     ├── Presentation (L6)
-│     │      ├── Encryption (SSL/TLS)
-│     │      ├── Compression
-│     │      └── Encoding
+│     │      → Data formatting and security
+│     │      → Encryption (TLS/SSL), Compression, Encoding
+│
 │     ├── Session (L5)
-│     │      ├── Session creation
-│     │      └── Session termination
+│     │      → Manages sessions between systems
+│     │      → Session creation, maintenance, termination
+│
 │     ├── Transport (L4)
-│     │      ├── TCP
-│     │      ├── UDP
-│     │      └── Port numbers
+│     │      → End-to-end data delivery
+│     │      → TCP (reliable), UDP (fast)
+│     │      → Uses Port numbers
+│
 │     ├── Network (L3)
-│     │      ├── IP addressing
-│     │      ├── Routing
-│     │      └── Protocols (RIP/OSPF/BGP)
+│     │      → Logical addressing and routing
+│     │      → IP addressing, Routing
+│     │      → Protocols: RIP, OSPF, BGP
+│
 │     ├── Data Link (L2)
-│     │      ├── MAC address
-│     │      ├── Framing
-│     │      └── Error detection
+│     │      → Node-to-node delivery
+│     │      → MAC addressing, Framing, Error detection
+│
 │     └── Physical (L1)
-│            ├── Bits
-│            ├── Cables
-│            └── Signals
+│            → Physical transmission of bits
+│            → Cables, Signals, Voltages
 │
 ├── 4. TCP/IP Model
 │     ├── Application
+│     │      → Combines OSI L7, L6, L5
+│
 │     ├── Transport
+│     │      → Same as OSI L4 (TCP/UDP)
+│
 │     ├── Internet
+│     │      → Same as OSI L3 (IP, Routing)
+│
 │     └── Network Access
+│            → Combines OSI L1 + L2
 │
 ├── 5. Encapsulation / Decapsulation
 │     ├── Application → Data
-│     ├── Transport → Segment
-│     ├── Network → Packet
-│     ├── Data Link → Frame
-│     └── Physical → Bits
+│     ├── Transport → Segment (adds port numbers)
+│     ├── Network → Packet (adds IP)
+│     ├── Data Link → Frame (adds MAC)
+│     └── Physical → Bits (signals on wire)
 │
 ├── 6. Networking Devices
 │     ├── Hub (L1)
+│     │      → Broadcasts data to all ports
+│
 │     ├── Repeater (L1)
+│     │      → Regenerates weak signals
+│
 │     ├── Switch (L2)
+│     │      → Forwards using MAC address
+│
 │     ├── Bridge (L2)
+│     │      → Connects two LAN segments
+│
 │     ├── Router (L3)
-│     ├── Gateway (L5-7)
+│     │      → Routes packets using IP
+│
+│     ├── Gateway (L5–L7)
+│     │      → Protocol translation
+│
 │     ├── Access Point
+│     │      → Wireless connection to LAN
+│
 │     └── Firewall
+│            → Filters traffic using rules
 │
 ├── 7. IP Addressing
-│     ├── IPv4 (32-bit)
-│     ├── IPv6 (128-bit)
+│     ├── IPv4
+│     │      → 32-bit address (e.g., 192.168.1.1)
+│
+│     ├── IPv6
+│     │      → 128-bit address (hexadecimal)
+│
 │     ├── Network ID & Host ID
-│     ├── Classes (A, B, C, D, E)
+│     │      → Network identifies subnet
+│     │      → Host identifies device
+│
+│     ├── Classes
+│     │      → A, B, C (unicast)
+│     │      → D (multicast), E (reserved)
+│
 │     ├── Private IP ranges
-│     └── Subnet mask (CIDR)
+│     │      → 10.0.0.0/8
+│     │      → 172.16.0.0/12
+│     │      → 192.168.0.0/16
+│
+│     └── Subnet Mask (CIDR)
+│            → Defines network/host bits
 │
 ├── 8. Subnetting
 │     ├── Why Subnet?
-│     ├── CIDR notation (/24 /16 /30)
+│     │      → Reduce broadcast traffic
+│     │      → Better security & IP utilization
+│
+│     ├── CIDR notation
+│     │      → /24, /16, /30
+│
 │     ├── Hosts formula
+│     │      → 2^(host bits) - 2
+│
 │     └── Subnet calculations
+│            → Divide network into smaller networks
 │
 ├── 9. Ports & Protocols
-│     ├── HTTP – 80
-│     ├── HTTPS – 443
-│     ├── DNS – 53
-│     ├── DHCP – 67/68
-│     ├── SSH – 22
-│     └── FTP – 20/21
+│     ├── HTTP – 80 → Web traffic
+│     ├── HTTPS – 443 → Secure web
+│     ├── DNS – 53 → Name resolution
+│     ├── DHCP – 67/68 → IP assignment
+│     ├── SSH – 22 → Secure login
+│     └── FTP – 20/21 → File transfer
 │
 ├── 10. Address Resolution
-│     ├── ARP (IP → MAC)
-│     └── DNS (Domain → IP)
+│     ├── ARP
+│     │      → Maps IP address to MAC address
+│
+│     └── DNS
+│            → Maps domain name to IP address
 │
 ├── 11. Transmission Media
-│     ├── Copper cables (Cat5e/6/7)
+│     ├── Copper cables
+│     │      → Cat5e, Cat6, Cat7 (Ethernet)
+│
 │     ├── Fiber optics
-│     └── Wireless (Wi-Fi/Bluetooth)
+│     │      → High speed, long distance
+│
+│     └── Wireless
+│            → Wi-Fi, Bluetooth
 │
 └── 12. Network Services
        ├── NAT
+       │      → Converts private IP to public IP
+       │
        ├── DHCP
+       │      → Automatically assigns IP addresses
+       │
        ├── VPN
+       │      → Secure tunnel over public network
+       │
        ├── Firewall rules
+       │      → Allow/Deny traffic
+       │
        └── Load balancing
+              → Distributes traffic across servers
 
 --------------------------------------------------------------------------------------------------------------------------
 How Networking Works — Layer by Layer (OSI Model)
@@ -294,78 +386,7 @@ Bits → Frame → Packet → Segment → Data
 Would you like me to draw a layer-wise diagram showing sender to receiver data flow (with headers at each step)? It makes understanding much clearer visually.
 
 --------------------------------------
-Data Flow from Sender to Receiver (Encapsulation & Decapsulation)
-                 ┌────────────────────────────┐
-                 │        Application         │
-                 │ (HTTP, SMTP, FTP, DNS etc.)│
-Sender           └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │       Presentation         │
-                 │ (SSL/TLS, Encryption, MIME)│
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │         Session            │
-                 │ (Manages connections)      │
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │        Transport           │
-                 │ (TCP/UDP – Ports, Segments)│
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │         Network            │
-                 │ (IP – Routing, Packets)    │
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │       Data Link            │
-                 │ (Ethernet – Frames, MAC)   │
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │       Physical             │
-                 │ (Cables, Signals, Bits)    │
-                 └────────────────────────────┘
-                               │
-                ─────────────────────────────→
-                               │
-                 ┌────────────────────────────┐
-                 │        Physical             │
-Receiver         │ (Signals converted to bits) │
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │       Data Link            │
-                 │ (Checks MAC, removes frame)│
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │         Network            │
-                 │ (Checks IP, removes packet)│
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │        Transport           │
-                 │ (TCP reassembles segments) │
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │         Session            │
-                 │ (Session maintained)       │
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │       Presentation         │
-                 │ (Decryption, formatting)   │
-                 └──────────────┬─────────────┘
-                               │
-                 ┌──────────────▼─────────────┐
-                 │        Application         │
-                 │ (Data shown to user)       │
-                 └────────────────────────────┘
+
 Encapsulation Process (Sender Side)
 Each layer adds its own header before passing data to the next layer:
 
