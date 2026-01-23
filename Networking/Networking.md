@@ -1,1 +1,289 @@
+# 📘 Networking Fundamentals for System Design Interviews
 
+This document consolidates **networking basics + system design expectations** into a single, structured reference.
+
+---
+
+## 1. What is Networking?
+Networking is the practice of connecting two or more devices to exchange data.
+
+### Why Networking is Needed
+- Messaging (WhatsApp, Email)
+- Internet browsing
+- File & printer sharing
+- Accessing servers & databases
+- Cloud services (AWS, Azure, GCP)
+
+---
+
+## 2. Types of Networks
+
+| Type | Description | Examples |
+|---|---|---|
+| PAN | Personal, very short range | Bluetooth, Smartwatch |
+| LAN | Limited area, high speed | Home Wi-Fi, Office |
+| MAN | City-wide | ISP city network |
+| WAN | Large geographical area | Internet |
+
+---
+
+## 3. Network Topologies
+
+| Topology | Description |
+|---|---|
+| Bus | Single backbone cable |
+| Star | Central hub/switch |
+| Ring | Circular data path |
+| Mesh | Multiple redundant paths |
+| Hybrid | Combination of topologies |
+
+---
+
+## 4. OSI Model (7 Layers)
+
+| Layer | Name | Purpose | Examples |
+|---|---|---|---|
+| 7 | Application | User-facing services | HTTP, FTP, DNS |
+| 6 | Presentation | Encryption & formatting | TLS/SSL |
+| 5 | Session | Session management | RPC |
+| 4 | Transport | Reliable delivery | TCP, UDP |
+| 3 | Network | Routing & IP | IP, ICMP |
+| 2 | Data Link | MAC & framing | Ethernet, ARP |
+| 1 | Physical | Signals & media | Cables, Wi-Fi |
+
+> Interview tip: L7 = app issue, L4 = TCP issue, L3 = routing issue
+
+---
+
+## 5. TCP/IP Model
+
+| TCP/IP Layer | OSI Mapping |
+|---|---|
+| Application | OSI 7,6,5 |
+| Transport | OSI 4 |
+| Internet | OSI 3 |
+| Network Access | OSI 2,1 |
+
+---
+
+## 6. Encapsulation & Decapsulation
+
+### Sender Side
+Application Data
+→ Segment (TCP/UDP)
+→ Packet (IP)
+→ Frame (MAC)
+→ Bits
+
+
+### Receiver Side
+Bits → Frame → Packet → Segment → Data
+
+
+---
+
+## 7. Networking Devices
+
+| Device | OSI Layer | Function |
+|---|---|---|
+| Hub | L1 | Broadcasts |
+| Repeater | L1 | Boosts signal |
+| Switch | L2 | MAC-based forwarding |
+| Bridge | L2 | Connects LAN segments |
+| Router | L3 | IP routing |
+| Gateway | L5–L7 | Protocol translation |
+| Access Point | L2 | Wireless access |
+| Firewall | L3/L4 | Traffic filtering |
+
+---
+
+## 8. IP Addressing Basics
+
+### IPv4
+- 32-bit (e.g. `192.168.1.10`)
+- Network ID + Host ID
+
+### IPv6
+- 128-bit hexadecimal
+- Network Prefix + Interface ID
+- Supports `::` compression
+
+---
+
+## 9. IP Address Classes (Legacy)
+
+| Class | Range | Usage |
+|---|---|---|
+| A | 1.0.0.0 – 126.255.255.255 | Large networks |
+| B | 128.0.0.0 – 191.255.255.255 | Medium |
+| C | 192.0.0.0 – 223.255.255.255 | Small |
+| D | 224.0.0.0 – 239.255.255.255 | Multicast |
+| E | 240.0.0.0 – 255.255.255.255 | Experimental |
+
+### Private IP Ranges
+- `10.0.0.0/8`
+- `172.16.0.0/12`
+- `192.168.0.0/16`
+
+---
+
+## 10. Subnetting & CIDR
+
+Subnetting divides a network into smaller logical networks.
+
+### CIDR
+- `/24`, `/16`, `/30`
+- Efficient IP allocation
+
+### Host Formula
+Hosts = 2^(host bits) – 2
+
+
+IPv6 commonly uses `/64`.
+
+---
+
+## 11. Ports & Common Protocols
+
+| Protocol | Port |
+|---|---|
+| HTTP | 80 |
+| HTTPS | 443 |
+| DNS | 53 |
+| DHCP | 67 / 68 |
+| SSH | 22 |
+| FTP | 20 / 21 |
+
+---
+
+## 12. Address Resolution
+- **ARP**: IP → MAC (local network)
+- **DNS**: Domain → IP
+
+---
+
+## 13. TCP vs UDP
+
+### TCP
+- Reliable, ordered
+- Connection-based
+- Used for HTTP, APIs, databases
+
+### UDP
+- Fast, connectionless
+- No delivery guarantee
+- Used for streaming, DNS
+
+---
+
+## 14. TCP Connection Lifecycle
+
+### 3-Way Handshake
+SYN → SYN-ACK → ACK
+
+
+### 4-Way Termination
+FIN → ACK → FIN → ACK
+
+--
+
+## 15. Network Services
+
+| Service | Purpose |
+|---|---|
+| NAT | Private → Public IP |
+| DHCP | Automatic IP assignment |
+| VPN | Secure tunnel |
+| Load Balancer | Traffic distribution |
+
+### NAT Types
+- Static NAT
+- Dynamic NAT
+- PAT (NAT Overload)
+
+---
+
+## 16. Switching & Routing
+
+### Switching
+- Learns MAC addresses
+- Floods unknown destinations
+
+### Routing
+- Static routing
+- Dynamic routing (RIP, OSPF, BGP)
+- Default routes
+
+---
+
+## 17. VLAN, STP & MTU
+- **VLAN**: Logical network segmentation
+- **STP**: Prevents switching loops
+- **MTU**: Max packet size
+- IPv4 allows router fragmentation
+- IPv6 does not
+
+---
+
+## 18. Traffic Types
+
+| Type | Description |
+|---|---|
+| Unicast | One-to-one |
+| Broadcast | One-to-all |
+| Multicast | One-to-many |
+
+---
+
+## 19. HTTP & HTTPS (System Design)
+- HTTP is stateless
+- HTTPS = HTTP + TLS
+- TLS provides encryption, authentication, integrity
+- REST vs RPC (high-level)
+- Idempotency (GET vs POST)
+
+---
+
+## 20. Proxies & CDN
+
+### Reverse Proxy
+- SSL termination
+- Load balancing
+- Request routing
+- Examples: Nginx, Envoy
+
+### CDN
+- Edge caching
+- Faster content delivery
+- Cache invalidation
+
+---
+
+## 21. Cloud Networking Basics
+- VPC (Virtual Private Cloud)
+- Public vs Private Subnets
+- Route Tables
+- Internet Gateway
+- NAT Gateway
+
+---
+
+## 22. Network Security Basics
+- Firewalls
+- Security Groups (stateful)
+- NACLs (stateless)
+- IDS / IPS
+- Encryption
+
+---
+
+## 23. End-to-End Request Flow (Interview Favorite)
+User
+→ DNS lookup
+→ TCP handshake
+→ HTTP request
+→ Router / Firewall
+→ Load Balancer
+→ Application Server
+→ Database
+→ Response back
