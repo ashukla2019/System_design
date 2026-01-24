@@ -81,19 +81,26 @@ Bits → Frame → Packet → Segment → Data
 
 
 ---
-
 ## 7. Networking Devices
 
 | Device | OSI Layer | Function |
-|---|---|---|
-| Hub | L1 | Broadcasts |
-| Repeater | L1 | Boosts signal |
-| Switch | L2 | MAC-based forwarding |
-| Bridge | L2 | Connects LAN segments |
-| Router | L3 | IP routing |
-| Gateway | L5–L7 | Protocol translation |
-| Access Point | L2 | Wireless access |
-| Firewall | L3/L4 | Traffic filtering |
+|------|----------|----------|
+| **Hub** | L1 (Physical) | Broadcasts incoming data to **all ports** without filtering. No MAC awareness, causes collisions. Largely obsolete. |
+| **Repeater** | L1 (Physical) | **Regenerates and amplifies** weak signals to extend transmission distance. Does not understand data. |
+| **Switch** | L2 (Data Link) | Forwards frames using a **MAC address table**. Creates separate collision domains per port. Faster and more efficient than hubs. |
+| **Bridge** | L2 (Data Link) | Connects **two LAN segments** and filters traffic using MAC addresses. Logical predecessor of switches. |
+| **Router** | L3 (Network) | Routes packets using **IP addresses and routing tables**. Connects different networks and separates broadcast domains. |
+| **Gateway** | L5–L7 (Session–Application) | Performs **protocol translation** (e.g., HTTP ↔ FTP, IPv4 ↔ IPv6). Entry/exit point between dissimilar networks. |
+| **Access Point (AP)** | L2 (Data Link) | Connects **wireless clients to a wired LAN**. Acts like a switch for Wi-Fi devices. |
+| **Firewall** | L3 / L4 (sometimes L7) | Filters traffic using **IP, port, protocol** (and content at L7). Enforces network security rules. |
+
+### Quick Memory Notes
+- **Hub** → Broadcasts everything  
+- **Switch** → MAC-based forwarding  
+- **Router** → IP-based routing  
+- **Gateway** → Protocol translator  
+- **Firewall** → Security filter
+
 
 ---
 
