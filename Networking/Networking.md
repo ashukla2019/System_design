@@ -141,6 +141,59 @@ Hosts = 2^(host bits) – 2
 
 IPv6 commonly uses `/64`.
 
+Ex:192.168.1.0/24
+
+- `/24` → 24 bits for network
+- Remaining bits → host bits
+
+---
+## Common CIDR Blocks (IPv4)
+
+| CIDR | Total IPs | Usable Hosts | Usage |
+|-----|----------|--------------|-------|
+| /30 | 4 | 2 | Point-to-point links |
+| /29 | 8 | 6 | Small subnets |
+| /24 | 256 | 254 | LAN / VPC subnet |
+| /16 | 65,536 | 65,534 | Large private networks |
+
+**Usable Hosts = Total IPs − 2**  
+(Network ID + Broadcast address)
+
+---
+
+## Host Formula (IPv4)
+
+---
+
+### Special CIDR
+- `/32` → Single IP (host route)
+- `/31` → Point-to-point, no broadcast
+
+---
+
+### IPv6 Subnetting
+- Standard subnet: `/64`
+- No broadcast
+- Host calculation not required
+
+---
+
+### IPv4 vs IPv6
+
+| Feature | IPv4 | IPv6 |
+|----|----|----|
+| Address size | 32-bit | 128-bit |
+| Typical subnet | /24 | /64 |
+| Broadcast | Yes | No |
+
+---
+
+### Key Interview Points
+- Subnetting improves IP utilization
+- CIDR allows flexible subnet sizing
+- IPv4 hosts = `2^(host bits) − 2`
+- IPv6 commonly uses `/64`
+
 ---
 
 ## 11. Ports & Common Protocols
