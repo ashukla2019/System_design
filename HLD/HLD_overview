@@ -1,0 +1,124 @@
+
+High-Level Design
+│
+├── 1. Architecture
+├── 2. Networking & Communication
+├── 3. Data Management
+├── 4. Storage
+├── 5. Scalability
+├── 6. Fault Tolerance
+└── 7. Security
+---------------------------------
+1. Architecture (Networking-aware)
+What you define
+
+Monolithic
+Microservices
+Event-driven
+Client–Server / Peer-to-Peer
+Centralized vs Distributed
+
+Networking here
+How components talk:
+
+Client → API Gateway → Services
+Service → Service (east–west traffic)
+
+Network boundaries:
+VPC / Subnets
+Public vs Private services
+
+-------------------------
+2. Networking & Communication (Core Networking Section)
+This is where networking explicitly lives.
+
+Communication model:
+Synchronous (HTTP/gRPC)
+Asynchronous (Kafka, SQS, RabbitMQ)
+
+Protocols:
+HTTP/HTTPS
+gRPC
+WebSocket
+TCP/UDP
+
+Network components:
+Load Balancer
+API Gateway
+DNS
+Service Mesh (Istio/Linkerd)
+
+----------------------------
+3. Data Management (Network-aware)
+What you define
+
+Read/write paths
+Data flow
+Caching layers
+
+Networking angle
+Client → Cache → DB path
+Cross-region replication traffic
+Data consistency over network latency
+
+Example:
+Client → Load Balancer → App → Redis → DB
+Networking affects latency, throughput, consistency.
+-----------------------
+4. Storage (Access over Network)
+What you define
+
+SQL / NoSQL
+Object / Block / File storage
+
+Networking angle
+Local vs Remote storage
+Storage access protocol:
+
+NFS
+iSCSI
+S3 API
+
+-----------------------
+5. Scalability (Heavily Network-driven)
+What you define
+
+Horizontal vs Vertical scaling
+Auto-scaling rules
+Networking angle
+Load balancing strategies:
+Round-robin
+Least connections
+Service discovery
+Traffic routing
+
+Example:
+
+Users → Load Balancer → N App Instances
+------------------------
+6. Fault Tolerance (Network Failures Included)
+
+Failover
+Replication
+Retries
+
+Networking angle
+Network partitions
+Timeouts
+Circuit breakers
+Multi-AZ / Multi-region routing
+
+Example:
+
+--------------------
+7. Security (Network-level Security)
+What you define
+
+Authentication & Authorization
+Data protection
+Networking angle
+TLS / HTTPS
+Firewall rules
+Security groups / NACLs
+mTLS between services
+VPN / Private endpoints
