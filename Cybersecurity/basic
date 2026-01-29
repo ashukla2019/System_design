@@ -3,22 +3,17 @@ Step 0: The Core Problem
 You want to send data over a network where:
 
 Anyone can listen
-
 Anyone can modify
-
 Anyone can pretend to be you
 
 So security must answer 3 questions:
-
 Is the data secret? → Confidentiality
-
 Was the data changed? → Integrity
-
 Who am I talking to? → Authentication
 
 Everything in security exists ONLY to answer these.
 
-1️⃣ Hashing (H) — Integrity First
+1) Hashing (H) — Integrity First
 Think of a fingerprint
 data = "hello"
 hash(data) = abcd1234...
@@ -26,32 +21,29 @@ Key ideas
 One-way (cannot reverse)
 
 Fixed length
-
 Tiny change → totally different hash
 
 Why hashing exists
 If I send:
-
 data + hash(data)
 Receiver does:
 
 hash(received data) == received hash ?
-✔ Same → data unchanged
-❌ Different → data modified
+Same → data unchanged
+Different → data modified
 
 Used for
 Password storage
-
 Message integrity
-
 Digital signatures
 
 Important
 Hashing does NOT hide data.
 
-➡️ Hashing = Integrity ONLY
+Hashing = Integrity ONLY
+--------------------------
 
-2️⃣ Symmetric Encryption (S) — Secrecy
+2) Symmetric Encryption (S) — Secrecy
 Problem it solves
 Prevent others from reading data.
 
@@ -63,11 +55,11 @@ AES
 Key problem
 Both sides must already know the same secret key.
 
-❓How do you share that key safely?
+How do you share that key safely?
 
-➡️ This is the core problem of cryptography
-
-3️⃣ Asymmetric Encryption (A) — Identity
+This is the core problem of cryptography
+---------------------------
+3) Asymmetric Encryption (A) — Identity
 Two keys
 Public key → shared with world
 
@@ -77,15 +69,13 @@ Magic property
 Encrypt(public key) → decrypt(private key)
 Why it exists
 No shared secret needed beforehand
-
 Enables identity verification
 
 Example
 RSA
-
 ECC
-
-4️⃣ Authentication — Proving Identity
+---------
+4) Authentication — Proving Identity
 How do I know you’re really YOU?
 Using asymmetric crypto:
 You send your public key
@@ -100,6 +90,7 @@ I verify using your public key
 
 ➡️ Authentication = identity proof
 
+--------------------
 5️⃣ Key Exchange (K) — The Missing Bridge
 Goal
 Create a shared symmetric key securely.
@@ -130,26 +121,26 @@ Anyone can pretend to be your friend
 
 We’ll fix this step by step.
 
-🧩 Problem 1: Someone reads the letter
-Solution: Lock the letter 🔒
+Problem 1: Someone reads the letter
+Solution: Lock the letter 
 That’s encryption.
 
 You lock the letter
 
 Only someone with the key can open it
 
-👉 This is Symmetric Encryption
+This is Symmetric Encryption
 
 Lock(message, key) → junk
 Unlock(junk, key) → message
-✔ Keeps message secret
-❌ But… how do you give your friend the key?
+Keeps message secret
+But… how do you give your friend the key?
 
-🧩 Problem 2: How to give the key safely?
+Problem 2: How to give the key safely?
 If you send the key:
-🚨 thief steals it
+thief steals it
 
-New idea: A magic lock 🔑🔓
+New idea: A magic lock 
 This lock:
 
 Anyone can lock it
@@ -162,12 +153,12 @@ Public key = lock
 
 Private key = unlock
 
-👉 Anyone can send you secrets safely.
+Anyone can send you secrets safely.
 
-🧩 Problem 3: Is this really my friend?
+Problem 3: Is this really my friend?
 What if the thief sends his lock pretending to be your friend?
 
-Solution: ID Card 🪪
+Solution: ID Card 
 Your friend gets an ID signed by a trusted authority.
 
 Authority signs friend’s public key
@@ -176,10 +167,10 @@ You trust the authority
 
 That’s a certificate.
 
-👉 This is Authentication.
+This is Authentication.
 
-🧩 Problem 4: Talking fast (important!)
-Using magic locks is slow 🐌
+Problem 4: Talking fast (important!)
+Using magic locks is slow 
 So we use it only once.
 
 Trick:
@@ -189,10 +180,10 @@ Then use normal lock forever
 
 This safe agreement is Key Exchange.
 
-🧩 Problem 5: What if someone changes the letter?
+Problem 5: What if someone changes the letter?
 Even if locked, someone might change it.
 
-Solution: Seal 🕵️‍♂️
+Solution: Seal 
 Before sending:
 
 seal = fingerprint(message)
@@ -200,12 +191,12 @@ send(message + seal)
 Receiver:
 
 fingerprint(message) == seal ?
-✔ Same → safe
-❌ Different → changed
+Same → safe
+Different → changed
 
 That’s Hashing.
 
-🎯 NOW THE FULL FLOW (Very Simple)
+NOW THE FULL FLOW (Very Simple)
 1. Check ID (Authentication)
 2. Agree on secret key (Key exchange)
 3. Lock messages with that key (Encryption)
