@@ -44,9 +44,9 @@ How HTTPS Works (HTTP + Security)
 HTTPS = HTTP over TLS/SSL
 
 It adds:
-Encryption
-Authentication
-Data Integrity
+Encryption(solves read data/sniffing)
+Data Integrity(modify data)
+Authentication(solves impersonating server/spoofing)
 Default port → 443
 ----------------☆
 HTTPS Step-by-Step (Very Important)
