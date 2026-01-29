@@ -1,0 +1,212 @@
+
+Step 0: The Core Problem
+You want to send data over a network where:
+
+Anyone can listen
+
+Anyone can modify
+
+Anyone can pretend to be you
+
+So security must answer 3 questions:
+
+Is the data secret? → Confidentiality
+
+Was the data changed? → Integrity
+
+Who am I talking to? → Authentication
+
+Everything in security exists ONLY to answer these.
+
+1️⃣ Hashing (H) — Integrity First
+Think of a fingerprint
+data = "hello"
+hash(data) = abcd1234...
+Key ideas
+One-way (cannot reverse)
+
+Fixed length
+
+Tiny change → totally different hash
+
+Why hashing exists
+If I send:
+
+data + hash(data)
+Receiver does:
+
+hash(received data) == received hash ?
+✔ Same → data unchanged
+❌ Different → data modified
+
+Used for
+Password storage
+
+Message integrity
+
+Digital signatures
+
+Important
+Hashing does NOT hide data.
+
+➡️ Hashing = Integrity ONLY
+
+2️⃣ Symmetric Encryption (S) — Secrecy
+Problem it solves
+Prevent others from reading data.
+
+ciphertext = Encrypt(data, key)
+data = Decrypt(ciphertext, key)
+Example
+AES
+
+Key problem
+Both sides must already know the same secret key.
+
+❓How do you share that key safely?
+
+➡️ This is the core problem of cryptography
+
+3️⃣ Asymmetric Encryption (A) — Identity
+Two keys
+Public key → shared with world
+
+Private key → secret
+
+Magic property
+Encrypt(public key) → decrypt(private key)
+Why it exists
+No shared secret needed beforehand
+
+Enables identity verification
+
+Example
+RSA
+
+ECC
+
+4️⃣ Authentication — Proving Identity
+How do I know you’re really YOU?
+Using asymmetric crypto:
+You send your public key
+
+I challenge you
+
+You sign challenge with private key
+
+I verify using your public key
+
+✔ If it verifies → you are authentic
+
+➡️ Authentication = identity proof
+
+5️⃣ Key Exchange (K) — The Missing Bridge
+Goal
+Create a shared symmetric key securely.
+
+Why not just send it?
+Because attackers are listening.
+
+Solution: Diffie-Hellman (DH)
+Both sides exchange public values
+
+Secret key is derived, never sent
+
+Attacker sees everything but cannot compute key
+
+Result
+✔ Shared symmetric key
+✔ No secret sent
+
+-----------‐----------------
+Imagine This Simple Story
+You want to send a secret letter to your friend over a road where:
+
+Anyone can read letters
+
+Anyone can change letters
+
+Anyone can pretend to be your friend
+
+We’ll fix this step by step.
+
+🧩 Problem 1: Someone reads the letter
+Solution: Lock the letter 🔒
+That’s encryption.
+
+You lock the letter
+
+Only someone with the key can open it
+
+👉 This is Symmetric Encryption
+
+Lock(message, key) → junk
+Unlock(junk, key) → message
+✔ Keeps message secret
+❌ But… how do you give your friend the key?
+
+🧩 Problem 2: How to give the key safely?
+If you send the key:
+🚨 thief steals it
+
+New idea: A magic lock 🔑🔓
+This lock:
+
+Anyone can lock it
+
+Only YOU can unlock it
+
+That’s Asymmetric Encryption.
+
+Public key = lock
+
+Private key = unlock
+
+👉 Anyone can send you secrets safely.
+
+🧩 Problem 3: Is this really my friend?
+What if the thief sends his lock pretending to be your friend?
+
+Solution: ID Card 🪪
+Your friend gets an ID signed by a trusted authority.
+
+Authority signs friend’s public key
+
+You trust the authority
+
+That’s a certificate.
+
+👉 This is Authentication.
+
+🧩 Problem 4: Talking fast (important!)
+Using magic locks is slow 🐌
+So we use it only once.
+
+Trick:
+Use magic lock to safely agree on a normal key
+
+Then use normal lock forever
+
+This safe agreement is Key Exchange.
+
+🧩 Problem 5: What if someone changes the letter?
+Even if locked, someone might change it.
+
+Solution: Seal 🕵️‍♂️
+Before sending:
+
+seal = fingerprint(message)
+send(message + seal)
+Receiver:
+
+fingerprint(message) == seal ?
+✔ Same → safe
+❌ Different → changed
+
+That’s Hashing.
+
+🎯 NOW THE FULL FLOW (Very Simple)
+1. Check ID (Authentication)
+2. Agree on secret key (Key exchange)
+3. Lock messages with that key (Encryption)
+4. Seal messages so they can't be changed
