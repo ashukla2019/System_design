@@ -45,7 +45,7 @@ HTTPS = HTTP over TLS/SSL
 
 It adds:
 Encryption(solves read data/sniffing)
-Data Integrity(modify data)
+Data Integrity(modify data/mims attack)
 Authentication(solves impersonating server/spoofing)
 Default port → 443
 ----------------☆
