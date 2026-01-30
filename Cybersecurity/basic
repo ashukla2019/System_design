@@ -201,3 +201,6 @@ NOW THE FULL FLOW (Very Simple)
 2. Agree on secret key (Key exchange)
 3. Lock messages with that key (Encryption)
 4. Seal messages so they can't be changed
+
+----------------------------
+Key exchange is the process by which two parties securely establish a shared secret key over an insecure network without transmitting the key itself. Each side,computes the shared secret.
