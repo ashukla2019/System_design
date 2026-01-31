@@ -1,4 +1,4 @@
-# API Communication Types – 1-Page Interview Notes
+# API Communication Types
 
 ## REST
 **Working**
