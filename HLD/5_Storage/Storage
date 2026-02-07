@@ -74,3 +74,11 @@ DR Strategies
 Onsite backup
 Offsite replication
 Cloud disaster recovery
+
+
+-------------------
+When to use which:
+Block for speed(low latency)
+Object for scale(media & large files)
+File for sharing.
+RPO = data loss, RTO = downtime.
