@@ -3,26 +3,20 @@ What
 Distributes incoming traffic across multiple servers.
 
 Why
-
 Prevents one server from getting overloaded
-
 Improves availability & reliability
 
 How
-
 Round Robin
-
 Least Connections
-
 IP Hash
 
 Where
-
 Nginx, HAProxy, AWS ALB/ELB
 
 Example
 User → Load Balancer → App Server 1 / 2 / 3
-
+----------------------------
 2. Caching
 What
 Stores frequently accessed data in fast storage (RAM).
@@ -46,7 +40,7 @@ CDN cache
 Example
 Request → Cache hit → return fast
 Request → Cache miss → DB → store in cache
-
+----------------------------
 3. CDN (Content Delivery Network)
 What
 A global network of servers that deliver static content closer to users.
@@ -74,7 +68,7 @@ Cloudflare
 AWS CloudFront
 
 Akamai
-
+----------------------------
 4. Message Queue
 What
 A buffer that stores messages between producers and consumers.
@@ -98,6 +92,7 @@ AWS SQS
 Example
 Order Service → Queue → Email Service
 
+----------------------------
 5. Publish–Subscribe (Pub-Sub)
 What
 Producers publish events, subscribers receive them.
@@ -117,6 +112,7 @@ Pub-Sub: many consumers per message
 Example
 UserRegistered Event → Email Service + Analytics + Notification
 
+----------------------------
 6. API Gateway
 What
 Single entry point for all client requests.
@@ -144,6 +140,7 @@ Apigee
 Flow
 Client → API Gateway → Microservices
 
+----------------------------
 7. Circuit Breaker
 What
 Stops calling a failing service temporarily.
@@ -168,6 +165,7 @@ Resilience4j
 
 Hystrix
 
+----------------------------
 8. Service Discovery
 What
 Automatically finds service instances.
@@ -179,101 +177,77 @@ IPs change in microservices
 Dynamic scaling
 
 Types
-
 Client-side (Eureka)
-
 Server-side (Kubernetes DNS)
 
 Example
 Service A → Service Registry → Service B
 
+----------------------------
 9. Sharding
 What
 Splitting a database into smaller parts (shards).
 
 Why
-
 Scale horizontally
-
 Improve performance
-
 Shard Keys
-
 User ID
-
 Region
-
 Hash
 
 Example
 Users 1–1M → DB1
 Users 1M–2M → DB2
 
+----------------------------
 10. Rate Limiting
 What
 Limits number of requests per user/IP.
 
 Why
-
 Prevent abuse
-
 Protect backend
-
 Fair usage
 
 Algorithms
-
 Token bucket
-
 Leaky bucket
-
 Fixed window
 
 Where
-
 API Gateway
-
 Load balancer
 
+----------------------------
 11. Consistent Hashing
 What
 Hashing technique that minimizes re-mapping when nodes change.
 
 Why
-
 Useful for caches & sharding
-
 Avoids massive data reshuffle
 
 Used in
-
 Distributed cache
-
 Load balancing
 
 Key Benefit
 Adding/removing a server affects only nearby keys.
 
+----------------------------
 12. Auto Scaling
 What
 Automatically increases or decreases servers based on load.
 
 Why
-
 Handle traffic spikes
-
 Reduce cost
-
 Triggers
-
 CPU usage
-
 Memory
-
 Request count
 
 Examples
-
 AWS Auto Scaling Group
-
 Kubernetes HPA
