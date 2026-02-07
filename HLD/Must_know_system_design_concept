@@ -22,19 +22,13 @@ What
 Stores frequently accessed data in fast storage (RAM).
 
 Why
-
 Reduces latency
-
 Reduces DB load
 
 Types
-
 Client-side (browser)
-
 Server-side (Redis, Memcached)
-
 DB cache
-
 CDN cache
 
 Example
@@ -46,27 +40,18 @@ What
 A global network of servers that deliver static content closer to users.
 
 Why
-
 Faster load times
-
 Less load on origin servers
 
 Used for
-
 Images
-
 Videos
-
 JS/CSS
-
 Static HTML
 
 Examples
-
 Cloudflare
-
 AWS CloudFront
-
 Akamai
 ----------------------------
 4. Message Queue
@@ -74,19 +59,13 @@ What
 A buffer that stores messages between producers and consumers.
 
 Why
-
 Decouples services
-
 Handles traffic spikes
-
 Improves reliability
 
 Popular tools
-
 RabbitMQ
-
 Kafka
-
 AWS SQS
 
 Example
@@ -98,15 +77,11 @@ What
 Producers publish events, subscribers receive them.
 
 Why
-
 One event → many consumers
-
 Loose coupling
 
 Difference from Queue
-
 Queue: one consumer per message
-
 Pub-Sub: many consumers per message
 
 Example
@@ -118,23 +93,15 @@ What
 Single entry point for all client requests.
 
 Why
-
 Authentication
-
 Rate limiting
-
 Logging
-
 Routing
-
 API versioning
 
 Examples
-
 AWS API Gateway
-
 Kong
-
 Apigee
 
 Flow
@@ -146,23 +113,16 @@ What
 Stops calling a failing service temporarily.
 
 Why
-
 Prevents cascading failures
-
 Improves system stability
 
 States
-
 Closed → normal
-
 Open → block calls
-
 Half-open → test recovery
 
 Tools
-
 Resilience4j
-
 Hystrix
 
 ----------------------------
@@ -171,9 +131,7 @@ What
 Automatically finds service instances.
 
 Why
-
 IPs change in microservices
-
 Dynamic scaling
 
 Types
