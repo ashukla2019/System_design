@@ -1,170 +1,146 @@
-1. Cloud Fundamentals
+Cloud Fundamentals
     Deployment Models: Public (AWS), Private (on-premise), and Hybrid (mix of both).
     Service Models:
-      Cloud service models define what level of control and responsibility you get when using cloud computing. The three core models are IaaS, PaaS, and SaaS (with some modern extensions).
+      Cloud service models define what level of control and responsibility you get when using cloud computing. The three core models are IaaS, PaaS, 
+      and SaaS (with some modern extensions).
 
-
-☁️ Cloud Service Models (ULTRA-EASY)
-Ask ONE question:
-How much work do I do?
-
+Cloud Service Models:
 More work → left
 Less work → right
 
 On-Prem → IaaS → PaaS → FaaS → BaaS → SaaS
-🏢 On-Prem (Everything is YOUR problem 😅)
-You manage:
-Hardware
-OS
-Network
-App
-Security
+  a) On-Prem (Everything is YOUR problem )
+    You manage:
+    Hardware
+    OS
+    Network
+    App
+    Security
 
-Example
-Company data center
+    Example
+    Company data center
 
-🧠 Memory: “I do everything”
+    Memory: “I do everything”
 ------------------------
-🧱 IaaS — Infrastructure as a Service
-AWS gives:
-VM
-Storage
-Network
+  b) IaaS — Infrastructure as a Service
+    AWS gives:
+    VM
+    Storage
+    Network
+    
+    You manage:
+    OS
+    App
+    Patching
 
-You manage:
-OS
-App
-Patching
-
-✅ Examples
-EC2
-EBS
-VPC
-🧠 Memory: “I manage OS”
+    Examples
+    EC2
+    EBS
+    VPC
+    Memory: “I manage OS”
 -------------------------
-🚧 PaaS — Platform as a Service
-AWS manages:
+  c) PaaS — Platform as a Service
+    AWS manages:
+    Hardware
+    OS
+    Runtime
 
-Hardware
+    You manage:
+    App code
+    Data
 
-OS
-
-Runtime
-
-You manage:
-
-App code
-
-Data
-
-✅ Examples
-Elastic Beanstalk
-
-App Runner
-
-RDS
-
-🧠 Memory: “I only write app code”
+    Examples
+    Elastic Beanstalk
+    
+    App Runner
+    RDS
+    
+    Memory: “I only write app code”
 -----------------------------
 
-⚡ FaaS — Function as a Service
-AWS manages:
-Everything
-
-You manage:
-Function logic
-
-✅ Example
-Lambda
-
-🧠 Memory: “I write a function”
+   d) FaaS — Function as a Service
+    AWS manages:
+    Everything
+    
+    You manage:
+    Function logic
+    
+    Example
+    Lambda
+    
+    Memory: “I write a function”
 ------------------------
-🔧 BaaS — Backend as a Service
-AWS gives ready-made backend services:
+  e) BaaS — Backend as a Service
+    AWS gives ready-made backend services:
 
-Database
-Auth
-Storage
-
-✅ Examples
-DynamoDB
-Cognito
-S3
-
-🧠 Memory: “Backend is ready”
+    Database
+    Auth
+    Storage
+    
+    Examples
+    DynamoDB
+    Cognito
+    S3
+    
+    Memory: “Backend is ready”
 ------------------------
 
-🧑‍💼 SaaS — Software as a Service
-👉 Just use the software
+f) SaaS — Software as a Service
+  Just use the software
 
-AWS (or vendor) manages:
-Everything
-
-✅ Examples
-Gmail
-Google Drive
-Salesforce
-Zoom
-
-🧠 Memory: “Just login and use”
+    AWS (or vendor) manages:
+    Everything
+    
+    Examples
+    Gmail
+    Google Drive
+    Salesforce
+    Zoom
+    
+    Memory: “Just login and use”
 ---------------------------
 Does it RUN code?      → Compute
 Does it STORE data?   → Storage
 Does it CONNECT?      → Networking
 Does it CONTROL access? → Security
 Does it WATCH things? → Monitoring
-Step 3️⃣ Map AWS services to these jobs
-🖥️ Compute = “Who is doing the work?”
+
+Map AWS services to these jobs:
+a) Compute = “Who is doing the work?”
 EC2 → Virtual machine doing work
-
 Lambda → Code doing work
-
 ECS/EKS → Containers doing work
 
-👉 If CPU/RAM involved → Compute
-
-📦 Storage = “Where is data kept?”
+If CPU/RAM involved → Compute
+----------------------------------------------------------------------
+b) Storage = “Where is data kept?”
 S3 → Files, images, backups
-
 EBS → Disk for EC2
-
 EFS → Shared folder
 
-👉 If data survives after shutdown → Storage
-
-🌐 Networking = “How things talk?”
+If data survives after shutdown → Storage
+------------------------------------------------------------------------------
+c) Networking = “How things talk?”
 VPC → Private network
-
 Subnet → Smaller network
-
 Load Balancer → Traffic distributor
-
 Route table → Path rules
-
 Internet Gateway → Internet access
 
-👉 If packets move → Networking
-
-🗄️ Database = “Structured storage”
+If packets move → Networking
+-------------------------------------------------------------------------------
+d) Database = “Structured storage”
 RDS → SQL tables
-
 DynamoDB → Key-value
-
 (Still storage, but specialized)
-
-🔐 Security = “Who is allowed?”
+-------------------------------------------------------------------------------
+e) Security = “Who is allowed?”
 IAM → Permissions
-
 Security Groups → Firewall
-
 NACL → Network firewall
-
-📊 Monitoring = “Who is watching?”
+--------------------------------------------------------------------------
+f) Monitoring = “Who is watching?”
 CloudWatch → Metrics, logs
-
 CloudTrail → Audit logs
-
-🧠 ONE MEMORY SENTENCE (Gold)
-Repeat this until it feels boring:
 
 Compute runs, Storage stores, Networking connects, Security protects, Monitoring watches
