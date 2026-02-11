@@ -500,10 +500,38 @@ Understanding threat models helps define security assumptions.
 - Misuses privileges
 
 Security protocols must be designed considering these attacker models.
+------------
+
+# What Is a Digital Signature?
+
+A digital signature is a cryptographic mechanism that verifies:
+
+- **Authenticity** – Who sent the message  
+- **Integrity** – The message was not altered  
+- **Non-repudiation** – The sender cannot deny it later  
+
+Digital signatures rely on **public-key cryptography** (like RSA or ECDSA).
 
 ---
 
-# End of Extended Security Concepts
+# High-Level Analogy
+
+Imagine you have:
+
+- A **private stamp** only you own → **Private Key**
+- A **public stamp verifier** everyone can use → **Public Key**
+
+You stamp a document → Others verify using the public verifier.
+
+---
+
+# How Digital Signatures Work (Step by Step)
+
+## 1. Hashing the Data
+
+Before signing, the message is hashed.
+
+
 
 
 
