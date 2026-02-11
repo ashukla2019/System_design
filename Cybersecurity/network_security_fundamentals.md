@@ -352,7 +352,158 @@ Provides:
 - Non-repudiation  
 
 ---
+---
 
-# End of Document
+## 9.3 Non-Repudiation
+
+Non-repudiation ensures that a sender cannot deny sending a message.
+
+This is typically achieved using **digital signatures**.
+
+If a message is signed using a private key:
+- Only the private key owner could have created the signature
+- The sender cannot later deny sending it
+
+### Important In:
+- Online banking
+- Digital contracts
+- Legal communications
+- Secure email systems
+
+---
+
+# 10. Authorization
+
+Authentication verifies **who you are**.  
+Authorization determines **what you are allowed to do**.
+
+Example:
+- Logging into a system → Authentication
+- Accessing admin panel → Authorization
+
+### Common Authorization Models
+
+- Role-Based Access Control (RBAC)
+- Attribute-Based Access Control (ABAC)
+- Access Control Lists (ACLs)
+
+Authorization is a critical but separate security principle.
+
+---
+
+# 11. Availability
+
+Availability ensures that systems and data are accessible when needed.
+
+It completes the full **CIA Triad**:
+
+- Confidentiality
+- Integrity
+- Availability
+
+### Threats to Availability
+
+- Distributed Denial-of-Service (DDoS) attacks
+- Hardware failures
+- Power outages
+- Resource exhaustion
+
+### Solutions
+
+- Load balancing
+- Redundancy
+- Failover systems
+- Rate limiting
+- DDoS mitigation services
+
+---
+
+# 12. Replay Attacks
+
+A replay attack occurs when an attacker:
+
+1. Captures a valid message
+2. Resends it later to gain unauthorized access
+
+Example:
+- Capturing a valid authentication request
+- Replaying it to impersonate a user
+
+### Solutions
+
+- Nonces (random one-time numbers)
+- Timestamps
+- Sequence numbers
+- Challenge-response protocols
+
+These ensure that old messages cannot be reused.
+
+---
+
+# 13. Forward Secrecy
+
+Forward Secrecy ensures that:
+
+> Even if a server’s long-term private key is compromised, past encrypted sessions remain secure.
+
+This is achieved using:
+
+- Ephemeral Diffie-Hellman (DHE)
+- Elliptic Curve Diffie-Hellman Ephemeral (ECDHE)
+
+Used in:
+- TLS 1.2 (optional)
+- TLS 1.3 (mandatory)
+
+Forward secrecy protects historical communications.
+
+---
+
+# 14. Hash Function Security Properties
+
+A secure cryptographic hash function must provide:
+
+## 14.1 Pre-image Resistance
+
+Given a hash value H, it should be computationally infeasible to find the original input.
+
+## 14.2 Second Pre-image Resistance
+
+Given input A, it should be infeasible to find another input B such that:
+
+Hash(A) = Hash(B)
+
+## 14.3 Collision Resistance
+
+It should be infeasible to find *any two different inputs* that produce the same hash.
+
+---
+
+# 15. Threat Models
+
+Understanding threat models helps define security assumptions.
+
+## 15.1 Passive Attacker
+
+- Can observe traffic
+- Cannot modify messages
+- Example: Eavesdropping
+
+## 15.2 Active Attacker
+
+- Can intercept, modify, inject, or delete messages
+- Example: Man-in-the-Middle (MITM)
+
+## 15.3 Insider Attacker
+
+- Has legitimate system access
+- Misuses privileges
+
+Security protocols must be designed considering these attacker models.
+
+---
+
+# End of Extended Security Concepts
+
 
 
