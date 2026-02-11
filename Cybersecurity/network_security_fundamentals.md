@@ -6,7 +6,7 @@
 
 When sending data over a network, three major risks exist:
 
-## 1.1 Confidentiality Risk – Anyone Can Read the Data
+## 1.1 Confidentiality  – Anyone Can Read the Data
 
 If data is not encrypted, attackers can intercept and view it  
 (e.g., passwords, credit card numbers).
@@ -15,7 +15,7 @@ If data is not encrypted, attackers can intercept and view it
 
 ---
 
-## 1.2 Integrity Risk – Anyone Can Modify the Data
+## 1.2 Integrity  – Anyone Can Modify the Data
 
 An attacker can alter messages in transit  
 (e.g., change a bank transfer amount).
@@ -27,7 +27,7 @@ An attacker can alter messages in transit
 
 ---
 
-## 1.3 Authentication Risk – Anyone Can Pretend to Be You
+## 1.3 Authentication  – Anyone Can Pretend to Be You
 
 An attacker may spoof identity  
 (e.g., fake website, stolen login credentials).
