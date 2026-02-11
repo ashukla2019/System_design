@@ -530,6 +530,75 @@ You stamp a document → Others verify using the public verifier.
 ## 1. Hashing the Data
 
 Before signing, the message is hashed.
+Message → Hash Function → Message Digest
+
+
+Example: `SHA-256`
+
+### Why hash?
+
+- Hashing is fast  
+- Prevents signing huge data directly  
+- Ensures integrity  
+
+---
+
+## 2. Signing with the Private Key
+
+A cryptographic algorithm (RSA/ECDSA) encrypts the hash with the private key.
+
+Signature = Encrypt(Hash(Message), PrivateKey)
+
+
+Only the owner has the private key → Ensures authenticity.
+
+---
+
+## 3. Sending the Message + Signature
+
+The sender sends:
+
+- The original message  
+- The digital signature  
+
+---
+
+## 4. Verification by the Receiver
+
+The receiver does two things:
+
+### A. Hash the Received Message
+Received Message → SHA-256 → hash1
+
+### B. Decrypt the Signature Using Sender’s Public Key
+Decrypt(Signature, PublicKey) → hash2
+
+
+If:
+hash1 == hash2
+
+Then the signature is valid.
+
+This means:
+
+- The message was not changed  
+- The sender is verified  
+- The sender cannot deny signing  
+
+---
+
+# Why the Public Key Works
+
+Because:
+
+- **Private key signs**
+- **Public key verifies**
+
+The public key cannot generate a signature — it can only verify one.
+
+
+
+
 
 
 
