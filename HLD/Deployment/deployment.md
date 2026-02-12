@@ -5,47 +5,6 @@
 ## Docker Deployment (Simple)
 
 ```
-Developer
-   |
-   | docker build
-   v
-Docker Image
-   |
-   | docker push
-   v
-Image Registry
-   |
-   | docker run
-   v
-Docker Container
-   |
-   v
-Application Running
-
-```
-
-
-You said:
-Can you make this more  correct and understandableDeveloper
-   |
-   | docker build
-   v
-Docker Image
-   |
-   | docker push
-   v
-Image Registry
-   |
-   | docker run
-   v
-Docker Container
-   |
-   v
-Application Running
-
-ChatGPT said:
-Yep — the idea is right, it just needs a bit more clarity and correctness around who does what and where docker run actually happens. Here’s a cleaner, more accurate version with simple explanations.
-
 Correct & Easy-to-Understand Docker Flow
 Developer Machine
    |
@@ -67,6 +26,8 @@ Docker Container
    |
    v
 Application Running
+
+
 
 What’s happening at each step (plain English)
 1️⃣ Developer Machine
