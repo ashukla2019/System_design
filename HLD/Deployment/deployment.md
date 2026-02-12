@@ -2,8 +2,37 @@
 
 ---
 
-## Docker Deployment (Simple)
+## Docker Deployment 
 
+```
+Developer Machine (Code + Dockerfile)
+   |
+   | docker build -t myapp:1.0 .
+   v
+Docker Image (App + Dependencies + Runtime)
+   |
+   | docker tag myapp:1.0 myrepo/myapp:1.0
+   | docker push myrepo/myapp:1.0
+   v
+Image Registry (Docker Hub / ECR / GCR / ACR)
+   |
+   | docker pull myrepo/myapp:1.0
+   v
+Docker Host (Server / VM / Cloud Instance)
+   |
+   | docker run -d -p 80:3000 --name myapp-container myrepo/myapp:1.0
+   v
+Running Container (Application Running)
+   |
+   ^
+   | Port Mapping (-p 80:3000)
+   |
+End Users Access Application via Server IP:80
+
+```
+
+
+## Kubernet Deployment 
 ```
 Developer Machine (Code + Dockerfile + K8s YAML)
    |
