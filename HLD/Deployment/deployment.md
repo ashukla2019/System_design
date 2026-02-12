@@ -5,104 +5,48 @@
 ## Docker Deployment (Simple)
 
 ```
-
-Developer Machine
+Developer Machine (Code + Dockerfile + K8s YAML)
    |
-   | docker build
+   | docker build (Creates Docker Image)
    v
-Docker Image (local)
+Docker Image (App + Dependencies + Runtime)
    |
-   | docker push
+   | docker push (Uploads image to Registry)
    v
-Image Registry (Docker Hub / ECR / GCR)
+Image Registry (Docker Hub / ECR / GCR / ACR)
    |
-   | docker pull
+   | kubectl apply -f deployment.yaml
    v
-Host Machine (Server / VM / Kubernetes Node)
+Kubernetes API Server (Stores desired state in etcd)
    |
-   | docker run
+   | Creates
    v
-Docker Container
+Deployment (Defines desired state: replicas, image, strategy)
+   |
+   | Manages
+   v
+ReplicaSet (Ensures correct number of Pods)
+   |
+   | Creates
+   v
+Pods (Smallest unit in Kubernetes)
+   |
+   | Kubelet pulls image from Registry
+   v
+Container Runtime (containerd / Docker)
    |
    v
-Application Running
-
-
-
-What’s happening at each step (plain English)
-1️⃣ Developer Machine
-You write code + Dockerfile.
-
-2️⃣ docker build
-Creates a Docker Image
-➡️ Image = blueprint (code + dependencies + runtime)
-
-3️⃣ Docker Image (local)
-Image exists only on your laptop at this point.
-
-4️⃣ docker push
-Uploads the image to an Image Registry
-Examples:
-Docker Hub
-AWS ECR
-GCP GCR
-Azure ACR
-
-5️⃣ Image Registry
-Central storage for images (like GitHub for code).
-
-6️⃣ docker pull
-Server downloads the image from registry.
-
-7️⃣ Host Machine
-Could be:
-EC2 / VM
-On-prem server
-Kubernetes node
-
-8️⃣ docker run
-Starts a Container from the image.
-
-9️⃣ Docker Container
-Running instance of the image
-➡️ Like an object created from a class
-
-🔟 Application Running
-Your app is now live
+Running Containers (Application Running)
+   |
+   ^
+   | Service exposes Pods
+   |
+Service (ClusterIP / NodePort / LoadBalancer)
+   |
+   v
+Users / External Traffic
 
 ```
-
----
-
-## Kubernetes Deployment (High Level)
-
-```
-Developer
-   |
-   | kubectl apply
-   v
-Kubernetes API Server
-   |
-   v
-Deployment
-   |
-   v
-ReplicaSet
-   |
-   v
-Pods (Containers)
-   |
-   v
-Service (Stable IP / Load Balancer)
-   |
-   v
-Users
-```
-
-### Notes
-- Pod is the smallest unit
-- Deployment manages replicas
-- Service exposes pods
 
 ---
 
@@ -124,5 +68,18 @@ Kubernetes -> Manage containers at scale
 ## Real World Flow
 
 ```
-Code â†’ Docker Image â†’ Registry â†’ Kubernetes â†’ Users
+Code → Docker Image → Registry → Kubernetes → Users
+
+Developer writes code → packages it as a container → stores it in registry → Kubernetes runs it → users access it.
+
+Node.js app
+   ↓
+Docker Image
+   ↓
+Push to AWS ECR
+   ↓
+Kubernetes (EKS) deploys it
+   ↓
+Users access via LoadBalancer
+
 ```
