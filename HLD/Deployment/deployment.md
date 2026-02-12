@@ -1,4 +1,4 @@
-# Docker & Kubernetes â€“ Quick Deployment Diagrams
+# Docker & Kubernetes Quick Deployment Diagrams
 
 ---
 
