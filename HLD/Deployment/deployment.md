@@ -70,6 +70,8 @@ Running instance of the image
 🔟 Application Running
 Your app is now live
 
+```
+
 ---
 
 ## Kubernetes Deployment (High Level)
