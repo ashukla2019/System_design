@@ -21,6 +21,7 @@ Docker Container
    |
    v
 Application Running
+
 ```
 
 ### Notes
