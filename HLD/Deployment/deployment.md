@@ -5,7 +5,7 @@
 ## Docker Deployment (Simple)
 
 ```
-Correct & Easy-to-Understand Docker Flow
+
 Developer Machine
    |
    | docker build
