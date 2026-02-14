@@ -140,7 +140,7 @@ New Hash
 │ Compare hashes  
 │  
 ▼  
-Integrity & Authentication Verified
+✔ Integrity & Authentication Verified
 
 
 ### Result
