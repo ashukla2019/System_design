@@ -222,28 +222,43 @@ If key storage is compromised:
 
 ## 7.1 Hybrid Encryption
 
+
 ## Hybrid Encryption Flow
 
+Hybrid Encryption combines **asymmetric encryption** (for secure key exchange)  
+with **symmetric encryption** (for fast data encryption).
+
+---
+
+###  Sender Side
+
+```
 Sender
-|
-|-- Generate Symmetric Key (Session Key)
-|
-|-- Encrypt Data with Session Key ---> Encrypted Data
-|
-|-- Encrypt Session Key with Receiver's Public Key
-|
-|-------------------------------> Send Both
-|
-v
+  |
+  |-- Generate Symmetric Key (Session Key)
+  |
+  |-- Encrypt Data using Session Key
+  |        |
+  |        ---> Encrypted Data
+  |
+  |-- Encrypt Session Key using Receiver's Public Key
+  |
+  |-------------------------------> Send:
+  |                                 - Encrypted Data
+  |                                 - Encrypted Session Key
+  |
+  v
+
 Receiver
-|
-Decrypt Session Key (Private Key)
-|
-Decrypt Data (Session Key)
+  |
+  |-- Decrypt Session Key using Private Key
+  |
+  |-- Decrypt Data using Session Key
+  |
+  v
+Plain Data (Original Message)
 
-
-
-
+```
 ---
 
 ## 7.2 Key Exchange Protocols
