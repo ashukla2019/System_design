@@ -222,18 +222,23 @@ If key storage is compromised:
 
 ## 7.1 Hybrid Encryption
 
-Used in HTTPS.
+Sender
+  |
+  |-- Generate Symmetric Key (Session Key)
+  |
+  |-- Encrypt Data with Session Key  ---> Encrypted Data
+  |
+  |-- Encrypt Session Key with Receiver's Public Key
+  |
+  |-------------------------------> Send Both
+                                    |
+                                    v
+                               Receiver
+                                    |
+                        Decrypt Session Key (Private Key)
+                                    |
+                        Decrypt Data (Session Key)
 
-Steps:
-
-1. Use asymmetric cryptography (RSA / ECC)  
-2. Securely exchange symmetric session key  
-3. Use symmetric encryption (AES) for data transfer  
-
-Why?
-
-- Symmetric encryption is fast  
-- Efficient for large data  
 
 ---
 
