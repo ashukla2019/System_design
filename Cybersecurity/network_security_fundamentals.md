@@ -67,7 +67,7 @@ Encryption converts plaintext into ciphertext.
 - AES – Symmetric encryption algorithm  
 - End-to-End Encryption (E2EE)
 
-Tls/ssl and vpn both uses symmetric and asymmetric key encryption.
+Tls/ssl and vpn both uses symmetric and asymmetric key encryption but Aes is pure symmetric key encryption.
 
 ---
 
