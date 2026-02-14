@@ -18,12 +18,12 @@ Decrypt (Same Secret Key)
 |
 Plain Data
 
-### ✅ Advantages
+### Advantages
 - Very fast
 - Efficient for **large / bulk data**
 - Low computational cost
 
-### ❌ Problems
+### Problems
 
 #### 1. Key Sharing Problem
 - How do sender and receiver **securely share the secret key**?
@@ -36,7 +36,7 @@ N(N−1)/2
 
 - Not practical for large networks (internet)
 
-### 🧠 Conclusion
+###  Conclusion
 - Excellent for **data encryption**
 - Terrible for **initial trust and key exchange**
 
@@ -49,6 +49,7 @@ N(N−1)/2
 - **Public Key** → Encrypt
 - **Private Key** → Decrypt
 
+'''
 Sender Receiver
 
 Plain Data
@@ -59,7 +60,7 @@ Encrypted Data -------------------->
 Decrypt (Receiver Private Key)
 |
 Plain Data
-
+'''
 
 ### ✅ Advantages
 - Solves **key sharing problem**
