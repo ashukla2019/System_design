@@ -222,22 +222,26 @@ If key storage is compromised:
 
 ## 7.1 Hybrid Encryption
 
+## Hybrid Encryption Flow
+
 Sender
-  |
-  |-- Generate Symmetric Key (Session Key)
-  |
-  |-- Encrypt Data with Session Key  ---> Encrypted Data
-  |
-  |-- Encrypt Session Key with Receiver's Public Key
-  |
-  |-------------------------------> Send Both
-                                    |
-                                    v
-                               Receiver
-                                    |
-                        Decrypt Session Key (Private Key)
-                                    |
-                        Decrypt Data (Session Key)
+|
+|-- Generate Symmetric Key (Session Key)
+|
+|-- Encrypt Data with Session Key ---> Encrypted Data
+|
+|-- Encrypt Session Key with Receiver's Public Key
+|
+|-------------------------------> Send Both
+|
+v
+Receiver
+|
+Decrypt Session Key (Private Key)
+|
+Decrypt Data (Session Key)
+
+
 
 
 ---
