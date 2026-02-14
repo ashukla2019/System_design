@@ -60,16 +60,26 @@ N(N−1)/2
 - **Private Key** → Decrypt
 
 '''
-Sender Receiver
+# Asymmetric Encryption Flow
 
+# Asymmetric Encryption Flow
+
+Plain Data  
+│  
+│ Encrypt (Receiver Public Key)  
+│  
+▼  
+Encrypted Data  
+│  
+│ ------------------------------>  
+│  
+▼  
+Decrypt (Receiver Private Key)  
+│  
+▼  
 Plain Data
-|
-Encrypt (Receiver Public Key)
-|
-Encrypted Data -------------------->
-Decrypt (Receiver Private Key)
-|
-Plain Data
+
+
 '''
 
 ### ✅ Advantages
@@ -95,13 +105,15 @@ Plain Data
 
 ## 3️⃣ Problem Summary Table
 
-| Problem | Exists In | Why |
-|------|---------|----|
-| Key sharing | Symmetric | Same secret must be exchanged |
-| Slow performance | Asymmetric | Heavy mathematical operations |
-| Sender authentication | Asymmetric | Public key is public |
-| Public key trust | Asymmetric | Fake public keys possible |
-| Data integrity | Both | Message can be modified |
+# Encryption Problems Overview
+
+| Problem               | Exists In     | Why |
+|-----------------------|---------------|-----|
+| Key sharing           | Symmetric     | Same secret key must be securely exchanged |
+| Slow performance      | Asymmetric    | Uses heavy mathematical operations |
+| Sender authentication| Asymmetric    | Public key is public, sender identity not guaranteed |
+| Public key trust      | Asymmetric    | Fake or malicious public keys can be presented |
+| Data integrity        | Both          | Message can be modified during transmission |
 
 ---
 
