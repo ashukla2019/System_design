@@ -9,14 +9,24 @@
   - Decryption
 Sender Receiver
 
+# Symmetric Encryption Flow
+
+Plain Data  
+│  
+│ Encrypt (Secret Key)  
+│  
+▼  
+Encrypted Data  
+│  
+│ ------------------------------>  
+│  
+▼  
+Decrypt (Same Secret Key)  
+│  
+▼  
 Plain Data
-|
-Encrypt (Secret Key)
-|
-Encrypted Data -------------------->
-Decrypt (Same Secret Key)
-|
-Plain Data
+
+
 
 ### Advantages
 - Very fast
