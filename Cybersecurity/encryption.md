@@ -79,32 +79,11 @@ Decrypt (Receiver Private Key)
 ▼  
 Plain Data
 
-
 '''
-
-### ✅ Advantages
-- Solves **key sharing problem**
-- No pre-shared secret required
-- Enables secure communication over open networks
-
-### ❌ Problems
-
-#### 1. Performance Problem
-- Very **slow**
-- Not suitable for large data encryption
-
-#### 2. Sender Authentication Problem
-- Anyone can encrypt using a public key
-- Receiver cannot know **who actually sent the message**
-
-#### 3. Public Key Trust Problem
-- How do we know the public key truly belongs to the claimed person/server?
-- Leads to **Man-in-the-Middle (MITM) attacks**
 
 ---
 
-## 3️⃣ Problem Summary Table
-
+## 3️⃣ Problem 
 # Encryption Problems Overview
 
 | Problem               | Exists In     | Why |
@@ -120,9 +99,9 @@ Plain Data
 ## 4️⃣ Solution 1: Digital Signature
 
 ### What problem it solves
-- ✅ Sender authentication
-- ✅ Message integrity
-- ✅ Non-repudiation
+- Sender authentication
+- Message integrity
+- Non-repudiation
 
 ### How it works (Step-by-Step)
 
@@ -148,12 +127,12 @@ Compare hashes
 
 ### Result
 - Hashes match →
-  - ✔ Sender is authenticated
-  - ✔ Message not modified
+  - Sender is authenticated
+  - Message not modified
 
 ### What it does NOT do
-- ❌ Does NOT encrypt data
-- ❌ Does NOT prove public key ownership
+- Does NOT encrypt data
+- Does NOT prove public key ownership
 
 ---
 
@@ -185,9 +164,9 @@ CA Signature
 - Trusted **Certificate Authority (CA)**
 
 ### What problems it solves
-- ✅ Public key authenticity
-- ✅ Prevents fake public keys
-- ✅ Enables internet-scale trust
+- Public key authenticity
+- Prevents fake public keys
+- Enables internet-scale trust
 
 ---
 
