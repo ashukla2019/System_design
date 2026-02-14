@@ -105,24 +105,42 @@ Plain Data
 
 ### How it works (Step-by-Step)
 
-**Sender**
-Message
-|
-Hash(Message)
-|
-Encrypt Hash with Sender PRIVATE KEY
-|
-Digital Signature
+# Digital Signature Flow
 
+## Sender
 
-**Receiver**
-Message + Signature
-|
-Decrypt Signature using Sender PUBLIC KEY
-|
-Hash received Message
-|
-Compare hashes
+Message  
+│  
+│ Hash(Message)  
+│  
+▼  
+Message Hash  
+│  
+│ Encrypt Hash with Sender **Private Key**  
+│  
+▼  
+Digital Signature  
+
+---
+
+## Receiver
+
+Message + Digital Signature  
+│  
+│ Decrypt Signature using Sender **Public Key**  
+│  
+▼  
+Original Hash  
+│  
+│ Hash received Message  
+│  
+▼  
+New Hash  
+│  
+│ Compare hashes  
+│  
+▼  
+Integrity & Authentication Verified
 
 
 ### Result
