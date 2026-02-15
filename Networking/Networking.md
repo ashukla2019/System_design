@@ -1,349 +1,481 @@
-# 📘 Networking Fundamentals for System Design Interviews
-
-This document consolidates **networking basics + system design expectations** into a single, structured reference.
+# Networking Interview Preparation Notes
 
 ---
 
-## 1. What is Networking?
-Networking is the practice of connecting two or more devices to exchange data.
+# 1. What is Networking?
 
-### Why Networking is Needed
-- Messaging (WhatsApp, Email)
-- Internet browsing
-- File & printer sharing
-- Accessing servers & databases
-- Cloud services (AWS, Azure, GCP)
+Networking is the practice of connecting computers and devices to share resources, data, and services.
 
----
-
-## 2. Types of Networks
-
-| Type | Description | Examples |
-|---|---|---|
-| PAN | Personal, very short range | Bluetooth, Smartwatch |
-| LAN | Limited area, high speed | Home Wi-Fi, Office |
-| MAN | City-wide | ISP city network |
-| WAN | Large geographical area | Internet |
+Goals:
+- Communication
+- Resource sharing
+- Centralized management
+- Scalability
 
 ---
 
-## 3. Network Topologies
+# 2. OSI Model (7 Layers)
 
-| Topology | Description |
-|---|---|
-| Bus | Single backbone cable |
-| Star | Central hub/switch |
-| Ring | Circular data path |
-| Mesh | Multiple redundant paths |
-| Hybrid | Combination of topologies |
+## 1. Physical Layer
+- Transmits raw bits
+- Cables, signals, voltages
+- Devices: Hub, Repeater
 
----
+## 2. Data Link Layer
+- MAC addressing
+- Framing
+- Error detection
+- Devices: Switch, Bridge
 
-## 4. OSI Model (7 Layers)
+Protocols:
+- Ethernet
+- ARP
 
-| Layer | Name | Purpose | Examples |
-|---|---|---|---|
-| 7 | Application | User-facing services | HTTP, FTP, DNS |
-| 6 | Presentation | Encryption & formatting | TLS/SSL |
-| 5 | Session | Session management | RPC |
-| 4 | Transport | Reliable delivery | TCP, UDP |
-| 3 | Network | Routing & IP | IP, ICMP |
-| 2 | Data Link | MAC & framing | Ethernet, ARP |
-| 1 | Physical | Signals & media | Cables, Wi-Fi |
+## 3. Network Layer
+- Logical addressing (IP)
+- Routing
+- Path selection
 
-> Interview tip: L7 = app issue, L4 = TCP issue, L3 = routing issue
+Protocols:
+- IP
+- ICMP
+- Routing protocols (OSPF, RIP, BGP)
 
----
+Devices:
+- Router
 
-## 5. TCP/IP Model
+## 4. Transport Layer
+- End-to-end communication
+- Port numbers
+- Reliability & flow control
 
-| TCP/IP Layer | OSI Mapping |
-|---|---|
-| Application | OSI 7,6,5 |
-| Transport | OSI 4 |
-| Internet | OSI 3 |
-| Network Access | OSI 2,1 |
+Protocols:
+- TCP
+- UDP
 
----
+## 5. Session Layer
+- Session management
+- Checkpoints
 
-## 6. Encapsulation & Decapsulation
+## 6. Presentation Layer
+- Encryption
+- Compression
+- Data formatting
 
-### Sender Side
-Application Data
-→ Segment (TCP/UDP)
-→ Packet (IP)
-→ Frame (MAC)
-→ Bits
+## 7. Application Layer
+- User-facing services
 
-
-### Receiver Side
-Bits → Frame → Packet → Segment → Data
-
-
----
-## 7. Networking Devices
-
-| Device | OSI Layer | Function |
-|------|----------|----------|
-| **Hub** | L1 (Physical) | Broadcasts incoming data to **all ports** without filtering. No MAC awareness, causes collisions. Largely obsolete. |
-| **Repeater** | L1 (Physical) | **Regenerates and amplifies** weak signals to extend transmission distance. Does not understand data. |
-| **Switch** | L2 (Data Link) | Forwards frames using a **MAC address table**. Creates separate collision domains per port. Faster and more efficient than hubs. |
-| **Bridge** | L2 (Data Link) | Connects **two LAN segments** and filters traffic using MAC addresses. Logical predecessor of switches. |
-| **Router** | L3 (Network) | Routes packets using **IP addresses and routing tables**. Connects different networks and separates broadcast domains. |
-| **Gateway** | L5–L7 (Session–Application) | Performs **protocol translation** (e.g., HTTP ↔ FTP, IPv4 ↔ IPv6). Entry/exit point between dissimilar networks. |
-| **Access Point (AP)** | L2 (Data Link) | Connects **wireless clients to a wired LAN**. Acts like a switch for Wi-Fi devices. |
-| **Firewall** | L3 / L4 (sometimes L7) | Filters traffic using **IP, port, protocol** (and content at L7). Enforces network security rules. |
-
-### Quick Memory Notes
-- **Hub** → Broadcasts everything  
-- **Switch** → MAC-based forwarding  
-- **Router** → IP-based routing  
-- **Gateway** → Protocol translator  
-- **Firewall** → Security filter
-
+Protocols:
+- HTTP
+- HTTPS
+- FTP
+- SMTP
+- DNS
+- SSH
 
 ---
 
-## 8. IP Addressing Basics
+# 3. TCP/IP Model (4 Layers)
 
-### IPv4
-- 32-bit (e.g. `192.168.1.10`)
-- Network ID + Host ID
+1. Network Access
+2. Internet
+3. Transport
+4. Application
 
-### IPv6
-- 128-bit hexadecimal
-- Network Prefix + Interface ID
-- Supports `::` compression
+Mapping:
 
----
-
-## 9. IP Address Classes (Legacy)
-
-| Class | Range | Usage |
-|---|---|---|
-| A | 1.0.0.0 – 126.255.255.255 | Large networks |
-| B | 128.0.0.0 – 191.255.255.255 | Medium |
-| C | 192.0.0.0 – 223.255.255.255 | Small |
-| D | 224.0.0.0 – 239.255.255.255 | Multicast |
-| E | 240.0.0.0 – 255.255.255.255 | Experimental |
-
-### Private IP Ranges
-- `10.0.0.0/8`
-- `172.16.0.0/12`
-- `192.168.0.0/16`
+OSI            | TCP/IP
+---------------|--------
+Application    | Application
+Presentation   | Application
+Session        | Application
+Transport      | Transport
+Network        | Internet
+Data Link      | Network Access
+Physical       | Network Access
 
 ---
 
-## 10. Subnetting & CIDR
+# 4. IP Addressing
 
-Subnetting divides a network into smaller logical networks.
+## IPv4
 
-### CIDR
-- `/24`, `/16`, `/30`
-- Efficient IP allocation
+- 32-bit address
+- Example: 192.168.1.1
+- Divided into Network + Host
 
-### Host Formula
-Hosts = 2^(host bits) – 2
+## IPv6
 
-
-IPv6 commonly uses `/64`.
-
-Ex:192.168.1.0/24
-
-- `/24` → 24 bits for network
-- Remaining bits → host bits
-
----
-## Common CIDR Blocks (IPv4)
-
-| CIDR | Total IPs | Usable Hosts | Usage |
-|-----|----------|--------------|-------|
-| /30 | 4 | 2 | Point-to-point links |
-| /29 | 8 | 6 | Small subnets |
-| /24 | 256 | 254 | LAN / VPC subnet |
-| /16 | 65,536 | 65,534 | Large private networks |
-
-**Usable Hosts = Total IPs − 2**  
-(Network ID + Broadcast address)
+- 128-bit address
+- Example: 2001:0db8::1
+- Larger address space
 
 ---
 
-## Host Formula (IPv4)
+## Private IP Ranges
+
+Class A: 10.0.0.0 – 10.255.255.255  
+Class B: 172.16.0.0 – 172.31.255.255  
+Class C: 192.168.0.0 – 192.168.255.255  
 
 ---
 
-### Special CIDR
-- `/32` → Single IP (host route)
-- `/31` → Point-to-point, no broadcast
+# 5. Subnetting
+
+Purpose:
+- Divide network into smaller sub-networks
+- Improve performance
+- Improve security
+
+Example:
+
+192.168.1.0/24
+
+Subnet mask:
+255.255.255.0
+
+CIDR notation:
+192.168.1.0/24
 
 ---
 
-### IPv6 Subnetting
-- Standard subnet: `/64`
-- No broadcast
-- Host calculation not required
+# 6. TCP vs UDP
+
+Feature         | TCP                | UDP
+----------------|-------------------|-------
+Connection      | Connection-oriented | Connectionless
+Reliability     | Reliable           | Unreliable
+Speed           | Slower             | Faster
+Use Cases       | HTTP, HTTPS, SSH   | DNS, Streaming, VoIP
 
 ---
 
-### IPv4 vs IPv6
+# 7. Three-Way Handshake (TCP)
 
-| Feature | IPv4 | IPv6 |
-|----|----|----|
-| Address size | 32-bit | 128-bit |
-| Typical subnet | /24 | /64 |
-| Broadcast | Yes | No |
+1. SYN → Client to Server
+2. SYN-ACK → Server to Client
+3. ACK → Client to Server
 
----
-
-### Key Interview Points
-- Subnetting improves IP utilization
-- CIDR allows flexible subnet sizing
-- IPv4 hosts = `2^(host bits) − 2`
-- IPv6 commonly uses `/64`
+Connection established.
 
 ---
 
-## 11. Ports & Common Protocols
+# 8. Common Protocols
 
-| Protocol | Port |
-|---|---|
-| HTTP | 80 |
-| HTTPS | 443 |
-| DNS | 53 |
-| DHCP | 67 / 68 |
-| SSH | 22 |
-| FTP | 20 / 21 |
+## HTTP
+- Port 80
+- Stateless
 
----
+## HTTPS
+- Port 443
+- HTTP + TLS encryption
 
-## 12. Address Resolution
-- **ARP**: IP → MAC (local network)
-- **DNS**: Domain → IP
+## DNS
+- Port 53
+- Resolves domain → IP
 
----
+## SSH
+- Port 22
+- Secure remote login
 
-## 13. TCP vs UDP
+## FTP
+- Port 21
+- File transfer
 
-### TCP
-- Reliable, ordered
-- Connection-based
-- Used for HTTP, APIs, databases
-
-### UDP
-- Fast, connectionless
-- No delivery guarantee
-- Used for streaming, DNS
+## SMTP
+- Port 25
+- Email sending
 
 ---
 
-## 14. TCP Connection Lifecycle
+# 9. DNS Resolution Process
 
-### 3-Way Handshake
-SYN → SYN-ACK → ACK
+1. User enters domain name.
+2. Local DNS cache checked.
+3. Recursive resolver contacted.
+4. Root server queried.
+5. TLD server queried.
+6. Authoritative server returns IP.
+7. Browser connects to IP.
 
+---
 
-### 4-Way Termination
-FIN → ACK → FIN → ACK
+# 10. ARP (Address Resolution Protocol)
 
---
+Maps:
+IP Address → MAC Address
 
-## 15. Network Services
+Used in local network.
 
-| Service | Purpose |
-|---|---|
-| NAT | Private → Public IP |
-| DHCP | Automatic IP assignment |
-| VPN | Secure tunnel |
-| Load Balancer | Traffic distribution |
+---
 
-### NAT Types
+# 11. NAT (Network Address Translation)
+
+Converts:
+Private IP → Public IP
+
+Types:
 - Static NAT
 - Dynamic NAT
-- PAT (NAT Overload)
+- PAT (Port Address Translation)
+
+Purpose:
+- Conserves IPv4 addresses
+- Adds security layer
 
 ---
 
-## 16. Switching & Routing
+# 12. DHCP
 
-### Switching
-- Learns MAC addresses
-- Floods unknown destinations
+Dynamic Host Configuration Protocol.
 
-### Routing
-- Static routing
-- Dynamic routing (RIP, OSPF, BGP)
-- Default routes
+Automatically assigns:
+- IP address
+- Subnet mask
+- Default gateway
+- DNS server
 
----
+Process:
+1. Discover
+2. Offer
+3. Request
+4. Acknowledge
 
-## 17. VLAN, STP & MTU
-- **VLAN**: Logical network segmentation
-- **STP**: Prevents switching loops
-- **MTU**: Max packet size
-- IPv4 allows router fragmentation
-- IPv6 does not
+(DORA)
 
 ---
 
-## 18. Traffic Types
+# 13. Firewalls
 
-| Type | Description |
-|---|---|
-| Unicast | One-to-one |
-| Broadcast | One-to-all |
-| Multicast | One-to-many |
+Monitors and filters traffic.
 
----
-
-## 19. HTTP & HTTPS (System Design)
-- HTTP is stateless
-- HTTPS = HTTP + TLS
-- TLS provides encryption, authentication, integrity
-- REST vs RPC (high-level)
-- Idempotency (GET vs POST)
+Types:
+- Packet filtering firewall
+- Stateful firewall
+- Next-generation firewall
 
 ---
 
-## 20. Proxies & CDN
+# 14. Load Balancing
 
-### Reverse Proxy
-- SSL termination
-- Load balancing
-- Request routing
-- Examples: Nginx, Envoy
+Distributes traffic across multiple servers.
 
-### CDN
-- Edge caching
-- Faster content delivery
-- Cache invalidation
+Types:
+- Round Robin
+- Least Connections
+- IP Hash
 
----
-
-## 21. Cloud Networking Basics
-- VPC (Virtual Private Cloud)
-- Public vs Private Subnets
-- Route Tables
-- Internet Gateway
-- NAT Gateway
+Improves:
+- Availability
+- Scalability
 
 ---
 
-## 22. Network Security Basics
-- Firewalls
-- Security Groups (stateful)
-- NACLs (stateless)
-- IDS / IPS
-- Encryption
+# 15. VPN (Virtual Private Network)
+
+Creates encrypted tunnel over public network.
+
+Types:
+- Site-to-site VPN
+- Remote access VPN
 
 ---
 
-## 23. End-to-End Request Flow (Interview Favorite)
-User
-→ DNS lookup
-→ TCP handshake
-→ HTTP request
-→ Router / Firewall
-→ Load Balancer
-→ Application Server
-→ Database
-→ Response back
+# 16. Routing Basics
+
+Static Routing:
+- Manually configured
+
+Dynamic Routing:
+- Automatically updates routes
+
+Common Routing Protocols:
+- RIP
+- OSPF
+- BGP
+
+---
+
+# 17. VLAN (Virtual LAN)
+
+Logically segments network.
+
+Benefits:
+- Improved security
+- Reduced broadcast traffic
+
+---
+
+# 18. Common Networking Interview Questions
+
+1. Explain OSI model.
+2. Difference between TCP and UDP.
+3. What happens when you type a URL?
+4. What is subnetting?
+5. How DNS works?
+6. What is NAT?
+7. What is difference between hub, switch, and router?
+8. Explain TCP handshake.
+9. What is ARP?
+10. What is CIDR?
+
+---
+
+# 19. What Happens When You Type a URL?
+
+1. DNS resolves domain to IP.
+2. TCP handshake occurs.
+3. TLS handshake (if HTTPS).
+4. HTTP request sent.
+5. Server responds.
+6. Browser renders page.
+
+---
+
+# 20. Hub vs Switch vs Router
+
+Device   | Layer | Function
+---------|-------|---------
+Hub      | L1    | Broadcast to all
+Switch   | L2    | Forwards using MAC address
+Router   | L3    | Routes using IP address
+
+---
+
+# 21. Important Networking Concepts for Interviews
+
+- Latency vs Bandwidth
+- Throughput
+- MTU (Maximum Transmission Unit)
+- Packet vs Frame
+- Broadcast vs Multicast vs Unicast
+- Port numbers
+- Ephemeral ports
+- Stateful vs Stateless protocols
+
+---
+
+# 22. Final Interview Tip
+
+Understand:
+- How data moves from browser → server → back
+- OSI layering conceptually
+- TCP vs UDP deeply
+- DNS resolution
+- Subnetting basics
+- Security basics (TLS, firewalls)
+
+Interviewers focus on:
+- Clarity of explanation
+- Layer-by-layer breakdown
+- Real-world examples
+- Troubleshooting approach
+
+---
+
+# 23. TCP Working and OSI Layer Mapping
+
+TCP is a **connection-oriented, reliable transport protocol** in the OSI model at **Layer 4 – Transport Layer**. It ensures:
+
+- Reliable delivery
+- Error detection & correction
+- Flow control
+- Ordered delivery
+
+---
+
+## 23.1 Three-Way Handshake (Connection Establishment)
+
+Occurs at **Transport Layer (L4)**.  
+
+1. **SYN** → Client sends synchronize request to server  
+2. **SYN-ACK** → Server acknowledges and synchronizes  
+3. **ACK** → Client acknowledges server  
+
+**Diagram:**
+
+Client Server
+| SYN (seq=x) ------------------------> |
+| |
+| <--------------------- SYN-ACK (seq=y, ack=x+1)
+| |
+| ACK (ack=y+1) ----------------------> |
+Connection Established!
+
+
+- Ensures both sides are ready to communicate and initial sequence numbers are synced.
+
+---
+
+## 23.2 Data Transmission (Flow Control & Segmentation)
+
+1. TCP segments application data into **chunks (segments)**.  
+2. Each segment includes:
+   - Source & Destination Ports
+   - Sequence Number
+   - Acknowledgment Number
+   - Flags (SYN, ACK, FIN, etc.)
+3. Segments are sent, **acknowledged by receiver**.
+
+**Diagram (Simplified):**
+
+Application Layer (HTTP/FTP/SSH)
+|
+v
+Transport Layer (TCP) - Segmentation, sequencing, reliability
+|
+v
+Network Layer (IP) - Packet addressing & routing
+|
+v
+Data Link Layer (Ethernet/Wi-Fi)
+|
+v
+Physical Layer (Cables/Wireless)
+
+
+- OSI mapping ensures **layered responsibility**:
+  - Transport Layer → reliability & flow control  
+  - Network Layer → IP addressing and routing  
+  - Data Link Layer → MAC addressing & framing  
+  - Physical Layer → raw bits over medium  
+
+---
+
+## 23.3 Connection Termination (Four-Way Handshake)
+
+TCP connection termination uses **FIN & ACK flags**:
+
+1. Client → FIN  
+2. Server → ACK  
+3. Server → FIN  
+4. Client → ACK  
+
+**Diagram:**
+
+Client Server
+| FIN ------------------------------> |
+| |
+| <---------------------------- ACK |
+| |
+| <---------------------------- FIN |
+| |
+| ACK ----------------------------> |
+Connection Closed
+
+
+- Ensures **graceful shutdown** and all data is transmitted.
+
+---
+
+## 23.4 TCP and OSI Layers Summary
+
+| TCP Function                  | OSI Layer | Role                                   |
+|--------------------------------|-----------|---------------------------------------|
+| Three-way handshake            | L4        | Connection setup                     |
+| Segmentation & Sequencing      | L4        | Ensures ordered delivery             |
+| Flow control (windowing)       | L4        | Prevents congestion                  |
+| Acknowledgment & retransmission| L4        | Reliability                           |
+| Encapsulation into IP packets  | L3        | Addressing and routing               |
+| Frame encapsulation (MAC)      | L2        | Delivery on LAN                       |
+| Physical transmission          | L1        | Electrical/optical/wireless signals  |
