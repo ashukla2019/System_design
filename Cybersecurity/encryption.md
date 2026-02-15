@@ -99,9 +99,9 @@ Plain Data
 ## 4️⃣ Solution 1: Digital Signature
 
 ### What problem it solves
-- Sender authentication
-- Message integrity
-- Non-repudiation
+Sender authentication: Verifies that the message truly comes from the claimed sender.
+Message integrity: Ensures the message was not altered during transmission.
+Non-repudiation: Prevents the sender from denying that they sent the message.
 
 ### How it works (Step-by-Step)
 
