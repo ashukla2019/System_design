@@ -62,8 +62,8 @@ Encryption converts plaintext into ciphertext.
 
 ### Common Solutions
 
-- TLS/SSL (HTTPS)
-- VPN
+- TLS/SSL (HTTPS)(web traffic encryption)
+- VPN(network traffic encryption)
 - AES (symmetric encryption)
 - End-to-End Encryption (E2EE)
 
