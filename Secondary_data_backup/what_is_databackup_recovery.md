@@ -1,4 +1,4 @@
-# Data Backup, Archiving, Restore & Data Protection – Complete Guide
+# Data Backup, Data restore, Data archiving, Disaster recovery & Data replication – Complete Guide
 
 ---
 
