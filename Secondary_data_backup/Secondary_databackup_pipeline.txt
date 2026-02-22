@@ -218,3 +218,133 @@ Then data flows:
 
 Disk → Driver → Block Layer → FS Driver → VFS → Application
 
+-----------------------------
+
+🔵 How VFS Decides Filesystem Type
+When your application calls:
+
+open("/home/user/data.txt")
+The kernel enters the VFS (Virtual File System) layer.
+
+VFS does path resolution step by step.
+
+🟢 Step 1: Start From Root
+VFS starts at:
+
+/
+Root itself is mounted on some filesystem.
+
+Example:
+
+/dev/sda1  /      ext4
+So / is handled by the ext4 driver.
+
+🟢 Step 2: Walk the Path Component-by-Component
+Path:
+
+/home/user/data.txt
+VFS walks:
+
+/
+
+home
+
+user
+
+data.txt
+
+At each step it checks:
+
+Is this directory a mount point?
+
+🟢 Step 3: Mount Point Check
+Let’s say:
+
+/dev/sda1  /        ext4
+/dev/sdb1  /backup  xfs
+If you open:
+
+/backup/file1
+Here’s what happens:
+
+VFS sees /backup
+
+It finds a mount entry
+
+That mount entry says:
+
+Filesystem type = xfs
+
+Use XFS driver
+
+So now all operations under /backup go to XFS driver, not ext4.
+
+🔥 What Actually Decides the Filesystem?
+Not the directory itself.
+
+It’s the mount table entry.
+
+When a filesystem is mounted:
+
+The kernel creates a superblock
+
+It registers:
+
+Mount point path
+
+Filesystem type
+
+Associated FS driver
+
+Device
+
+VFS consults this mount table.
+
+🟣 Internally (Kernel Concepts)
+Each mount has:
+
+superblock → represents mounted filesystem
+
+dentry → directory entry cache
+
+inode → file metadata
+
+file_operations → function pointers
+
+Key idea:
+
+Each filesystem registers its own function pointers:
+
+ext4 → ext4_read(), ext4_write()
+
+xfs → xfs_read(), xfs_write()
+
+VFS doesn’t care which FS it is.
+
+It just calls:
+
+inode->i_op->lookup()
+file->f_op->read()
+The correct driver handles it.
+
+🟡 So Answering Your Question Directly
+When VFS parses files, it checks mount point and that decides filesystem type?
+
+✔ YES.
+
+More precisely:
+
+VFS resolves path component by component
+
+At each directory, it checks:
+
+Is there a mount point here?
+
+If yes:
+
+Switch to that filesystem’s superblock
+
+From then on:
+
+Use that filesystem’s driver
+
