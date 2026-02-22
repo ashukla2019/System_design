@@ -18,16 +18,7 @@
         v
 [Physical Storage Device]
 
-ChatGPT said:
-Great 👍 this is actually a very important system-design concept (especially for interviews).
-
-Let’s make this fully logical and intuitive.
-
-Think of it as:
-
-“How does a backup application actually read data from disk?”
-
-We’ll follow the journey of a file from top → bottom.
+----------------
 
 🔵 Big Picture
 You have a Backup Manager process (your application).
