@@ -6,7 +6,7 @@ Step-by-step HTTP flow:
 1)User enters URL
 http://example.com
 
-2)DNS Resolution
+2)DNS Resolution: The DNS resolver may Check browser cache, Check OS cache, Ask your router, Ask your ISP’s DNS server, Eventually reach authoritative DNS servers for Google
 Browser asks DNS: “What is the IP of example.com?”
 DNS returns → 93.184.216.34
 
@@ -55,6 +55,10 @@ Same as HTTP → get server IP
 
 🔹 Step 2: TCP Connection
 Client connects to server on port 443
+Performs a 3-way handshake:
+SYN
+SYN-ACK
+ACK
 
 🔹 Step 3: TLS Handshake (Heart of HTTPS)
 This happens before HTTP data is exchanged.
@@ -89,4 +93,12 @@ Now normal HTTP happens, but:
 
 Data is encrypted
 No one can read or modify it
-GET /login HTTP/1.1   (encrypted)
+GET /login HTTP/1.1   (encrypted
+
+
+| Layer | What Happens                            |
+| ----- | --------------------------------------- |
+| TCP   | Reliability only                        |
+| TLS   | Encryption + Integrity + Authentication |
+| HTTP  | Application data                        |
+
