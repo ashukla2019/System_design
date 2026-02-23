@@ -144,3 +144,135 @@ CloudWatch → Metrics, logs
 CloudTrail → Audit logs
 
 Compute runs, Storage stores, Networking connects, Security protects, Monitoring watches
+
+------------------------------
+
+What is Fleet Manager?
+
+Fleet Manager is a capability inside AWS Systems Manager that helps you:
+
+Manage EC2 instances
+Manage on-prem servers
+Manage virtual machines
+View OS-level details
+Perform remote actions (like RDP/SSH from console)
+
+AWS
+ └── AWS Systems Manager
+       └── Fleet Manager
+
+How It Works
+
+Fleet Manager works using:
+
+SSM Agent installed on instance
+
+IAM roles attached to instance
+
+Systems Manager service
+
+Communication happens over HTTPS — no need to open SSH (22) or RDP (3389) ports.
+----------------------
+What is SSM Agent?
+
+SSM Agent is a software installed on your EC2 instance or server.
+
+It acts like:
+A communication bridge between your server and AWS Systems Manager.
+
+What it does:
+
+Receives commands from Systems Manager
+Executes them on the instance
+Sends output back to AWS
+Enables Session Manager, Fleet Manager, Patch Manager, etc.
+
+Without SSM Agent → Systems Manager cannot control the instance.
+
+Where it runs
+Installed by default on most Amazon Linux & Windows AMIs
+Must be installed manually on custom AMIs
+Can also run on on-prem servers
+---------------------
+2️⃣ What is IAM Role (for EC2)?
+
+IAM Role is the permission identity attached to an EC2 instance.
+
+Think of it like:
+
+Temporary AWS credentials given to the instance.
+
+When you attach a role to EC2:
+
+AWS automatically provides temporary credentials
+
+Instance can securely call AWS APIs
+
+3️⃣ Why IAM Role is Required for SSM
+SSM Agent needs permission to:
+Register with Systems Manager
+Send logs/output
+Get commands
+Access Parameter Store / Secrets Manager
+
+If no IAM role is attached ❌
+→ SSM Agent cannot talk to AWS.
+
+4️⃣ Required IAM Policy
+
+Usually you attach this AWS managed policy:
+
+👉 AmazonSSMManagedInstanceCore
+
+This policy allows:
+
+ssm:*
+
+ec2messages:*
+
+ssmmessages:*
+
+5️⃣ Full Flow (Very Important)
+
+Here is what happens internally:
+
+1. EC2 instance launches
+2. IAM Role is attached to EC2
+3. AWS creates temporary credentials via STS
+4. Credentials are exposed to instance via Instance Metadata Service (IMDS)
+5. SSM Agent starts on the instance
+6. SSM Agent retrieves credentials from IMDS
+7. Agent connects to SSM endpoints over HTTPS (port 443)
+8. Instance registers as a Managed Instance
+9. SSM can now send commands via ssmmessages/ec2messages channel
+
+6️⃣ Simple Real-World Analogy
+
+EC2 Instance → Employee
+IAM Role → Employee ID card (permissions)
+SSM Agent → Company laptop software
+Systems Manager → Company management system
+Without ID card → employee cannot access system
+Without laptop software → cannot receive instructions
+
+Important for Interviews
+
+If someone asks:
+Why is my EC2 not showing in Systems Manager?
+
+Check:
+Is SSM Agent installed and running?
+Is IAM role attached?
+Does role have AmazonSSMManagedInstanceCore policy?
+
+Does instance have internet or VPC endpoint access?
+
+If you want, I can now explain:
+
+How SSM works without internet (VPC endpoints)
+
+How IAM roles internally provide temporary credentials
+
+Deep internal request flow (STS, metadata service, etc.)
+
+Since you're learning AWS architecture deeply, we can go internal level next.
