@@ -232,47 +232,4 @@ ec2messages:*
 
 ssmmessages:*
 
-5️⃣ Full Flow (Very Important)
-
-Here is what happens internally:
-
-1. EC2 instance launches
-2. IAM Role is attached to EC2
-3. AWS creates temporary credentials via STS
-4. Credentials are exposed to instance via Instance Metadata Service (IMDS)
-5. SSM Agent starts on the instance
-6. SSM Agent retrieves credentials from IMDS
-7. Agent connects to SSM endpoints over HTTPS (port 443)
-8. Instance registers as a Managed Instance
-9. SSM can now send commands via ssmmessages/ec2messages channel
-
-6️⃣ Simple Real-World Analogy
-
-EC2 Instance → Employee
-IAM Role → Employee ID card (permissions)
-SSM Agent → Company laptop software
-Systems Manager → Company management system
-Without ID card → employee cannot access system
-Without laptop software → cannot receive instructions
-
-Important for Interviews
-
-If someone asks:
-Why is my EC2 not showing in Systems Manager?
-
-Check:
-Is SSM Agent installed and running?
-Is IAM role attached?
-Does role have AmazonSSMManagedInstanceCore policy?
-
-Does instance have internet or VPC endpoint access?
-
-If you want, I can now explain:
-
-How SSM works without internet (VPC endpoints)
-
-How IAM roles internally provide temporary credentials
-
-Deep internal request flow (STS, metadata service, etc.)
-
 Since you're learning AWS architecture deeply, we can go internal level next.
