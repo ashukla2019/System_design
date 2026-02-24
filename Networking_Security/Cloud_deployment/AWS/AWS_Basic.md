@@ -1,9 +1,20 @@
+Account
+  → Region
+      → VPC (network boundary)
+          → Subnet (IP boundary)
+              → EC2 (compute)
+                  → EBS (block disk)
+      → S3 (regional object storage)
+      → EFS (regional file system)
+
+      --------------------------------------------------------------------------
+
 Cloud Fundamentals
     Deployment Models: Public (AWS), Private (on-premise), and Hybrid (mix of both).
     Service Models:
       Cloud service models define what level of control and responsibility you get when using cloud computing. The three core models are IaaS, PaaS, 
       and SaaS (with some modern extensions).
-
+-------------------------------------------------------------------------
 Cloud Service Models:
 More work → left
 Less work → right
