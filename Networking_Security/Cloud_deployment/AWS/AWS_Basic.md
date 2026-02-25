@@ -324,7 +324,7 @@ Fleet Manager is just the UI layer.
 Admin selects which EC2 instance to manage.
 
 ⚠️ Nothing has been sent to EC2 yet — this is purely UI interaction.
----------------------
+
 🔹 Step 2 — Systems Manager Receives Request
 Fleet Manager (UI) sends a request to AWS Systems Manager APIs.
 Systems Manager now knows that the admin wants to manage EC2 instance X.
@@ -336,13 +336,13 @@ It maintains an outbound HTTPS connection to Systems Manager.
 It polls for any pending commands:
 “Do you have any commands for me?”
 This is why EC2 does not need inbound ports open — the agent initiates the connection.
---------------------------------------
+
 🔹 Step 4 — Credential Retrieval (EC2 → IMDS → IAM Role)
 Before SSM Agent talks to Systems Manager, it needs credentials.
 SSM Agent asks IMDS for temporary AWS credentials.
 IMDS provides credentials based on the IAM Role attached to the EC2 instance.
 SSM Agent now has permission to talk securely to Systems Manager.
-------------------------------------------
+
 🔹 Step 5 — Command Execution (EC2 executes)
 Systems Manager responds with the requested command.
 SSM Agent executes the command locally on EC2.
@@ -352,13 +352,13 @@ Open a session (Fleet Manager → Session Manager)
 Collect logs
 Run shell scripts
 Output is captured by the agent.
---------------------------------
+
 🔹 Step 6 — Output Flow (Back to Admin)
 SSM Agent sends the command output back to Systems Manager over HTTPS.
 Systems Manager receives the result.
 Fleet Manager UI fetches the result from Systems Manager and displays it to the admin.
 ✅ Now admin sees the command output.
--------------------------------------------------- 
+
 🔹 Step 7 — Summary of Who Talks to Whom
 Who	                    Talks To	               Purpose
 Admin	                  Fleet Manager (UI)	     Sends request to manage instance
