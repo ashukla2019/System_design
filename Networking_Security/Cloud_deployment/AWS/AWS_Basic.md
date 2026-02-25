@@ -1,328 +1,317 @@
-📦 AWS Service Categories
-🔹 Compute = “Who is doing the work?”
+# AWS Fundamentals & Architecture Notes
 
-EC2 → Virtual machine doing work
+---
 
-Lambda → Code doing work
+# 📦 AWS Service Categories
 
-ECS/EKS → Containers doing work
+## 🔹 Compute = “Who is doing the work?”
 
-👉 If CPU/RAM is involved → Compute
+- EC2 → Virtual machine doing work  
+- Lambda → Code doing work  
+- ECS/EKS → Containers doing work  
 
-🔹 Storage = “Where is data kept?”
+👉 If CPU/RAM is involved → **Compute**
 
-S3 → Files, images, backups
+---
 
-EBS → Disk for EC2
+## 🔹 Storage = “Where is data kept?”
 
-EFS → Shared file system
+- S3 → Files, images, backups  
+- EBS → Disk for EC2  
+- EFS → Shared file system  
 
-👉 If data survives after shutdown → Storage
+👉 If data survives after shutdown → **Storage**
 
-🔹 Networking = “How things talk?”
+---
 
-VPC → Private network
+## 🔹 Networking = “How things talk?”
 
-Subnet → Smaller network
+- VPC → Private network  
+- Subnet → Smaller network  
+- Load Balancer → Traffic distributor  
+- Route Table → Path rules  
+- Internet Gateway → Internet access  
 
-Load Balancer → Traffic distributor
+👉 If packets move → **Networking**
 
-Route Table → Path rules
+---
 
-Internet Gateway → Internet access
+## 🔹 Database = “Structured storage”
 
-👉 If packets move → Networking
-
-🔹 Database = “Structured storage”
-
-RDS → SQL tables
-
-DynamoDB → Key-value
+- RDS → SQL tables  
+- DynamoDB → Key-value  
 
 👉 Specialized storage system
 
-🔹 Security = “Who is allowed?”
+---
 
-IAM → Permissions
+## 🔹 Security = “Who is allowed?”
 
-Security Groups → Instance firewall
+- IAM → Permissions  
+- Security Groups → Instance firewall  
+- NACL → Subnet firewall  
 
-NACL → Subnet firewall
+---
 
-🔹 Monitoring = “Who is watching?”
+## 🔹 Monitoring = “Who is watching?”
 
-CloudWatch → Metrics, logs
+- CloudWatch → Metrics, logs  
+- CloudTrail → API audit logs  
 
-CloudTrail → API audit logs
+---
 
-✅ Core Principle
+## ✅ Core Principle
 
-Compute runs
-Storage stores
-Networking connects
-Security protects
-Monitoring watches
+> Compute runs  
+> Storage stores  
+> Networking connects  
+> Security protects  
+> Monitoring watches  
 
-🌍 AWS Resource Hierarchy
+---
+
+# 🌍 AWS Resource Hierarchy
 Account
-  → Region
-      → VPC (network boundary)
-          → Subnet (IP boundary)
-              → EC2 (compute)
-                  → EBS (block disk)
-      → S3 (regional object storage)
-      → EFS (regional file system)
-☁️ Cloud Fundamentals
-Deployment Models
+→ Region
+→ VPC (network boundary)
+→ Subnet (IP boundary)
+→ EC2 (compute)
+→ EBS (block disk)
+→ S3 (regional object storage)
+→ EFS (regional file system)
 
-Public Cloud (AWS)
+---
 
-Private Cloud (On-premise)
+# ☁️ Cloud Fundamentals
 
-Hybrid Cloud (Mix of both)
+## Deployment Models
 
-🏗 Cloud Service Models
+- Public Cloud (AWS)
+- Private Cloud (On-premise)
+- Hybrid Cloud (Mix of both)
 
-Cloud service models define the level of control and responsibility you get in cloud computing.
+---
 
-More Work → Left
-Less Work → Right
+# 🏗 Cloud Service Models
+
+Cloud service models define the level of control and responsibility in cloud computing.
+
+### More Work → Left  
+### Less Work → Right  
 On-Prem → IaaS → PaaS → FaaS → BaaS → SaaS
-a) On-Prem — Everything is YOUR problem
-You manage:
 
-Hardware
 
-OS
+---
 
-Network
+## a) On-Prem — Everything is YOUR problem
 
-Application
+### You manage:
+- Hardware  
+- OS  
+- Network  
+- Application  
+- Security  
 
-Security
+**Example:** Company data center  
 
-Example: Company data center
+**Memory:** “I do everything”
 
-Memory: “I do everything”
+---
 
-b) IaaS — Infrastructure as a Service
-AWS provides:
+## b) IaaS — Infrastructure as a Service
 
-VM
+### AWS provides:
+- VM  
+- Storage  
+- Network  
 
-Storage
+### You manage:
+- OS  
+- Application  
+- Patching  
 
-Network
+### Examples:
+- EC2  
+- EBS  
+- VPC  
 
-You manage:
+**Memory:** “I manage OS”
 
-OS
+---
 
-Application
+## c) PaaS — Platform as a Service
 
-Patching
+### AWS manages:
+- Hardware  
+- OS  
+- Runtime  
 
-Examples:
+### You manage:
+- Application code  
+- Data  
 
-EC2
+### Examples:
+- Elastic Beanstalk  
+- App Runner  
+- RDS  
 
-EBS
+**Memory:** “I only write app code”
 
-VPC
+---
 
-Memory: “I manage OS”
+## d) FaaS — Function as a Service
 
-c) PaaS — Platform as a Service
-AWS manages:
+### AWS manages:
+- Everything  
 
-Hardware
+### You manage:
+- Function logic  
 
-OS
+### Example:
+- Lambda  
 
-Runtime
+**Memory:** “I write a function”
 
-You manage:
+---
 
-Application code
-
-Data
-
-Examples:
-
-Elastic Beanstalk
-
-App Runner
-
-RDS
-
-Memory: “I only write app code”
-
-d) FaaS — Function as a Service
-AWS manages:
-
-Everything
-
-You manage:
-
-Function logic
-
-Example:
-
-Lambda
-
-Memory: “I write a function”
-
-e) BaaS — Backend as a Service
+## e) BaaS — Backend as a Service
 
 AWS provides ready-made backend services:
 
-Database
+- Database  
+- Authentication  
+- Storage  
 
-Authentication
+### Examples:
+- DynamoDB  
+- Cognito  
+- S3  
 
-Storage
+**Memory:** “Backend is ready”
 
-Examples:
+---
 
-DynamoDB
-
-Cognito
-
-S3
-
-Memory: “Backend is ready”
-
-f) SaaS — Software as a Service
+## f) SaaS — Software as a Service
 
 Just use the software.
 
-Vendor manages:
+### Vendor manages:
+- Everything  
 
-Everything
+### Examples:
+- Gmail  
+- Google Drive  
+- Salesforce  
+- Zoom  
 
-Examples:
+**Memory:** “Just login and use”
 
-Gmail
+---
 
-Google Drive
+# 🧠 Categorizing AWS Services
 
-Salesforce
+| Question | Category |
+|----------|----------|
+| Does it RUN code? | Compute |
+| Does it STORE data? | Storage |
+| Does it CONNECT systems? | Networking |
+| Does it CONTROL access? | Security |
+| Does it WATCH systems? | Monitoring |
 
-Zoom
+---
 
-Memory: “Just login and use”
-
-🧠 Categorizing AWS Services
-Question	Category
-Does it RUN code?	Compute
-Does it STORE data?	Storage
-Does it CONNECT systems?	Networking
-Does it CONTROL access?	Security
-Does it WATCH systems?	Monitoring
-🖥 Fleet Manager
+# 🖥 Fleet Manager
 
 Fleet Manager is a capability inside AWS Systems Manager that helps you:
 
-Manage EC2 instances
-
-Manage on-prem servers
-
-Manage virtual machines
-
-View OS-level details
-
-Perform remote actions (RDP/SSH from console)
+- Manage EC2 instances  
+- Manage on-prem servers  
+- Manage virtual machines  
+- View OS-level details  
+- Perform remote actions (RDP/SSH from console)
 
 AWS
- └── AWS Systems Manager
-       └── Fleet Manager
-How Fleet Manager Works
+└── AWS Systems Manager
+└── Fleet Manager
+
+
+---
+
+## How Fleet Manager Works
 
 Fleet Manager uses:
 
-SSM Agent installed on the instance
+- SSM Agent installed on the instance  
+- IAM role attached to the instance  
+- Systems Manager service  
 
-IAM role attached to the instance
-
-Systems Manager service
-
-Communication happens over HTTPS.
+Communication happens over HTTPS.  
 No need to open:
+- SSH (22)
+- RDP (3389)
 
-SSH (22)
+---
 
-RDP (3389)
-
-🔧 What is SSM Agent?
+# 🔧 What is SSM Agent?
 
 SSM Agent is software installed on your EC2 instance or server.
 
 It acts as:
 
-A communication bridge between your server and AWS Systems Manager.
+> A communication bridge between your server and AWS Systems Manager.
 
-Responsibilities:
-
-Receives commands
-
-Executes them on the instance
-
-Sends output back to AWS
-
-Enables Session Manager, Fleet Manager, Patch Manager
+### Responsibilities:
+- Receives commands  
+- Executes them  
+- Sends output back to AWS  
+- Enables Session Manager, Fleet Manager, Patch Manager  
 
 Without SSM Agent → Systems Manager cannot control the instance.
 
-Installation:
+### Installation:
 
-Pre-installed on most Amazon Linux & Windows AMIs
+- Pre-installed on most Amazon Linux & Windows AMIs  
+- Manual install required on custom AMIs  
+- Can run on on-prem servers  
 
-Manual install required on custom AMIs
+---
 
-Can run on on-prem servers
-
-🔐 IAM Role (for EC2)
+# 🔐 IAM Role (for EC2)
 
 IAM Role is the permission identity attached to an EC2 instance.
 
 It provides:
 
-Temporary AWS credentials
-
-Secure API access
-
-Automatic credential rotation
+- Temporary AWS credentials  
+- Secure API access  
+- Automatic credential rotation  
 
 When attached:
 
-AWS generates temporary credentials
+- AWS generates temporary credentials  
+- Instance can call AWS APIs securely  
 
-Instance can call AWS APIs securely
+---
 
-🔑 Why IAM Role is Required for SSM
+# 🔑 Why IAM Role is Required for SSM
 
 SSM Agent needs permission to:
 
-Register with Systems Manager
+- Register with Systems Manager  
+- Send logs/output  
+- Receive commands  
+- Access Parameter Store / Secrets Manager  
 
-Send logs/output
-
-Receive commands
-
-Access Parameter Store / Secrets Manager
-
-Without IAM Role ❌
+Without IAM Role ❌  
 SSM Agent cannot communicate with AWS.
 
-📜 Required IAM Policy
+---
+
+# 📜 Required IAM Policy
 
 Attach the AWS managed policy:
-
 AmazonSSMManagedInstanceCore
-
 This policy allows:
-
 ssm:*
 ec2messages:*
 ssmmessages:*
-🧾 Final Summary
