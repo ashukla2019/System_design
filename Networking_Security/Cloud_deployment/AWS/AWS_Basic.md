@@ -315,3 +315,32 @@ This policy allows:
 ssm:*
 ec2messages:*
 ssmmessages:*
+
+----------------------
+# Step by step communication flow:
+🟢 Step 1 — Admin → Fleet Manager
+Admin interacts with UI.
+
+🟢 Step 2 — Fleet Manager → Systems Manager
+Request sent to Systems Manager API.
+
+🟢 Step 3 — SSM Agent Polling
+SSM Agent already maintains outbound connection:
+EC2 → Systems Manager (HTTPS 443)
+
+It checks:
+“Do you have any commands for me?”
+
+🟢 Step 4 — Credential Retrieval
+Before talking to Systems Manager:
+SSM Agent → IMDS → Temporary IAM Credentials
+IMDS gets credentials from attached IAM role.
+
+🟢 Step 5 — Command Execution
+SSM Agent:
+Receives command
+Executes locally
+Sends output back
+
+🟢 Step 6 — Output Flow
+SSM Agent → Systems Manager → Fleet Manager → Admin
