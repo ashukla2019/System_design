@@ -130,27 +130,47 @@
 ---
 
 ## Key Architecture Diagram
-
-> **Note:** This is a **single all-in-one Mermaid diagram**. You can copy it into your `.md` file and render in VS Code / Obsidian / GitHub.
+# AWS Complete Architecture Diagram
 
 ```mermaid
 flowchart TD
-    %% Users & DNS
-    User[User / Client] --> Route53[Route 53 DNS]
-    Route53 --> WAF[WAF + Shield]
+    subgraph Internet
+        User[User / Client] --> Route53[Route 53 DNS]
+        Route53 --> WAF[WAF + Shield]
+    end
 
-    %% Public Load Balancer
-    WAF --> ALB[ALB (Public Subnet AZ1 & AZ2)]
+    subgraph VPC["VPC: 10.0.0.0/16"]
+        subgraph PublicSubnets["Public Subnets"]
+            ALB[Application Load Balancer]
+            IGW[Internet Gateway]
+            ALB --> IGW
+        end
 
-    %% Private Application Layer
-    ALB --> EC2App1[EC2 Private Subnet AZ1]
-    ALB --> EC2App2[EC2 Private Subnet AZ2]
+        subgraph PrivateAppSubnets["Private App Subnets"]
+            EC2App1[EC2 AZ1]
+            EC2App2[EC2 AZ2]
+            NAT[NAT Gateway]
+            EC2App1 --> NAT
+            EC2App2 --> NAT
+        end
+
+        subgraph PrivateDBSubnets["Private DB Subnets"]
+            RDSPrimary[RDS Primary AZ1]
+            RDSStandby[RDS Standby AZ2]
+            RDSPrimary --> RDSStandby
+        end
+    end
+
+    %% Connect Public to Private
+    WAF --> ALB
+    ALB --> EC2App1
+    ALB --> EC2App2
 
     %% IAM Roles
-    IAMRole[IAM Role Attached] --> EC2App1
+    IAMRole[IAM Role] --> EC2App1
     IAMRole --> EC2App2
 
-    %% Systems Manager / SSM
+    %% Systems Manager
     Admin[Admin Console/CLI] --> AWS_SSM[AWS Systems Manager]
     AWS_SSM --> SSMAgent1[SSM Agent AZ1]
     AWS_SSM --> SSMAgent2[SSM Agent AZ2]
@@ -162,11 +182,6 @@ flowchart TD
     EC2App2 --> S3
     EC2App1 --> EBS1[EBS Volume AZ1]
     EC2App2 --> EBS2[EBS Volume AZ2]
-
-    %% Database Layer
-    EC2App1 --> RDSPrimary[RDS Primary AZ1]
-    EC2App2 --> RDSStandby[RDS Standby AZ2]
-    RDSPrimary --> RDSStandby
 
     %% Monitoring
     EC2App1 --> CloudWatchA[CloudWatch Metrics]
