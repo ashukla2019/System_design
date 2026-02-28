@@ -89,6 +89,19 @@
 - Shared file storage for multiple EC2
 - Performance Modes: General Purpose, Max I/O
 
+| Feature             | S3                     | EBS                        | EFS                            |
+|--------------------|-----------------------|----------------------------|--------------------------------|
+| Type               | Object                | Block                      | File                           |
+| Access             | HTTP/SDK              | EC2-attached               | NFS mount                      |
+| Durability         | 99.999999999%         | 99.8–99.9%                 | 99.99%                         |
+| Scalability        | Virtually unlimited   | Volume-limited per instance| Automatic                      |
+| Performance        | High throughput, variable latency | Low-latency, high IOPS (gp3/io2), sequential optimized (st1) | Low-latency for General Purpose, high throughput for Max I/O |
+| Latency            | Milliseconds          | Single-digit ms            | Single to tens of ms           |
+| Encryption         | KMS at rest, SSL in transit | KMS at rest, encryption in transit | KMS at rest, encryption in transit |
+| Versioning         | Yes                   | Snapshots (point-in-time)  | N/A (manual via snapshots)     |
+| Lifecycle Policies  | Yes (auto transition to IA/Glacier) | Snapshots lifecycle (manual) | N/A                             |
+| Use Case           | Backups, archives, static files, big data | Boot volumes, DB storage, low-latency apps | Shared web content, analytics, NAS replacement |
+
 ---
 
 ## Part V – Database Services
