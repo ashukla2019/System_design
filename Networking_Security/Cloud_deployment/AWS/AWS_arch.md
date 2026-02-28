@@ -142,15 +142,12 @@ flowchart TD
         subgraph PublicSubnets["Public Subnets"]
             ALB[Application Load Balancer]
             IGW[Internet Gateway]
-            ALB --> IGW
         end
 
         subgraph PrivateAppSubnets["Private App Subnets"]
             EC2App1[EC2 AZ1]
             EC2App2[EC2 AZ2]
             NAT[NAT Gateway]
-            EC2App1 --> NAT
-            EC2App2 --> NAT
         end
 
         subgraph PrivateDBSubnets["Private DB Subnets"]
@@ -164,6 +161,7 @@ flowchart TD
     WAF --> ALB
     ALB --> EC2App1
     ALB --> EC2App2
+    ALB --> IGW
 
     %% IAM Roles
     IAMRole[IAM Role] --> EC2App1
@@ -195,4 +193,5 @@ flowchart TD
     LaunchTemplate[Launch Template / ASG] --> EC2App1
     LaunchTemplate --> EC2App2
     EC2App1 -->|User Data / Bootstrapping| AppStart1[Application Startup]
-    EC2App2 -->|User Data / Bootstrapping| AppStart2[Application Startup]
+    EC2App2 -->|User Data / Bootstrapping| AppStart2[Application Startup]# AWS Complete Notes and Architecture Flows
+
