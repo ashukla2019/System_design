@@ -1,23 +1,46 @@
-# AWS Complete Architecture with Storage, SSM, and 5-Step Sequencing
+# AWS Complete Architecture – Notes & Diagram
 
 ---
 
-## Notes
-- Step 1: User traffic enters via Route 53 and is filtered by WAF + Shield, reaching ALB.  
-- Step 2: ALB distributes requests to EC2 instances in private subnets.  
-- Step 3: Admin sends commands via SSM; EC2 processes commands with IAM role + IMDS credentials.  
-- Step 4: EC2 reads/writes data to storage: EBS (attached), EFS (shared), S3 (static content/backups/logs).  
-- Step 5: CloudWatch collects metrics and logs for EC2 and RDS; auditing and monitoring occur.  
+## Detailed Notes – 5-Step Architecture Flow
+
+- **Step 1: User Traffic Entry & Filtering**  
+  - Users/clients initiate requests (web, API, mobile apps).  
+  - **Route 53** resolves DNS to the ALB endpoint.  
+  - Traffic passes through **AWS WAF** (blocks attacks) and **AWS Shield** (DDoS protection).  
+  - Requests reach **Application Load Balancer (ALB)** for Layer 7 routing, SSL termination, and health checks.
+
+- **Step 2: EC2 Request Distribution & Auto Scaling**  
+  - ALB forwards requests to EC2 instances in **private subnets**.  
+  - **Auto Scaling Group (ASG)** adjusts the number of EC2s based on load.  
+  - EC2 instances launched via **Launch Template** with AMI, Security Groups, IAM Role, and bootstrapping scripts.
+
+- **Step 3: Admin Access via SSM & IAM/IMDS**  
+  - EC2 runs **SSM Agent** to communicate securely with **AWS Systems Manager**.  
+  - Admin sends commands through SSM Console/CLI (no SSH or public IP needed).  
+  - EC2 uses **IAM Role** + **IMDS (Instance Metadata Service)** to get temporary credentials for AWS services.  
+  - Logs and outputs from commands are sent to **CloudWatch** or **S3**.
+
+- **Step 4: EC2 Storage Interactions**  
+  - **EBS:** Block storage attached to EC2, used for OS and application data; snapshots can go to S3.  
+  - **EFS:** Shared file system mounted on multiple EC2s across AZs.  
+  - **S3:** Object storage for static content, backups, and logs; accessed via SDK/API with IAM Role.
+
+- **Step 5: Monitoring, Logging & Auditing**  
+  - **CloudWatch** collects metrics from EC2, RDS, ALB, and custom apps.  
+  - CloudWatch Logs receive application/system logs; S3 can store long-term logs.  
+  - **RDS metrics** monitored (CPU, connections, IOPS, failovers).  
+  - **CloudTrail** audits admin and API actions for security and compliance.
 
 ---
 
-## Architecture Diagram with 5 Steps
+## Architecture Diagram (Mermaid)
 
 ```mermaid
 flowchart TD
-    %% Step 1: User Traffic
+    %% Step 1: User Traffic Entry
     User[Step 1: User / Client] --> Route53[Route 1: Route 53 DNS]
-    Route53 --> WAF[Step 1: WAF + Shield]
+    Route53 --> WAF[Step 1: AWS WAF + Shield]
     WAF --> ALB[Step 1: Application Load Balancer]
 
     %% VPC Layer
