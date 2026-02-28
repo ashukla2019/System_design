@@ -12,12 +12,12 @@
 ```mermaid
 flowchart TD
     %% Step 1: Admin sends command
-    Admin[1️⃣ Admin Console / CLI] -->|Step 1: Send Command| AWS_SSM[2️⃣ AWS Systems Manager]
+    Admin[Step 1: Admin Console / CLI] -->|Send Command| AWS_SSM[Step 2: AWS Systems Manager]
 
     %% Step 2: SSM communicates with EC2
     subgraph EC2_Instances["EC2 Instances"]
-        EC2_1[3️⃣ EC2 AZ1 with SSM Agent]
-        EC2_2[3️⃣ EC2 AZ2 with SSM Agent]
+        EC2_1[Step 3: EC2 AZ1 with SSM Agent]
+        EC2_2[Step 3: EC2 AZ2 with SSM Agent]
     end
 
     %% IAM Role grants permissions
@@ -25,11 +25,11 @@ flowchart TD
     IAMRole --> EC2_2
 
     %% Step 2 Communication
-    AWS_SSM -->|Step 2: Command Delivery| EC2_1
-    AWS_SSM -->|Step 2: Command Delivery| EC2_2
+    AWS_SSM -->|Command Delivery| EC2_1
+    AWS_SSM -->|Command Delivery| EC2_2
 
     %% Step 3: Logging
-    EC2_1 -->|Step 3: Logs/Output| CloudWatch[CloudWatch Logs / Metrics]
-    EC2_2 -->|Step 3: Logs/Output| CloudWatch
-    EC2_1 -->|Step 3: Logs/Output| S3[S3 Bucket for Logs]
-    EC2_2 -->|Step 3: Logs/Output| S3
+    EC2_1 -->|Logs/Output| CloudWatch[CloudWatch Logs / Metrics]
+    EC2_2 -->|Logs/Output| CloudWatch
+    EC2_1 -->|Logs/Output| S3[S3 Bucket for Logs]
+    EC2_2 -->|Logs/Output| S3
