@@ -181,7 +181,7 @@ flowchart TD
     EC2App2 --> S3
     EC2App1 --> EFS[EFS Shared File Storage]
     EC2App2 --> EFS
-    EBS1 --> S3Backup[S3 (EBS Snapshots)]
+    EBS1 --> S3Backup["S3 - EBS Snapshots"]
     EBS2 --> S3Backup
 
     %% Monitoring
