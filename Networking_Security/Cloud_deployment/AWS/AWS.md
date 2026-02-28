@@ -1,0 +1,176 @@
+# 📘 AWS Interview Preparation Guide  
+### System Design + Cloud + DevOps Focus
+
+---
+
+# Table of Contents
+
+## Part I – AWS Fundamentals
+
+### 1. Introduction to Cloud Computing
+- 1.1 What is Cloud Computing  
+- 1.2 IaaS vs PaaS vs SaaS  
+- 1.3 Public vs Private vs Hybrid Cloud  
+- 1.4 Shared Responsibility Model  
+
+### 2. AWS Global Infrastructure
+- 2.1 Regions  
+- 2.2 Availability Zones  
+- 2.3 Edge Locations  
+- 2.4 High Availability Concepts  
+
+---
+
+## Part II – Networking in AWS (Core Interview Area)
+
+### 3. Virtual Private Cloud (VPC)
+- 3.1 CIDR Blocks  
+- 3.2 Subnets (Public vs Private)  
+- 3.3 Route Tables  
+- 3.4 Internet Gateway (IGW)  
+- 3.5 NAT Gateway vs NAT Instance  
+- 3.6 Security Groups vs NACL  
+- 3.7 VPC Peering  
+- 3.8 VPC Flow Logs  
+
+### 4. DNS & Traffic Routing
+- 4.1 Route 53  
+- 4.2 Routing Policies  
+- 4.3 Health Checks  
+
+---
+
+## Part III – Compute Services
+
+### 5. Elastic Compute Cloud (EC2)
+- 5.1 EC2 Architecture  
+- 5.2 Instance Types  
+- 5.3 Instance Lifecycle  
+- 5.4 Key Pairs  
+- 5.5 User Data & Bootstrapping  
+- 5.6 AMI (Amazon Machine Image)  
+
+### 6. Load Balancing
+- 6.1 Application Load Balancer (ALB)  
+- 6.2 Network Load Balancer (NLB)  
+- 6.3 Target Groups  
+- 6.4 Health Checks  
+
+### 7. Auto Scaling
+- 7.1 Auto Scaling Groups (ASG)  
+- 7.2 Scaling Policies  
+- 7.3 Launch Templates  
+
+### 8. Serverless Compute
+- 8.1 AWS Lambda  
+- 8.2 Event-driven Architecture  
+- 8.3 Use Cases  
+
+---
+
+## Part IV – Storage Services
+
+### 9. Amazon S3
+- 9.1 Object Storage Architecture  
+- 9.2 Storage Classes  
+- 9.3 Versioning  
+- 9.4 Lifecycle Policies  
+- 9.5 S3 Security  
+
+### 10. Elastic Block Store (EBS)
+- 10.1 Block Storage  
+- 10.2 Volume Types  
+- 10.3 Snapshots  
+- 10.4 Encryption  
+
+### 11. Elastic File System (EFS)
+- 11.1 Shared File Storage  
+- 11.2 Use Cases  
+- 11.3 Performance Modes  
+
+---
+
+## Part V – Database Services
+
+### 12. Relational Database Service (RDS)
+- 12.1 Supported Engines  
+- 12.2 Multi-AZ Deployment  
+- 12.3 Read Replicas  
+- 12.4 Backup & Restore  
+
+### 13. Amazon DynamoDB
+- 13.1 NoSQL Concepts  
+- 13.2 Partition Key & Sort Key  
+- 13.3 Throughput Modes  
+- 13.4 Global Tables  
+
+---
+
+## Part VI – Identity & Security
+
+### 14. Identity and Access Management (IAM)
+- 14.1 Users  
+- 14.2 Groups  
+- 14.3 Roles  
+- 14.4 Policies  
+- 14.5 Best Practices  
+
+### 15. Security Services
+- 15.1 AWS WAF  
+- 15.2 AWS Shield  
+- 15.3 AWS KMS  
+- 15.4 CloudTrail  
+- 15.5 GuardDuty  
+
+---
+
+## Part VII – High Availability & Architecture Design
+
+### 16. Highly Available Web Architecture
+- 16.1 Multi-AZ Design  
+- 16.2 Load Balancing Strategy  
+- 16.3 Database High Availability  
+- 16.4 Static Content with S3  
+
+### 17. Disaster Recovery Strategies
+- 17.1 Backup & Restore  
+- 17.2 Pilot Light  
+- 17.3 Warm Standby  
+- 17.4 Multi-Site Active/Active  
+
+---
+
+## Part VIII – Monitoring & DevOps
+
+### 18. Monitoring & Logging
+- 18.1 CloudWatch  
+- 18.2 Metrics & Alarms  
+- 18.3 Logs & Insights  
+
+### 19. CI/CD in AWS
+- 19.1 CodeCommit  
+- 19.2 CodeBuild  
+- 19.3 CodeDeploy  
+- 19.4 CodePipeline  
+
+---
+
+## Part IX – Cost Optimization
+
+### 20. Cost Management
+- 20.1 On-Demand vs Reserved vs Spot  
+- 20.2 Savings Plans  
+- 20.3 Cost Explorer  
+- 20.4 Cost Optimization Best Practices  
+
+---
+
+## Part X – Advanced Interview Topics
+
+### 21. Microservices Architecture in AWS  
+### 22. Serverless Architecture Design  
+### 23. Multi-Region Architecture  
+### 24. Security Architecture Patterns  
+### 25. Common AWS Interview Scenarios & Answers  
+
+---
