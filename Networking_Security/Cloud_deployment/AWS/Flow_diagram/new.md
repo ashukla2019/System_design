@@ -3,14 +3,14 @@
 ---
 
 ## Notes
-- **EC2 Instances** run applications in private subnets and retrieve credentials via **IMDS** using attached **IAM Roles**.  
-- **ALB** distributes traffic across EC2 instances in multiple AZs.  
-- **RDS** is deployed in **Multi-AZ** mode for high availability.  
-- **SSM** allows admin access without SSH or public IP.  
-- **EBS** is block storage attached to specific EC2 instances.  
-- **EFS** is shared file storage accessible by multiple EC2 instances.  
-- **S3** is object storage used for static content, backups, and logs.  
-- **CloudWatch** monitors EC2 and RDS metrics.  
+- EC2 Instances run applications in private subnets and retrieve credentials via IMDS using attached IAM Roles.
+- ALB distributes traffic across EC2 instances in multiple AZs.
+- RDS is deployed in Multi-AZ mode for high availability.
+- SSM allows admin access without SSH or public IP.
+- EBS is block storage attached to specific EC2 instances.
+- EFS is shared file storage accessible by multiple EC2 instances.
+- S3 is object storage used for static content, backups, and logs.
+- CloudWatch monitors EC2 and RDS metrics.
 
 ---
 
@@ -50,18 +50,18 @@ flowchart TD
     end
 
     %% IAM and IMDS
-    IAMRole[IAM Role attached to EC2] --> IMDS[Instance Metadata Service (IMDS)]
+    IAMRole[IAM Role attached to EC2] --> IMDS[Instance Metadata Service - IMDS]
     IMDS --> EC2_1
     IMDS --> EC2_2
 
     %% SSM Communication
-    Admin[1️⃣ Admin Console / CLI] -->|Step 1: Send Command| AWS_SSM[2️⃣ AWS Systems Manager]
-    AWS_SSM -->|Step 2: Command Delivery| EC2_1
-    AWS_SSM -->|Step 2: Command Delivery| EC2_2
-    EC2_1 -->|Step 3: Logs/Output| CloudWatch[CloudWatch Logs / Metrics]
-    EC2_2 -->|Step 3: Logs/Output| CloudWatch
-    EC2_1 -->|Step 3: Logs/Output| S3[S3 Bucket for Logs]
-    EC2_2 -->|Step 3: Logs/Output| S3
+    Admin[Step 1: Admin Console / CLI] -->|Send Command| AWS_SSM[Step 2: AWS Systems Manager]
+    AWS_SSM -->|Command Delivery| EC2_1
+    AWS_SSM -->|Command Delivery| EC2_2
+    EC2_1 -->|Logs/Output| CloudWatch[CloudWatch Logs / Metrics]
+    EC2_2 -->|Logs/Output| CloudWatch
+    EC2_1 -->|Logs/Output| S3[S3 Bucket for Logs]
+    EC2_2 -->|Logs/Output| S3
 
     %% Storage
     EBS1[EBS Volume AZ1] -->|Attach| EC2_1
