@@ -193,5 +193,4 @@ flowchart TD
     LaunchTemplate[Launch Template / ASG] --> EC2App1
     LaunchTemplate --> EC2App2
     EC2App1 -->|User Data / Bootstrapping| AppStart1[Application Startup]
-    EC2App2 -->|User Data / Bootstrapping| AppStart2[Application Startup]# AWS Complete Notes and Architecture Flows
-
+    EC2App2 -->|User Data / Bootstrapping| AppStart2[Application Startup]
