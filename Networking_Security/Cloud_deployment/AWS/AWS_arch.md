@@ -133,9 +133,56 @@
 
 # AWS Complete Architecture Diagram
 
-## Architecture Diagram
+Architecture Explanation
+1. Internet Layer
 
-# AWS Complete Architecture Diagram
+User traffic goes through Route 53 DNS.
+
+WAF + Shield protect against DDoS and attacks.
+
+Traffic reaches ALB in public subnets.
+
+2. VPC & Subnets
+
+VPC isolates all resources (10.0.0.0/16).
+
+Public subnets: ALB + IGW.
+
+Private app subnets: EC2 instances (AZ1 & AZ2) using NAT for outbound traffic.
+
+Private DB subnets: RDS Primary & Standby (Multi-AZ).
+
+3. Traffic Flow
+
+ALB distributes requests to EC2App1 and EC2App2.
+
+EC2 instances connect to RDSPrimary; replication to RDSStandby ensures high availability.
+
+Outbound traffic from EC2 goes via NAT Gateway.
+
+4. IAM & Systems Manager
+
+EC2 instances use IAM Role to securely access AWS services (S3, CloudWatch).
+
+Admins manage EC2 via SSM; no SSH or public IP required.
+
+SSM Agent runs on EC2, sending logs to CloudWatch or S3.
+
+5. Storage
+
+EBS: persistent volume attached to EC2.
+
+S3: static content, logs, backups.
+
+6. Monitoring
+
+CloudWatch collects metrics from EC2 and RDS for dashboards and alerts.
+
+7. High Availability
+
+Multi-AZ ensures redundancy.
+
+ALB + EC2 + RDS spread across AZ1 & AZ2 to prevent single-point failures.
 
 ## Architecture Diagram
 
