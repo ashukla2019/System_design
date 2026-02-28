@@ -1,193 +1,174 @@
-                                                ┌────────────────────────────┐
-                                                │         End Users           │
-                                                └──────────────┬─────────────┘
-                                                               │
-                                                               ▼
-                                                     ┌─────────────────┐
-                                                     │  Route 53 (DNS) │
-                                                     └────────┬────────┘
-                                                              │
-                                                              ▼
-                                           ┌──────────────────────────────┐
-                                           │ AWS Shield + AWS WAF         │
-                                           └──────────────┬───────────────┘
-                                                          │
-                                                          ▼
-                                           ┌──────────────────────────────┐
-                                           │ Application Load Balancer    │
-                                           │ (Public Subnet - AZ1 & AZ2)  │
-                                           └──────────────┬───────────────┘
-                                                          │
-                         ┌────────────────────────────────┴────────────────────────────────┐
-                         ▼                                                                 ▼
-            ┌────────────────────────┐                                   ┌────────────────────────┐
-            │  EC2 Instance (AZ1)    │                                   │  EC2 Instance (AZ2)    │
-            │  Private Subnet        │                                   │  Private Subnet        │
-            │  Auto Scaling Group    │                                   │  Auto Scaling Group    │
-            │  IAM Role Attached     │                                   │  IAM Role Attached     │
-            │  SSM Agent Installed   │                                   │  SSM Agent Installed   │
-            └──────────────┬─────────┘                                   └──────────────┬─────────┘
-                           │                                                               │
-                           │                                                               │
-                ┌──────────┴──────────┐                                        ┌──────────┴──────────┐
-                │ EBS Volume          │                                        │ EBS Volume          │
-                │ (Encrypted via KMS) │                                        │ (Encrypted via KMS) │
-                └──────────┬──────────┘                                        └──────────┬──────────┘
-                           │                                                               │
-                           └──────────────────────────────┬────────────────────────────────┘
-                                                          ▼
-                                           ┌──────────────────────────────┐
-                                           │ RDS Primary (Multi-AZ)       │
-                                           │ Private Subnet               │
-                                           │ Encrypted (KMS)              │
-                                           └──────────────┬───────────────┘
-                                                          │
-                                                          ▼
-                                           ┌──────────────────────────────┐
-                                           │ RDS Standby / Read Replica   │
-                                           │ Secondary AZ                 │
-                                           └──────────────────────────────┘
+# AWS Complete Notes and Architecture Flows
 
+---
 
-STATIC CONTENT:
-EC2 ↔ S3 (via IAM Role + VPC Endpoint)
+## Part I – AWS Fundamentals
 
-────────────────────────────────────────────────────────────────────────
+### 1. Introduction to Cloud Computing
+- Cloud Computing: on-demand delivery of IT resources over the internet.
+- Service Models:
+  - IaaS: Compute, Storage, Network (EC2, S3)
+  - PaaS: Managed platforms (Elastic Beanstalk)
+  - SaaS: Software delivered via cloud (WorkDocs, QuickSight)
+- Deployment Models:
+  - Public Cloud: AWS shared infrastructure
+  - Private Cloud: On-premises or dedicated cloud
+  - Hybrid Cloud: Combination of both
+- **Shared Responsibility Model**:
+  - AWS: Security *of* cloud (hardware, networking, facilities)
+  - Customer: Security *in* cloud (OS, data, IAM, applications)
 
-NETWORK LAYER (Inside VPC)
+### 2. AWS Global Infrastructure
+- Regions: Geographical locations (e.g., us-east-1)
+- Availability Zones (AZs): Isolated data centers inside a region
+- Edge Locations: For CDN (CloudFront)
+- High Availability Concepts: Multi-AZ, fault-tolerant design
 
-VPC (CIDR 10.0.0.0/16)
-│
-├── Public Subnet (AZ1, AZ2)
-│     ├── ALB
-│     └── NAT Gateway
-│
-├── Private App Subnet (AZ1, AZ2)
-│     └── EC2 Instances
-│
-├── Private DB Subnet
-│     └── RDS
-│
-├── Internet Gateway (Attached to VPC)
-│
-└── VPC Endpoints
-      ├── S3 Endpoint
-      └── Systems Manager Endpoint
+---
 
-────────────────────────────────────────────────────────────────────────
+## Part II – Networking in AWS
 
-SYSTEMS MANAGER (NO SSH MODEL)
+### 3. Virtual Private Cloud (VPC)
+- CIDR Blocks: Define network range (e.g., 10.0.0.0/16)
+- Subnets: Public vs Private
+- Route Tables: Traffic routing inside VPC
+- Internet Gateway (IGW): Public subnet internet access
+- NAT Gateway/Instance: Outbound internet for private subnets
+- Security Groups vs NACLs:
+  - SG: Instance-level firewall
+  - NACL: Subnet-level firewall
+- VPC Peering: Connects multiple VPCs
+- VPC Flow Logs: Track traffic
 
-Admin (Console / CLI)
-        │
-        ▼
-AWS Systems Manager
-        │  (HTTPS 443 outbound only)
-        ▼
-SSM Agent inside EC2
-        │
-        ▼
-OS Command Execution
-        │
-        ▼
-Logs → S3 / CloudWatch
+### 4. DNS & Traffic Routing
+- Route 53: Domain name resolution
+- Routing Policies: Simple, Weighted, Latency-based, Failover
+- Health Checks: Monitor endpoints
 
-(No Port 22, No Bastion, No Public IP required)
+---
 
-────────────────────────────────────────────────────────────────────────
+## Part III – Compute Services
 
-IAM ARCHITECTURE
+### 5. Elastic Compute Cloud (EC2)
+- Instance Types: General Purpose, Compute Optimized, Memory Optimized
+- AMI: Amazon Machine Image
+- Key Pairs for SSH/SSM
+- User Data & Bootstrapping
 
-IAM Role Attached to EC2:
-    ├── S3 Access Policy
-    ├── CloudWatch Logs Policy
-    ├── SSM Managed Instance Policy
-    └── KMS Decrypt Permissions
+### 6. Load Balancing
+- ALB: Layer 7, HTTP/HTTPS
+- NLB: Layer 4, TCP/UDP
+- Target Groups & Health Checks
 
-IAM enforces least privilege.
+### 7. Auto Scaling
+- Auto Scaling Groups (ASG)
+- Scaling Policies: Target tracking, Step scaling
+- Launch Templates
 
-────────────────────────────────────────────────────────────────────────
+### 8. Serverless Compute
+- AWS Lambda: Event-driven compute
+- Event sources: S3, DynamoDB Streams, API Gateway
+- Use Cases: Image processing, data transformation
 
-MONITORING & LOGGING
+---
 
-CloudWatch:
-    ├── Metrics (CPU, Memory)
-    ├── Logs
-    ├── Alarms
-    └── Dashboards
+## Part IV – Storage Services
 
-CloudTrail:
-    └── API auditing
+### 9. Amazon S3
+- Object storage, 99.999999999% durability
+- Storage Classes: Standard, IA, Glacier
+- Versioning & Lifecycle Policies
+- Security: Bucket policies, Encryption (KMS)
 
-────────────────────────────────────────────────────────────────────────
+### 10. Elastic Block Store (EBS)
+- Block storage for EC2
+- Volume Types: gp3, io2, st1
+- Snapshots & Encryption (KMS)
 
-CI/CD FLOW
+### 11. Elastic File System (EFS)
+- Shared file storage for multiple EC2
+- Performance Modes: General Purpose, Max I/O
 
-Developer
-   │
-   ▼
-CodeCommit → CodeBuild → CodeDeploy → EC2 Auto Scaling Group
+---
 
-────────────────────────────────────────────────────────────────────────
+## Part V – Database Services
 
-DISASTER RECOVERY
+### 12. RDS
+- Engines: MySQL, PostgreSQL, SQL Server, Aurora
+- Multi-AZ Deployment
+- Read Replicas
+- Backup & Restore
 
-Multi-AZ Deployment
-RDS Automatic Failover
-S3 Cross-Region Replication
-Route 53 Failover Routing
-Snapshots Stored in S3
+### 13. DynamoDB
+- NoSQL key-value store
+- Partition & Sort Key
+- Provisioned & On-Demand Throughput
+- Global Tables for multi-region replication
 
-────────────────────────────────────────────────────────────────────────
+---
 
-SECURITY LAYERS SUMMARY
+## Part VI – Identity & Security
 
-Layer 1: Shield (DDoS)
-Layer 2: WAF (Application Firewall)
-Layer 3: Security Groups (Instance Firewall)
-Layer 4: NACL (Subnet Firewall)
-Layer 5: IAM (Identity)
-Layer 6: KMS (Encryption)
-Layer 7: SSM (Secure Access)
+### 14. IAM
+- Users, Groups, Roles, Policies
+- Best Practices: Least privilege, MFA, Role-based access
 
-------------------------------------------------------------------------------------------------
-FULL END-TO-END WORKING FLOW
-1️⃣ User Access
+### 15. Security Services
+- AWS WAF: Web application firewall
+- AWS Shield: DDoS protection
+- KMS: Encryption keys
+- CloudTrail: API auditing
+- GuardDuty: Threat detection
 
-User → Route 53 → WAF/Shield → ALB
+### SSM Communication
+- EC2 runs SSM Agent
+- IAM Role attached to EC2 allows SSM access
+- Admin sends commands via Systems Manager
+- No SSH or public IP required
+- Logs stored in CloudWatch/S3
 
-2️⃣ Load Balancing
+---
 
-ALB distributes traffic across EC2 in multiple AZs.
+## Key Architecture Diagram
 
-3️⃣ Application Processing
+> **Note:** This is a **single all-in-one Mermaid diagram**. You can copy it into your `.md` file and render in VS Code / Obsidian / GitHub.
 
-EC2:
+```mermaid
+flowchart TD
+    %% Users & DNS
+    User[User / Client] --> Route53[Route 53 DNS]
+    Route53 --> WAF[WAF + Shield]
 
-Uses IAM Role (temporary credentials)
+    %% Public Load Balancer
+    WAF --> ALB[ALB (Public Subnet AZ1 & AZ2)]
 
-Reads/Writes to S3
+    %% Private Application Layer
+    ALB --> EC2App1[EC2 Private Subnet AZ1]
+    ALB --> EC2App2[EC2 Private Subnet AZ2]
 
-Connects to RDS
+    %% IAM Roles
+    IAMRole[IAM Role Attached] --> EC2App1
+    IAMRole --> EC2App2
 
-Sends logs to CloudWatch
+    %% Systems Manager / SSM
+    Admin[Admin Console/CLI] --> AWS_SSM[AWS Systems Manager]
+    AWS_SSM --> SSMAgent1[SSM Agent AZ1]
+    AWS_SSM --> SSMAgent2[SSM Agent AZ2]
+    SSMAgent1 --> EC2App1
+    SSMAgent2 --> EC2App2
 
-4️⃣ Database
+    %% Storage
+    EC2App1 --> S3[S3 Bucket]
+    EC2App2 --> S3
+    EC2App1 --> EBS1[EBS Volume AZ1]
+    EC2App2 --> EBS2[EBS Volume AZ2]
 
-RDS:
+    %% Database Layer
+    EC2App1 --> RDSPrimary[RDS Primary AZ1]
+    EC2App2 --> RDSStandby[RDS Standby AZ2]
+    RDSPrimary --> RDSStandby
 
-Primary handles writes
-
-Standby for failover
-
-Encrypted with KMS
-
-5️⃣ Systems Manager
-
-Admin executes command:
-Console → SSM → EC2 Agent → Command runs → Logs stored
-
-6️⃣ Monitoring
-
-CloudWatch monitors health.
-Alarms trigger scaling or notifications.
+    %% Monitoring
+    EC2App1 --> CloudWatchA[CloudWatch Metrics]
+    EC2App2 --> CloudWatchB[CloudWatch Metrics]
+    RDSPrimary --> CloudWatchRDS[CloudWatch RDS Metrics]
