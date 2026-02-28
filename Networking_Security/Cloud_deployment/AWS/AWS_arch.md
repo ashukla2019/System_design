@@ -131,49 +131,13 @@
 
 ## Key Architecture Diagram
 
-# AWS Complete Architecture Diagram
-
-## Architecture Explanation
-1. Internet Layer
-
-User traffic goes through Route 53 DNS.
-WAF + Shield protect against DDoS and attacks.
-Traffic reaches ALB in public subnets.
-
-2. VPC & Subnets
-VPC isolates all resources (10.0.0.0/16).
-Public subnets: ALB + IGW.
-Private app subnets: EC2 instances (AZ1 & AZ2) using NAT for outbound traffic.
-Private DB subnets: RDS Primary & Standby (Multi-AZ).
-
-3. Traffic Flow
-ALB distributes requests to EC2App1 and EC2App2.
-EC2 instances connect to RDSPrimary; replication to RDSStandby ensures high availability.
-Outbound traffic from EC2 goes via NAT Gateway.
-
-4. IAM & Systems Manager
-EC2 instances use IAM Role to securely access AWS services (S3, CloudWatch).
-Admins manage EC2 via SSM; no SSH or public IP required.
-SSM Agent runs on EC2, sending logs to CloudWatch or S3.
-
-5. Storage
-EBS: persistent volume attached to EC2.
-S3: static content, logs, backups.
-
-6. Monitoring
-CloudWatch collects metrics from EC2 and RDS for dashboards and alerts.
-
-7. High Availability
-Multi-AZ ensures redundancy.
-ALB + EC2 + RDS spread across AZ1 & AZ2 to prevent single-point failures.
-
-## Architecture Diagram
-
 ```mermaid
 flowchart TD
+    %% Internet Layer
     User[User / Client] --> Route53[Route 53 DNS]
     Route53 --> WAF[WAF + Shield]
 
+    %% VPC Layer
     subgraph VPC["VPC: 10.0.0.0/16"]
         subgraph PublicSubnets["Public Subnets"]
             ALB[Application Load Balancer]
@@ -196,24 +160,39 @@ flowchart TD
         end
     end
 
+    %% Connect Public to Private
     WAF --> ALB
     ALB --> EC2App1
     ALB --> EC2App2
 
+    %% IAM Roles
     IAMRole[IAM Role] --> EC2App1
     IAMRole --> EC2App2
 
+    %% Systems Manager
     Admin[Admin Console/CLI] --> AWS_SSM[AWS Systems Manager]
     AWS_SSM --> SSMAgent1[SSM Agent AZ1]
     AWS_SSM --> SSMAgent2[SSM Agent AZ2]
     SSMAgent1 --> EC2App1
     SSMAgent2 --> EC2App2
 
-    EC2App1 --> S3[S3 Bucket]
-    EC2App2 --> S3
+    %% Storage
     EC2App1 --> EBS1[EBS Volume AZ1]
     EC2App2 --> EBS2[EBS Volume AZ2]
+    EC2App1 --> S3[S3 Bucket]
+    EC2App2 --> S3
+    EC2App1 --> EFS[EFS Shared File Storage]
+    EC2App2 --> EFS
+    EBS1 --> S3Backup[S3 (EBS Snapshots)]
+    EBS2 --> S3Backup
 
+    %% Monitoring
     EC2App1 --> CloudWatchA[CloudWatch Metrics]
     EC2App2 --> CloudWatchB[CloudWatch Metrics]
     RDSPrimary --> CloudWatchRDS[CloudWatch RDS Metrics]
+
+    %% EC2 Launch Sequence
+    LaunchTemplate[Launch Template / ASG] --> EC2App1
+    LaunchTemplate --> EC2App2
+    EC2App1 -->|User Data / Bootstrapping| AppStart1[Application Startup]
+    EC2App2 -->|User Data / Bootstrapping| AppStart2[Application Startup]
