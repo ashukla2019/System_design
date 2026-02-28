@@ -131,12 +131,14 @@
 
 ## Key Architecture Diagram
 
+# AWS Complete Architecture Diagram
+
+## Architecture Diagram (Mermaid)
+
 ```mermaid
 flowchart TD
-    subgraph Internet
-        User[User / Client] --> Route53[Route 53 DNS]
-        Route53 --> WAF[WAF + Shield]
-    end
+    User[User / Client] --> Route53[Route 53 DNS]
+    Route53 --> WAF[WAF + Shield]
 
     subgraph VPC["VPC: 10.0.0.0/16"]
         subgraph PublicSubnets["Public Subnets"]
@@ -181,55 +183,3 @@ flowchart TD
     EC2App1 --> CloudWatchA[CloudWatch Metrics]
     EC2App2 --> CloudWatchB[CloudWatch Metrics]
     RDSPrimary --> CloudWatchRDS[CloudWatch RDS Metrics]
-
-Diagram Working Explanation
-
-Internet Layer
-
-User → Route 53 DNS → WAF + Shield → ALB.
-
-Protects against DDoS and malicious requests.
-
-VPC & Subnets
-
-VPC isolates resources (10.0.0.0/16).
-
-Public subnets: ALB and IGW.
-
-Private app subnets: EC2 instances, NAT for outbound access.
-
-Private DB subnets: Multi-AZ RDS deployment.
-
-Traffic Flow
-
-ALB distributes incoming traffic to EC2App1 (AZ1) & EC2App2 (AZ2).
-
-EC2 communicates with RDSPrimary; replication to RDSStandby ensures HA.
-
-Outbound internet requests go via NAT Gateway.
-
-IAM & SSM
-
-EC2 instances use IAM Roles to securely access AWS services (S3, CloudWatch).
-
-Admin uses Systems Manager to manage EC2 without SSH or public IP.
-
-SSM Agents on EC2 handle commands and send logs to CloudWatch/S3.
-
-Storage
-
-EC2 instances store persistent data on EBS.
-
-S3 used for static content, backups, and logs.
-
-Monitoring
-
-CloudWatch collects metrics from EC2 and RDS.
-
-Provides dashboards, alerts, and observability for operations.
-
-High Availability
-
-Multi-AZ setup ensures no single point of failure.
-
-ALB + EC2 + RDS spread across AZ1 and AZ2.
