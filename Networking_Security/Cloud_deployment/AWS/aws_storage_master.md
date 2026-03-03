@@ -1,113 +1,147 @@
-# AWS Storage – Complete Architecture & Workflow Guide
 
+AWS Storage – Complete Architecture & Internal Data Flow Guide
 This document covers:
 
-1. Amazon EBS (Block Storage)
-2. Amazon EFS (File Storage)
-3. Amazon S3 (Object Storage)
-4. Internal Data Flow
-5. Architecture Comparison
-6. Interview-Ready Summary
+Amazon EBS (Block Storage)
 
+Amazon EFS (File Storage)
+
+Amazon S3 (Object Storage)
+
+Correct Internal Data Flow
+
+Control Plane vs Data Plane
+
+Deep Architecture Comparison
+
+Interview-Ready Summary
 
 ============================================================
 PART 1 – AMAZON EBS (Elastic Block Store)
-============================================================
+What is Amazon EBS?
+Amazon Web Services Elastic Block Store (EBS) is network-attached block storage designed for EC2 instances.
 
-What is EBS?
+Scoped to a Single Availability Zone (AZ)
 
-EBS is block storage attached to EC2 instances like a virtual hard disk.
+Provides persistent block-level storage
 
-- Single AZ
-- Attached to one EC2 (except Multi-Attach specific types)
-- Low latency
-- Used for OS, databases, transactional systems
+Low latency
 
+Used for OS disks, databases, transactional workloads
 
-EBS Architecture
+Automatically replicated within the same AZ
 
+EBS is not a physical disk attached directly to EC2.
+It is distributed storage accessed over the AWS internal storage network.
+
+EBS High-Level Architecture
 EC2 Instance
      ↓
-OS Block Layer
+Operating System
      ↓
-EBS Volume
+Block Device (NVMe)
      ↓
-EBS Storage Backend (Replicated within AZ)
+Nitro Hypervisor
+     ↓
+AWS Internal Storage Network
+     ↓
+EBS Storage Cluster (within same AZ)
+EBS Volume Creation & Attachment Workflow
+Create EBS Volume (Choose AZ)
 
+Launch EC2 in the same AZ
 
-EBS Attachment Workflow
+Attach Volume
 
-1. Create EBS Volume (Choose AZ)
-2. Launch EC2 in same AZ
-3. Attach Volume
-4. OS detects new block device (/dev/xvdf)
-5. Create filesystem (ext4/xfs)
-6. Mount to directory
-7. Read/Write data
+OS detects block device (e.g., /dev/nvme1n1)
 
+Create filesystem (ext4/xfs)
 
-Internal Data Flow (Write Operation)
+Mount to directory
 
+Application performs read/write
+
+Correct Internal Data Flow (Write Operation)
 Application
    ↓
 Linux VFS
    ↓
 Filesystem (ext4/xfs)
    ↓
-Block Layer
+Linux Block Layer
    ↓
-EBS Virtual Device
+NVMe Driver
    ↓
-EBS Backend Storage (replicated inside AZ)
+Nitro Hypervisor
+   ↓
+AWS Storage Network
+   ↓
+EBS Storage Servers
+   ↓
+Synchronous Replication (within AZ)
+Important Technical Clarifications
+EBS traffic stays inside AWS private network
 
+Replication happens within the same AZ only
 
-Important Characteristics
+Cross-AZ replication requires snapshots or other services
 
-- AZ-level redundancy (not multi-AZ)
-- Snapshots stored in S3
-- Volume types: gp3, io2, st1, sc1
+Snapshots are stored in S3 (incremental)
 
+EBS Volume Types
+gp3 (General Purpose SSD)
+
+io2 (Provisioned IOPS SSD)
+
+st1 (Throughput HDD)
+
+sc1 (Cold HDD)
 
 ============================================================
 PART 2 – AMAZON EFS (Elastic File System)
-============================================================
+What is Amazon EFS?
+Amazon Web Services Elastic File System (EFS) is a managed NFS-based shared file system.
 
-What is EFS?
+Regional service
 
-Managed NFS-based shared file storage.
+Multi-AZ storage
 
-- Regional
-- Multi-AZ
-- Shared across EC2
-- POSIX compliant
+POSIX compliant
 
+Automatically scalable
+
+Shared across multiple EC2 instances
 
 EFS Architecture
-
-VPC
-├── Subnet (AZ-a) → EC2
-├── Subnet (AZ-b) → EC2
-└── EFS File System
-       ├── Mount Target (AZ-a ENI)
-       ├── Mount Target (AZ-b ENI)
-
+VPC (Regional)
+├── Subnet (AZ-a)
+│     └── EC2
+├── Subnet (AZ-b)
+│     └── EC2
+└── EFS File System (Regional)
+      ├── Mount Target (AZ-a ENI)
+      ├── Mount Target (AZ-b ENI)
+      └── Distributed Multi-AZ Storage Backend
+Mount Target = NFS endpoint in each AZ
+Actual storage = Regional distributed system
 
 EFS Workflow
+Create EFS (Regional)
 
-1. Create EFS (Regional)
-2. Create Mount Targets (per AZ)
-3. Configure Security Group (Allow TCP 2049)
-4. Install NFS client on EC2
-5. Mount using DNS name
-6. Read/Write shared data
+Create Mount Targets (one per AZ)
 
-Example mount command:
+Configure Security Group (Allow TCP 2049)
+
+Install NFS client on EC2
+
+Mount using DNS
+
+Perform read/write operations
+
+Example:
 
 sudo mount -t nfs4 fs-12345.efs.region.amazonaws.com:/ /mnt/efs
-
-
-EFS Data Flow
-
+Correct EFS Data Flow
 Application
    ↓
 Linux VFS
@@ -116,127 +150,152 @@ NFS Client
    ↓
 TCP 2049
    ↓
+VPC Network
+   ↓
 Mount Target ENI
    ↓
-EFS Backend (Multi-AZ replicated)
-
-
-Performance Modes
-
-- General Purpose
-- Max I/O
-
-
-Throughput Modes
-
-- Bursting
-- Provisioned
-- Elastic
-
-
+Regional EFS Control Plane
+   ↓
+Distributed Storage Nodes
+   ↓
+Multi-AZ Replication
 Failure Scenario
-
 If AZ-a fails:
 
-- EC2 in AZ-a becomes unavailable
-- EFS data remains safe (regional replication)
-- EC2 in AZ-b continues accessing EFS via its mount target
+EC2 in AZ-a becomes unavailable
 
+EFS remains available
+
+EC2 in AZ-b continues accessing data
+
+No data loss (regional replication)
 
 ============================================================
 PART 3 – AMAZON S3 (Simple Storage Service)
-============================================================
+What is Amazon S3?
+Amazon Web Services Simple Storage Service (S3) is distributed object storage accessed via HTTPS API.
 
-What is S3?
+Regional service
 
-Object storage service accessed via API/SDK/HTTP.
+Multi-AZ durability
 
-- Regional
-- Multi-AZ
-- Virtually unlimited scale
-- Internet accessible (if allowed)
+Virtually unlimited scale
 
+Strong read-after-write consistency
 
-S3 Architecture
+Accessed via API/SDK/HTTP
 
+S3 High-Level Architecture
 Client / Application
         ↓
-HTTPS (REST API)
+DNS Resolution
         ↓
-S3 Endpoint
+S3 Regional Endpoint
         ↓
-S3 Storage Nodes (Multi-AZ replicated)
-
+S3 Front-End Fleet (Request Routers)
+        ↓
+Authentication (IAM)
+        ↓
+Partition Layer (Key-based routing)
+        ↓
+Storage Nodes
+        ↓
+Multi-AZ Replication / Erasure Coding
+S3 is a massively distributed object storage system — not a single storage server.
 
 S3 Upload Workflow
+Client sends HTTPS PUT request
 
-1. Client sends HTTPS request
-2. IAM authentication
-3. Object stored in bucket
-4. Replicated across multiple AZs
-5. Metadata updated
+DNS resolves to regional endpoint
 
+Front-end authenticates request
 
-S3 Data Model
+Key-based routing determines partition
 
-Object consists of:
+Object written to storage nodes
 
-- Key
-- Value (data)
-- Metadata
-- Version ID (if enabled)
+Data replicated across multiple AZs
 
+Metadata updated
 
-Storage Classes
+Success response returned
 
-- Standard
-- Intelligent-Tiering
-- Standard-IA
-- One Zone-IA
-- Glacier
-- Glacier Deep Archive
+S3 Object Structure
+Each object consists of:
 
+Key
+
+Value (Data)
+
+Metadata
+
+Version ID (if enabled)
+
+S3 Storage Classes
+Standard
+
+Intelligent-Tiering
+
+Standard-IA
+
+One Zone-IA
+
+Glacier
+
+Glacier Deep Archive
+
+============================================================
+CONTROL PLANE vs DATA PLANE
+EBS
+Control Plane:
+
+Create Volume
+
+Attach/Detach
+
+Snapshot
+
+Data Plane:
+
+Block read/write operations
+
+EFS
+Control Plane:
+
+Create file system
+
+Create mount targets
+
+Data Plane:
+
+NFS read/write traffic
+
+S3
+Control Plane:
+
+Create bucket
+
+Lifecycle policies
+
+Bucket policies
+
+Data Plane:
+
+PUT, GET, DELETE object operations
 
 ============================================================
 Deep Architecture Comparison
-============================================================
-
-| Feature | EBS | EFS | S3 |
-|----------|------|------|------|
-| Type | Block | File | Object |
-| Access | Attach to EC2 | NFS Mount | API |
-| Shared | No | Yes | Yes |
-| Multi-AZ | No | Yes | Yes |
-| Latency | Very Low | Low | Higher |
-| Use Case | OS, DB | Shared apps | Backup, media |
-
-
-============================================================
-When To Use What?
-============================================================
-
-Use EBS When:
-- Running database
-- Need low latency
-- Need boot volume
-
-Use EFS When:
-- Multiple EC2 need shared files
-- Web servers sharing uploads
-- Container storage
-
-Use S3 When:
-- Backup
-- Static website
-- Logs
-- Big data
-- Media storage
-
-
+Feature	EBS	EFS	S3
+Type	Block	File	Object
+Scope	Single AZ	Regional	Regional
+Access Method	Attach to EC2	NFS Mount	HTTPS API
+Shared	No (except specific types)	Yes	Yes
+Multi-AZ Data	No	Yes	Yes
+Network Based	Yes	Yes	Yes
+Latency	Very Low	Low	Higher
+Best Use Case	OS, DB	Shared apps	Backup, logs, media
 ============================================================
 Complete Storage Architecture View
-============================================================
-
                 ┌───────────────┐
                 │  Application  │
                 └───────┬───────┘
@@ -247,29 +306,28 @@ Complete Storage Architecture View
    (Block)          (File)           (Object)
    Single AZ        Regional         Regional
    Attached         Shared           API Based
-
-
 ============================================================
 60-Second Interview Summary
-============================================================
+AWS provides three primary storage models:
 
-AWS provides three primary storage types:
+EBS → Network-attached block storage within a single AZ
 
-- EBS: Block storage attached to EC2 within a single AZ.
-- EFS: Regional NFS-based shared file storage.
-- S3: Highly durable, scalable object storage accessed via API.
+EFS → Regional distributed shared file system
 
-Choice depends on:
-- Access pattern
-- Performance requirement
-- Sharing requirement
-- Availability design
+S3 → Highly durable multi-AZ object storage
 
+Selection depends on:
+
+Access pattern
+
+Performance requirement
+
+Sharing requirement
+
+Availability architecture
 
 ============================================================
 Memory Trick
-============================================================
-
 Block → Attach
 File → Mount
 Object → API
@@ -277,3 +335,4 @@ Object → API
 EBS → EC2 Disk
 EFS → Shared Folder
 S3 → Internet Storage
+
