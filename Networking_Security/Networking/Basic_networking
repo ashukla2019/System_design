@@ -56,24 +56,61 @@ Networking
 │     ├── Application (L7)
 │     │      → Interface for user applications
 │     │      → Protocols: HTTP/HTTPS, FTP, SMTP, DNS
-│
+|     | Protocols:
+         HTTP / HTTPS → Transfers web pages between browser and server
+         FTP / SFTP → File transfer between systems
+         SMTP → Sends email between mail servers
+         POP3 / IMAP → Retrieves email from server
+         DNS → Converts domain name → IP address
+         SSH → Secure remote login to servers
+         Telnet → Remote login (unencrypted)
+│     |
 │     ├── Presentation (L6)
 │     │      → Data formatting and security
 │     │      → Encryption (TLS/SSL), Compression, Encoding
+              Protocols / Standards:
+              SSL/TLS → Encrypts communication (HTTPS)
+              MIME → Defines email content formats
+              JPEG / PNG → Image encoding
+              MP3 / MPEG → Audio/Video compression
+
+              Data Unit: Data
+              Example: Encrypting web traffic using TLS.
 │
 │     ├── Session (L5)
 │     │      → Manages sessions between systems
 │     │      → Session creation, maintenance, termination
+               Protocols:
+               NetBIOS → Session management in Windows networks
+               RPC → Remote procedure calls between systems
+               PPTP → VPN tunneling protocol
 │
 │     ├── Transport (L4)
 │     │      → End-to-end data delivery
 │     │      → TCP (reliable), UDP (fast)
 │     │      → Uses Port numbers
+               Protocols:
+               TCP → Reliable transmission
+                   • Connection oriented
+                   • Uses acknowledgements
+                   • Used in HTTP, HTTPS, FTP
+
+               UDP → Fast transmission
+                   • Connectionless
+                   • No reliability
+                   • Used in DNS, video streaming, VoIP
 │
 │     ├── Network (L3)
 │     │      → Logical addressing and routing
 │     │      → IP addressing, Routing
 │     │      → Protocols: RIP, OSPF, BGP
+               Protocols:
+               IP (IPv4 / IPv6) → Logical addressing
+               ICMP → Error reporting (ping, traceroute)
+               ARP → IP → MAC address mapping
+               RIP → Distance vector routing protocol
+               OSPF → Link state routing protocol
+               BGP → Internet routing between autonomous systems
 │
 │     ├── Data Link (L2)
 │     │      → Node-to-node delivery
