@@ -8,8 +8,13 @@
 - Cloud Computing: on-demand delivery of IT resources over the internet.
 - Service Models:
   - IaaS: Compute, Storage, Network (EC2, S3)
+       The cloud provider gives basic infrastructure resources like virtual machines, storage, and networking.
+       You are responsible for installing the OS, applications, runtime, and configurations.
   - PaaS: Managed platforms (Elastic Beanstalk)
+       The cloud provider manages the infrastructure and platform, allowing developers to focus only on application code.
   - SaaS: Software delivered via cloud (WorkDocs, QuickSight)
+      The cloud provider delivers fully functional software through the internet.
+      You simply use the application without managing infrastructure or platforms.
 - Deployment Models:
   - Public Cloud: AWS shared infrastructure
   - Private Cloud: On-premises or dedicated cloud
