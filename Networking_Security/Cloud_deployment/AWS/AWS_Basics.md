@@ -1,296 +1,325 @@
-AWS Cloud Computing
+# AWS Cloud Computing – Structured Notes
 
+## Overview
+
+This document provides a structured overview of AWS core services and architecture concepts, organized hierarchically for easier understanding and study.
+
+---
+
+# AWS Cloud Computing Architecture Tree
+
+```
+AWS Cloud Computing
 │
 ├── Part I – AWS Fundamentals
 │
 ├── 1. Introduction to Cloud Computing
-│ ├── Cloud Computing
-│ │ → On-demand delivery of IT resources over the internet
-│ │ → Pay-as-you-go pricing
-│ │ → Eliminates need for on-premise infrastructure
-│ │
-│ ├── Service Models
-│ │
-│ │ ├── IaaS (Infrastructure as a Service)
-│ │ │ → Provides compute, storage, and networking infrastructure
-│ │ │ → Customer manages OS, applications, runtime
-│ │ │ → Examples: Amazon EC2, Amazon S3
-│ │
-│ │ ├── PaaS (Platform as a Service)
-│ │ │ → Managed application platform
-│ │ │ → Developers focus only on application code
-│ │ │ → Example: AWS Elastic Beanstalk
-│ │
-│ │ └── SaaS (Software as a Service)
-│ │ → Fully functional software delivered via internet
-│ │ → No infrastructure or platform management needed
-│ │ → Examples: Amazon WorkDocs, Amazon QuickSight
+│   │
+│   ├── Cloud Computing
+│   │   → On-demand delivery of IT resources over the internet
+│   │   → Pay-as-you-go pricing model
+│   │   → Eliminates need for physical data centers
+│   │
+│   ├── Service Models
+│   │
+│   │   ├── IaaS (Infrastructure as a Service)
+│   │   │   → Provides compute, storage, and networking
+│   │   │   → User manages OS, middleware, runtime, and applications
+│   │   │   → Examples:
+│   │   │        Amazon EC2
+│   │   │        Amazon S3
+│   │   │
+│   │   ├── PaaS (Platform as a Service)
+│   │   │   → Managed platform for application deployment
+│   │   │   → Infrastructure and runtime handled by cloud provider
+│   │   │   → Developer focuses on writing code
+│   │   │   → Example:
+│   │   │        AWS Elastic Beanstalk
+│   │   │
+│   │   └── SaaS (Software as a Service)
+│   │       → Fully managed software delivered over internet
+│   │       → Users access applications without infrastructure management
+│   │       → Examples:
+│   │            Amazon WorkDocs
+│   │            Amazon QuickSight
+│   │
+│   ├── Deployment Models
+│   │
+│   │   ├── Public Cloud
+│   │   │   → Infrastructure owned and operated by cloud provider
+│   │   │   → Shared among multiple customers
+│   │   │   → Example: AWS public cloud
+│   │   │
+│   │   ├── Private Cloud
+│   │   │   → Dedicated infrastructure for one organization
+│   │   │   → Hosted on-premise or private data center
+│   │   │
+│   │   └── Hybrid Cloud
+│   │       → Combination of public cloud and private infrastructure
+│   │       → Enables data portability and flexible workloads
+│   │
+│   └── Shared Responsibility Model
 │
-│ ├── Deployment Models
-│ │ ├── Public Cloud
-│ │ │ → Infrastructure owned by cloud provider
-│ │ │ → Shared among multiple customers
-│ │ │ → Example: AWS public cloud
-│ │ │
-│ │ ├── Private Cloud
-│ │ │ → Dedicated infrastructure for one organization
-│ │ │ → Hosted on-premise or private data center
-│ │ │
-│ │ └── Hybrid Cloud
-│ │ → Combination of public and private cloud
-│ │ → Enables workload portability
-│
-│ └── Shared Responsibility Model
-│ ├── AWS Responsibility (Security of the Cloud)
-│ │ → Physical data centers
-│ │ → Hardware infrastructure
-│ │ → Networking infrastructure
-│ │
-│ └── Customer Responsibility (Security in the Cloud)
-│ → Operating systems
-│ → Applications
-│ → Data protection
-│ → IAM configuration
+│       ├── AWS Responsibility (Security OF the Cloud)
+│       │   → Physical data centers
+│       │   → Hardware infrastructure
+│       │   → Networking infrastructure
+│       │   → Global infrastructure
+│       │
+│       └── Customer Responsibility (Security IN the Cloud)
+│           → Operating systems
+│           → Applications
+│           → Data protection
+│           → IAM policies and user access
 │
 │
 ├── 2. AWS Global Infrastructure
 │
-│ ├── Regions
-│ │ → Large geographic areas containing multiple data centers
-│ │ → Regions are isolated from each other
-│ │ → Examples:
-│ │ us-east-1 → Northern Virginia
-│ │ eu-west-1 → Ireland
-│ │ ap-south-1 → Mumbai
-│
-│ ├── Availability Zones (AZs)
-│ │ → Isolated data centers within a region
-│ │ → Connected via low-latency network
-│ │ → Examples:
-│ │ us-east-1a
-│ │ us-east-1b
-│ │ us-east-1c
-│
-│ ├── Edge Locations
-│ │ → Global caching locations for content delivery
-│ │ → Used mainly by Amazon CloudFront
-│ │ → Reduces latency for end users
-│
-│ └── High Availability Concepts
-│ → Multi-AZ deployment
-│ → Fault-tolerant architecture
-│ → Automatic failover mechanisms
+│   ├── Regions
+│   │   → Large geographic locations with multiple data centers
+│   │   → Regions are isolated from each other
+│   │   → Used for latency optimization and compliance
+│   │
+│   │   Examples:
+│   │       us-east-1   → Northern Virginia
+│   │       eu-west-1   → Ireland
+│   │       ap-south-1  → Mumbai
+│   │
+│   ├── Availability Zones (AZs)
+│   │   → Independent data centers within a region
+│   │   → Connected with low latency network
+│   │   → Designed for high availability
+│   │
+│   │   Examples:
+│   │       us-east-1a
+│   │       us-east-1b
+│   │       us-east-1c
+│   │
+│   ├── Edge Locations
+│   │   → Global caching locations
+│   │   → Used for content delivery
+│   │   → Example: CloudFront CDN
+│   │
+│   └── High Availability Concepts
+│       → Multi-AZ deployment
+│       → Fault tolerant systems
+│       → Automatic failover
 │
 │
 ├── Part II – Networking in AWS
 │
 ├── 3. Virtual Private Cloud (VPC)
 │
-│ ├── VPC
-│ │ → Isolated virtual network inside AWS
-│ │ → Enables full control over networking configuration
+│   ├── VPC
+│   │   → Logical isolated network inside AWS
+│   │   → Similar to traditional data center network
+│   │
+│   ├── CIDR Blocks
+│   │   → Defines IP address range
+│   │   → Example:
+│   │        10.0.0.0/16
+│   │
+│   │   Explanation:
+│   │        /16 → first 16 bits represent network portion
+│   │        Remaining bits used for host addresses
+│   │
+│   ├── Subnets
+│   │
+│   │   ├── Public Subnet
+│   │   │   → Connected to Internet Gateway
+│   │   │   → Used for load balancers and bastion hosts
+│   │   │
+│   │   └── Private Subnet
+│   │       → No direct internet access
+│   │       → Used for application servers and databases
+│   │
+│   ├── Route Tables
+│   │   → Controls how traffic flows inside VPC
+│   │
+│   ├── Internet Gateway (IGW)
+│   │   → Enables inbound and outbound internet access
+│   │
+│   ├── NAT Gateway / NAT Instance
+│   │   → Allows private instances to access internet
+│   │   → Outbound connections only
+│   │
+│   ├── Security Groups
+│   │   → Instance level firewall
+│   │   → Stateful
+│   │
+│   ├── Network ACLs
+│   │   → Subnet level firewall
+│   │   → Stateless
+│   │
+│   ├── VPC Peering
+│   │   → Direct network connection between VPCs
+│   │
+│   └── VPC Flow Logs
+│       → Capture network traffic information
 │
-│ ├── CIDR Blocks
-│ │ → Defines network IP range
-│ │ → Example: 10.0.0.0/16
-│ │ → /16 means first 16 bits represent network portion
 │
-│ ├── Subnets
-│ │ ├── Public Subnet
-│ │ │ → Has internet access through Internet Gateway
-│ │ │
-│ │ └── Private Subnet
-│ │ → No direct internet access
-│ │ → Used for backend resources (DB, internal apps)
+├── 4. DNS and Traffic Routing
 │
-│ ├── Route Tables
-│ │ → Controls network traffic routing within the VPC
-│
-│ ├── Internet Gateway (IGW)
-│ │ → Enables internet connectivity for public subnets
-│
-│ ├── NAT Gateway / NAT Instance
-│ │ → Allows private subnet instances to access internet
-│ │ → Outbound only (no inbound traffic allowed)
-│
-│ ├── Security Groups vs Network ACLs
-│ │
-│ │ ├── Security Groups
-│ │ │ → Instance-level firewall
-│ │ │ → Stateful
-│ │
-│ │ └── Network ACLs
-│ │ → Subnet-level firewall
-│ │ → Stateless
-│
-│ ├── VPC Peering
-│ │ → Connects multiple VPC networks together
-│
-│ └── VPC Flow Logs
-│ → Captures IP traffic information
-│ → Used for monitoring and troubleshooting
-│
-│
-├── 4. DNS & Traffic Routing
-│
-│ ├── Domain Name System
-│ │ → Managed using Amazon Route 53
-│
-│ ├── Routing Policies
-│ │ ├── Simple Routing
-│ │ ├── Weighted Routing
-│ │ ├── Latency-Based Routing
-│ │ └── Failover Routing
-│
-│ └── Health Checks
-│ → Monitor application endpoints
-│ → Automatically redirect traffic if endpoint fails
+│   ├── Amazon Route 53
+│   │   → Highly available DNS service
+│   │
+│   ├── Routing Policies
+│   │   ├── Simple Routing
+│   │   ├── Weighted Routing
+│   │   ├── Latency Based Routing
+│   │   └── Failover Routing
+│   │
+│   └── Health Checks
+│       → Monitors endpoints
+│       → Automatically redirects traffic on failure
 │
 │
 ├── Part III – Compute Services
 │
 ├── 5. Elastic Compute Cloud (EC2)
 │
-│ ├── EC2 Instances
-│ │ → Virtual servers running in AWS cloud
-│
-│ ├── Instance Types
-│ │ ├── General Purpose
-│ │ ├── Compute Optimized
-│ │ └── Memory Optimized
-│
-│ ├── AMI (Amazon Machine Image)
-│ │ → Template used to launch EC2 instances
-│
-│ ├── Key Pairs
-│ │ → Secure login to EC2 instances (SSH)
-│
-│ └── User Data & Bootstrapping
-│ → Scripts executed during instance startup
+│   ├── EC2 Instances
+│   │   → Virtual machines running in AWS cloud
+│   │
+│   ├── Instance Types
+│   │   ├── General Purpose
+│   │   ├── Compute Optimized
+│   │   └── Memory Optimized
+│   │
+│   ├── Amazon Machine Image (AMI)
+│   │   → Template used to launch EC2 instances
+│   │
+│   ├── Key Pairs
+│   │   → Used for secure SSH access
+│   │
+│   └── User Data
+│       → Bootstrapping scripts executed during launch
 │
 │
 ├── 6. Load Balancing
 │
-│ ├── Application Load Balancer (ALB)
-│ │ → Layer 7 load balancing
-│ │ → Supports HTTP / HTTPS routing
-│
-│ ├── Network Load Balancer (NLB)
-│ │ → Layer 4 load balancing
-│ │ → Supports TCP / UDP traffic
-│
-│ └── Target Groups
-│ → Group of instances receiving traffic
-│ → Health checks monitor instance availability
+│   ├── Application Load Balancer (ALB)
+│   │   → Layer 7 load balancing
+│   │   → Supports HTTP and HTTPS routing
+│   │
+│   ├── Network Load Balancer (NLB)
+│   │   → Layer 4 load balancing
+│   │   → Supports TCP and UDP
+│   │
+│   └── Target Groups
+│       → Group of instances receiving traffic
 │
 │
 ├── 7. Auto Scaling
 │
-│ ├── Auto Scaling Groups (ASG)
-│ │ → Automatically adjust number of EC2 instances
-│
-│ ├── Scaling Policies
-│ │ ├── Target Tracking
-│ │ └── Step Scaling
-│
-│ └── Launch Templates
-│ → Define instance configuration for scaling
+│   ├── Auto Scaling Groups
+│   │   → Automatically scale EC2 instances
+│   │
+│   ├── Scaling Policies
+│   │   ├── Target Tracking
+│   │   └── Step Scaling
+│   │
+│   └── Launch Templates
+│       → Defines configuration for new instances
 │
 │
 ├── 8. Serverless Compute
 │
-│ ├── AWS Lambda
-│ │ → Event-driven serverless compute service
-│
-│ ├── Event Sources
-│ │ ├── Amazon S3
-│ │ ├── Amazon DynamoDB Streams
-│ │ └── Amazon API Gateway
-│
-│ └── Use Cases
-│ → Image processing
-│ → Data transformation
-│ → Automation tasks
+│   ├── AWS Lambda
+│   │   → Event driven serverless compute
+│   │
+│   ├── Event Sources
+│   │   ├── Amazon S3
+│   │   ├── DynamoDB Streams
+│   │   └── API Gateway
+│   │
+│   └── Use Cases
+│       → Image processing
+│       → Data transformation
+│       → Automation tasks
 │
 │
 ├── Part IV – Storage Services
 │
 ├── 9. Amazon S3
-│ → Object storage service
-│ → Durability: 99.999999999% (11 nines)
 │
-│ ├── Storage Classes
-│ │ ├── Standard
-│ │ ├── Infrequent Access (IA)
-│ │ └── Glacier (archival storage)
-│
-│ ├── Versioning
-│ │ → Maintains multiple versions of objects
-│
-│ ├── Lifecycle Policies
-│ │ → Automatically move data between storage classes
-│
-│ └── Security
-│ → Bucket policies
-│ → Encryption using AWS Key Management Service
+│   ├── Object Storage
+│   │   → Stores files as objects in buckets
+│   │
+│   ├── Durability
+│   │   → 99.999999999% (11 nines)
+│   │
+│   ├── Storage Classes
+│   │   ├── Standard
+│   │   ├── Infrequent Access
+│   │   └── Glacier
+│   │
+│   ├── Versioning
+│   │   → Maintains object history
+│   │
+│   ├── Lifecycle Policies
+│   │   → Automatic data tiering
+│   │
+│   └── Encryption
+│       → AWS KMS
 │
 │
 ├── 10. Elastic Block Store (EBS)
 │
-│ ├── Block storage attached to EC2 instances
-│
-│ ├── Volume Types
-│ │ ├── gp3 (General purpose SSD)
-│ │ ├── io2 (Provisioned IOPS SSD)
-│ │ └── st1 (Throughput optimized HDD)
-│
-│ ├── Snapshots
-│ │ → Backup stored in S3
-│
-│ └── Encryption
-│ → Using KMS keys
+│   ├── Block storage attached to EC2
+│   │
+│   ├── Volume Types
+│   │   ├── gp3
+│   │   ├── io2
+│   │   └── st1
+│   │
+│   ├── Snapshots
+│   │   → Stored in S3
+│   │
+│   └── Encryption
+│       → Using AWS KMS
 │
 │
 ├── 11. Elastic File System (EFS)
 │
-│ ├── Shared file system storage for multiple EC2 instances
-│
-│ └── Performance Modes
-│ ├── General Purpose
-│ └── Max I/O
+│   ├── Shared network file storage
+│   │
+│   └── Performance Modes
+│       ├── General Purpose
+│       └── Max I/O
 │
 │
 ├── Part V – Database Services
 │
-├── 12. Relational Database Service (RDS)
+├── 12. Amazon RDS
 │
-│ ├── Supported Engines
-│ │ ├── MySQL
-│ │ ├── PostgreSQL
-│ │ ├── SQL Server
-│ │ └── Aurora
+│   ├── Supported Engines
+│   │   ├── MySQL
+│   │   ├── PostgreSQL
+│   │   ├── SQL Server
+│   │   └── Amazon Aurora
+│   │
+│   ├── Multi-AZ Deployment
+│   │   → High availability database
+│   │
+│   ├── Read Replicas
+│   │   → Improve read performance
+│   │
+│   └── Automated Backups
 │
-│ ├── Multi-AZ Deployment
-│ │ → High availability database replication
 │
-│ ├── Read Replicas
-│ │ → Improves read performance
+├── 13. Amazon DynamoDB
 │
-│ └── Backup & Restore
-│ → Automated backups and snapshots
-│
-│
-├── 13. DynamoDB
-│
-│ ├── Fully managed NoSQL database
-│
-│ ├── Key Structure
-│ │ ├── Partition Key
-│ │ └── Sort Key
-│
-│ ├── Capacity Modes
-│ │ ├── Provisioned throughput
-│ │ └── On-Demand capacity
-│
-│ └── Global Tables
-│ → Multi-region replication
+│   ├── NoSQL Key Value Database
+│   │
+│   ├── Key Structure
+│   │   ├── Partition Key
+│   │   └── Sort Key
+│   │
+│   ├── Capacity Modes
+│   │   ├── Provisioned
+│   │   └── On Demand
+│   │
+│   └── Global Tables
+│       → Multi region replication
+```
