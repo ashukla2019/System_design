@@ -34,7 +34,7 @@
 ## Part II – Networking in AWS
 
 ### 3. Virtual Private Cloud (VPC)
-- CIDR Blocks: Define network range (e.g., 10.0.0.0/16)
+- CIDR Blocks: Define network range (e.g., 10.0.0.0/16) => /16 means 16 bits are used for the network portion.
 - Subnets: Public vs Private
 - Route Tables: Traffic routing inside VPC
 - Internet Gateway (IGW): Public subnet internet access
