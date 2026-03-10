@@ -24,9 +24,16 @@
   - Customer: Security *in* cloud (OS, data, IAM, applications)
 
 ### 2. AWS Global Infrastructure
-- Regions: Geographical locations (e.g., us-east-1)
+- Regions: A Region is a large geographical area where AWS has multiple data centers
+  us-east-1 – Northern Virginia
+  eu-west-1 – Ireland
+  ap-south-1 – Mumbai
 - Availability Zones (AZs): Isolated data centers inside a region
+   us-east-1a
+   us-east-1b
+   us-east-1c
 - Edge Locations: For CDN (CloudFront)
+   Edge locations are global caching locations used mainly by Amazon CloudFront (AWS CDN)
 - High Availability Concepts: Multi-AZ, fault-tolerant design
 
 ---
