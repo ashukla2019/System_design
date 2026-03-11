@@ -243,60 +243,63 @@ AWS Cloud Computing
 │   └── Analogy
 │       → Just run your code, AWS handles everything else
 │
-|├── Part IV – Storage Services
+| ├── Part IV – Storage Services
 │
 ├── 9. Amazon S3
 │
-│   ├── Why Amazon S3
+│   ├── Why
 │   │   → Store and retrieve files at massive scale from anywhere
 │   │
-│   ├── What it Provides
-│   │   ├── Stores files as objects in buckets
-│   │   ├── File storage (Images, Videos, Documents)
-│   │   ├── Backup and Disaster Recovery
+│   ├── Use Cases / When to Use
+│   │   ├── Static files (images, videos, documents)
+│   │   ├── Backups and disaster recovery
+│   │   ├── Archival / infrequent access → Glacier or Infrequent Access
+│   │
+│   ├── Key Features
+│   │   ├── Object storage in buckets
 │   │   ├── Versioning → Maintains object history
-│   │   ├── Lifecycle Policies → Automatic data tiering
-│   │   ├── Storage Classes
-│   │   │   ├── Standard
-│   │   │   ├── Infrequent Access
-│   │   │   └── Glacier
-│   │   └── Encryption → Using AWS KMS
+│   │   ├── Lifecycle Policies → Automatic tiering
+│   │   └── Encryption → AWS KMS
 │   │
 │   └── Analogy
 │       → Like a “cloud hard drive for objects” that scales infinitely
 │
 ├── 10. Elastic Block Store (EBS)
 │
-│   ├── Why EBS
-│   │   → Persistent block-level storage for EC2 instances
+│   ├── Why
+│   │   → Persistent block-level storage attached to EC2
 │   │
-│   ├── What it Provides
-│   │   ├── Works like a virtual hard drive for OS, applications, databases, logs
-│   │   ├── Persistent Storage → Data remains even if EC2 stops
-│   │   ├── Volume Types
-│   │   │   ├── gp3 (general purpose SSD)
-│   │   │   ├── io2 (high performance SSD)
-│   │   │   └── st1 (throughput optimized HDD)
+│   ├── Use Cases / When to Use
+│   │   ├── OS disks, application files, databases, logs
+│   │   ├── Persistent storage → Data remains if EC2 stops
+│   │   └── High-performance workloads → gp3/io2; large throughput → st1
+│   │
+│   ├── Key Features
+│   │   ├── Virtual hard drive for EC2
 │   │   ├── Snapshots → Backups stored in S3
-│   │   └── Encryption → Using AWS KMS
+│   │   └── Encryption → AWS KMS
 │   │
 │   └── Analogy
 │       → Like attaching a hard drive to your cloud server
 │
 ├── 11. Elastic File System (EFS)
 │
-│   ├── Why EFS
+│   ├── Why
 │   │   → Shared network file storage for multiple EC2 instances
 │   │
-│   ├── What it Provides
-│   │   ├── File sharing between multiple servers
-│   │   ├── Centralized storage → Single source of truth for files
-│   │   └── Performance Modes
-│   │       ├── General Purpose → Low latency for most workloads
-│   │       └── Max I/O → High throughput for analytics, big data
+│   ├── Use Cases / When to Use
+│   │   ├── Shared files across multiple servers
+│   │   ├── Centralized storage → Single source of truth
+│   │   ├── Low-latency workloads → General Purpose
+│   │   └── Big data / analytics → Max I/O
+│   │
+│   ├── Key Features
+│   │   ├── File sharing between servers
+│   │   └── Performance modes (General Purpose / Max I/O)
 │   │
 │   └── Analogy
 │       → Like a “shared network drive” accessible by many servers at once
+|
 ├── Part V – Database Services
 │
 ├── 12. Amazon RDS
