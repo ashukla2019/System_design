@@ -111,8 +111,9 @@ AWS Cloud Computing
 ├── 3. Virtual Private Cloud (VPC)
 │
 │   ├── VPC
-│   │   → Logical isolated network inside AWS
-│   │   → Similar to traditional data center network
+│   │   → A VPC keeps your cloud resources separate from other users in the cloud.
+│   │   → Only resources inside your VPC can communicate with each other unless you allow external access.
+|   |   → Security Control: security groups, NACL, Firewalls
 │   │
 │   ├── CIDR Blocks
 │   │   → Defines IP address range
@@ -123,11 +124,11 @@ AWS Cloud Computing
 │   │        /16 → first 16 bits represent network portion
 │   │        Remaining bits used for host addresses
 │   │
-│   ├── Subnets
+│   ├── Subnets: is a smaller network created inside a VPC to organize and control cloud resources.
 │   │
 │   │   ├── Public Subnet
 │   │   │   → Connected to Internet Gateway
-│   │   │   → Used for load balancers and bastion hosts
+│   │   │   → Used for load balancers and bastion hosts(a secure server used to access private servers inside a network)
 │   │   │
 │   │   └── Private Subnet
 │   │       → No direct internet access
@@ -243,7 +244,9 @@ AWS Cloud Computing
 │
 ├── 9. Amazon S3
 │
-│   ├── Object Storage
+│   ├── → Stores files as objects in buckets
+│   │   → File Storage(Images, Videos, Documents)
+│   │   → Backup and Disaster Recovery
 │   │   → Stores files as objects in buckets
 │   │
 │   ├── Durability
@@ -267,7 +270,8 @@ AWS Cloud Computing
 ├── 10. Elastic Block Store (EBS)
 │
 │   ├── Block storage attached to EC2
-│   │
+│   ├── EBS works like a virtual hard drive attached to a cloud server.(OS installation, Application files, Databases, Logs)
+│   ├── Persistent Storage(Stop EC2 → Data still exists in EBS and Start EC2 → Data is available again)
 │   ├── Volume Types
 │   │   ├── gp3
 │   │   ├── io2
@@ -282,8 +286,8 @@ AWS Cloud Computing
 │
 ├── 11. Elastic File System (EFS)
 │
-│   ├── Shared network file storage
-│   │
+│   ├── Shared network file storage(File Sharing Between Multiple Servers)
+│   ├── Centralized Storage(Instead of storing files on each server separately, files are stored in one central location)
 │   └── Performance Modes
 │       ├── General Purpose
 │       └── Max I/O
