@@ -1,13 +1,58 @@
 
 High-Level Design
+System Design
 |
-├── 1. Architecture
-├── 2. Networking & Communication
-├── 3. Data Management
-├── 4. Storage
-├── 5. Scalability
+├── 1. Requirements
+│   ├── Functional Requirements
+│   └── Non-Functional Requirements
+│
+├── 2. Architecture
+│   ├── Monolith / Microservices
+│   ├── Component Design
+│   └── Tech Stack
+│
+├── 3. Communication & Networking
+│   ├── Networking
+│   ├── Load Balancing
+│   ├── API Communication
+│   └── Protocols (HTTP, gRPC, WebSockets)
+│
+├── 4. Data Management
+│   ├── Databases
+│   ├── Data Modeling
+│   └── Caching
+│
+├── 5. Storage
+│   ├── Object Storage
+│   ├── File Storage
+│   └── Backup Strategy
+│
 ├── 6. Fault Tolerance
-└── 7. Security
+│   ├── Redundancy
+│   ├── Failover
+│   └── Disaster Recovery
+│
+├── 7. Scaling
+│   ├── Horizontal Scaling
+│   ├── Vertical Scaling
+│   └── Auto Scaling
+│
+├── 8. Security
+│   ├── Cybersecurity
+│   ├── Firewall
+│   ├── Authentication & Authorization
+│   └── Encryption
+│
+├── 9. Monitoring
+│   ├── Logging
+│   ├── Metrics
+│   └── Alerting
+│
+└── 10. Deployment
+    ├── Cloud Deployment
+    ├── CI/CD
+    ├── Containerization
+    └── Infrastructure as Code
 ---------------------------------
 1. Architecture (Networking-aware)
 What you define
