@@ -4,7 +4,7 @@ System Design
 |
 ├── 1. Requirements
 │   ├── Functional Requirements
-│   └── Non-Functional Requirements
+│   └── Non-Functional Requirements(SCALD: scaling, consistency, Availability, Latency, Durability)
 │
 ├── 2. Architecture
 │   ├── Monolith / Microservices
