@@ -1,169 +1,147 @@
-
-High-Level Design
 System Design
 |
 ├── 1. Requirements
 │   ├── Functional Requirements
-│   └── Non-Functional Requirements(SCALD: scaling, consistency, Availability, Latency, Durability)
+│   │   → What the system should do (features, user actions, workflows).
+│   │
+│   └── Non-Functional Requirements (SCALD)
+│       ├── Scaling → Ability to handle growing users/traffic
+│       ├── Consistency → Data correctness across nodes
+│       ├── Availability → System uptime and accessibility
+│       ├── Latency → Response time of requests
+│       └── Durability → Data persistence even after failures
 │
 ├── 2. Architecture
-│   ├── Monolith / Microservices
-│   ├── Component Design
-│   └── Tech Stack
+│   ├── Monolith
+│   │   → Single application where all components are tightly coupled.
+│   │
+│   ├── Microservices
+│   │   → System split into small independent services communicating via APIs.
+│   │
+│   ├── Event-Driven
+│   │   → Components communicate through events/messages (publish-subscribe).
+│   │
+│   ├── Serverless
+│   │   → Cloud provider manages infrastructure; code runs on demand.
+│   │
+│   ├── Stateful
+│   │   → Services store session/state information locally.
+│   │
+│   └── Stateless
+│       → Each request is independent; easier to scale horizontally.
 │
 ├── 3. Communication & Networking
-│   ├── Networking
-│   ├── Load Balancing
-│   ├── API Communication
-│   └── Protocols (HTTP, gRPC, WebSockets)
+│   │
+│   ├── Networking Fundamentals
+│   │   ├── DNS → Converts domain names to IP addresses.
+│   │   ├── TCP / UDP → Transport protocols for reliable vs fast communication.
+│   │   ├── IP Addressing → Identifies devices in a network.
+│   │   └── VPC / Subnets → Isolated cloud networks and internal segmentation.
+│   │
+│   ├── Communication Patterns
+│   │   ├── Synchronous
+│   │   │   → Immediate response required (HTTP, REST, SOAP, GraphQL, gRPC).
+│   │   │
+│   │   └── Asynchronous
+│   │       → Message-based communication using queues/streams.
+│   │       (RabbitMQ, Kafka)
+│   │
+│   ├── Infrastructure
+│   │   ├── API Gateway → Entry point for APIs (routing, authentication).
+│   │   ├── Forward Proxy → Client-side intermediary for requests.
+│   │   └── Reverse Proxy → Server-side gateway for load balancing/security.
+│   │
+│   └── Traffic Control
+│       └── Rate Limiting
+│           → Restrict number of requests from users/services to prevent abuse.
 │
 ├── 4. Data Management
 │   ├── Databases
+│   │   ├── SQL → Structured relational databases with strong consistency.
+│   │   └── NoSQL → Flexible schema, optimized for scalability.
+│   │
 │   ├── Data Modeling
-│   └── Caching
+│   │   ├── Normalization → Reduce redundancy and improve integrity.
+│   │   └── Denormalization → Duplicate data to improve query performance.
+│   │
+│   └── Data Distribution
+│       ├── Replication → Copy data across nodes for availability.
+│       ├── Sharding → Split data across servers for scalability.
+│       └── CAP Theorem → Trade-off between Consistency, Availability, Partition tolerance.
 │
 ├── 5. Storage
+│   ├── Block Storage
+│   │   → Raw disk storage used for databases and VM disks.
+│   │
 │   ├── Object Storage
+│   │   → Stores files as objects (images, videos, backups).
+│   │
 │   ├── File Storage
-│   └── Backup Strategy
+│   │   → Shared file systems accessible by multiple servers.
+│   │
+│   └── Backup & Disaster Recovery
+│       → Data backup strategies to recover from failures.
 │
 ├── 6. Fault Tolerance
 │   ├── Redundancy
+│   │   → Duplicate components to avoid single point of failure.
+│   │
 │   ├── Failover
+│   │   → Automatic switch to standby system if primary fails.
+│   │
 │   └── Disaster Recovery
+│       → Restore systems after major outages or data loss.
 │
 ├── 7. Scaling
 │   ├── Horizontal Scaling
+│   │   → Add more servers to distribute load.
+│   │
 │   ├── Vertical Scaling
+│   │   → Increase CPU/RAM of existing server.
+│   │
 │   └── Auto Scaling
+│       → Automatically scale resources based on traffic.
 │
 ├── 8. Security
-│   ├── Cybersecurity
-│   ├── Firewall
-│   ├── Authentication & Authorization
+│   ├── Cybersecurity Principles
+│   │   ├── CIA Triad → Confidentiality, Integrity, Availability.
+│   │   ├── Threat Modeling → Identify and mitigate potential attacks.
+│   │   └── Zero Trust → Never trust any user/device without verification.
+│   │
+│   ├── Network Security
+│   │   ├── Firewall → Filters network traffic based on security rules.
+│   │   ├── WAF → Protects web apps from attacks (SQL injection, XSS).
+│   │   └── Security Groups → Cloud firewall rules controlling traffic.
+│   │
+│   ├── Authentication (AuthN)
+│   │   → Verifying user identity (passwords, tokens, biometrics).
+│   │
+│   ├── Authorization (AuthZ)
+│   │   → Controlling what authenticated users are allowed to access.
+│   │
 │   └── Encryption
+│       ├── SSL / TLS → Secure communication between client and server.
+│       └── Data Encryption → Protect stored data from unauthorized access.
 │
 ├── 9. Monitoring
 │   ├── Logging
+│   │   → Record system events and errors for debugging.
+│   │
 │   ├── Metrics
+│   │   → Measure system performance (CPU, latency, requests/sec).
+│   │
 │   └── Alerting
+│       → Notify teams when issues or thresholds are triggered.
 │
 └── 10. Deployment
-    ├── Cloud Deployment
-    ├── CI/CD
-    ├── Containerization
-    └── Infrastructure as Code
----------------------------------
-1. Architecture (Networking-aware)
-What you define
-
-Monolithic
-Microservices
-Event-driven
-Client–Server / Peer-to-Peer
-Centralized vs Distributed
-
-Networking here
-How components talk:
-
-Client → API Gateway → Services
-Service → Service (east–west traffic)
-
-Network boundaries:
-VPC / Subnets
-Public vs Private services
-
--------------------------
-2. Networking & Communication (Core Networking Section)
-This is where networking explicitly lives.
-
-Communication model:
-Synchronous (HTTP/gRPC)
-Asynchronous (Kafka, SQS, RabbitMQ)
-
-Protocols:
-HTTP/HTTPS
-gRPC
-WebSocket
-TCP/UDP
-
-Network components:
-Load Balancer
-API Gateway
-DNS
-Service Mesh (Istio/Linkerd)
-
-----------------------------
-3. Data Management (Network-aware)
-What you define
-
-Read/write paths
-Data flow
-Caching layers
-
-Networking angle
-Client → Cache → DB path
-Cross-region replication traffic
-Data consistency over network latency
-
-Example:
-Client → Load Balancer → App → Redis → DB
-Networking affects latency, throughput, consistency.
------------------------
-4. Storage (Access over Network)
-What you define
-
-SQL / NoSQL
-Object / Block / File storage
-
-Networking angle
-Local vs Remote storage
-Storage access protocol:
-
-NFS
-iSCSI
-S3 API
-
------------------------
-5. Scalability (Heavily Network-driven)
-What you define
-
-Horizontal vs Vertical scaling
-Auto-scaling rules
-Networking angle
-Load balancing strategies:
-Round-robin
-Least connections
-Service discovery
-Traffic routing
-
-Example:
-
-Users → Load Balancer → N App Instances
-------------------------
-6. Fault Tolerance (Network Failures Included)
-
-Failover
-Replication
-Retries
-
-Networking angle
-Network partitions
-Timeouts
-Circuit breakers
-Multi-AZ / Multi-region routing
-
-Example:
-
---------------------
-7. Security (Network-level Security)
-What you define
-
-Authentication & Authorization
-Data protection
-Networking angle
-TLS / HTTPS
-Firewall rules
-Security groups / NACLs
-mTLS between services
-VPN / Private endpoints
+├── Cloud Deployment
+│   → Deploy applications on cloud platforms (AWS, Azure, GCP).
+│
+├── CI/CD
+│   → Automated build, test, and deployment pipelines.
+│
+├── Containerization
+│   → Package applications with dependencies using containers.
+│
+└── Infrastructure as Code
+→ Manage infrastructure using code (Terraform, CloudFormation).
