@@ -27,259 +27,71 @@ Amazon EBS (Elastic Block Store) is network-attached block storage designed for 
 - Accessed over AWS internal storage network (not physically attached)  
 
 ### High-Level Architecture
-
+```text
 EC2 Instance
-↓
+    ↓
 Operating System
-↓
+    ↓
 Block Device (NVMe)
-↓
+    ↓
 Nitro Hypervisor
-↓
+    ↓
 AWS Internal Storage Network
-↓
+    ↓
 EBS Storage Cluster (Same AZ)
 
+Volume Creation & Attachment Workflow
 
-### Volume Creation & Attachment Workflow
-1. Create EBS Volume (Choose AZ)  
-2. Launch EC2 in same AZ  
-3. Attach Volume  
-4. OS detects device (e.g., /dev/nvme1n1)  
-5. Create filesystem (ext4/xfs)  
-6. Mount to directory  
-7. Application performs read/write  
+Create EBS Volume (Choose AZ)
 
-### Correct Write Data Flow
+Launch EC2 in same AZ
 
+Attach Volume
+
+OS detects device (e.g., /dev/nvme1n1)
+
+Create filesystem (ext4/xfs)
+
+Mount to directory
+
+Application performs read/write
+
+Correct Write Data Flow
 Application
-↓
+    ↓
 Linux VFS
-↓
+    ↓
 Filesystem (ext4/xfs)
-↓
+    ↓
 Linux Block Layer
-↓
+    ↓
 NVMe Driver
-↓
+    ↓
 Nitro Hypervisor
-↓
+    ↓
 AWS Storage Network
-↓
+    ↓
 EBS Storage Servers
-↓
+    ↓
 Synchronous Replication (within AZ)
 
+Important Clarifications:
 
-**Important Clarifications:**
+EBS traffic stays inside AWS private network
 
-- EBS traffic stays inside AWS private network  
-- Replication happens only within the same AZ  
-- Cross-AZ replication requires snapshots  
-- Snapshots are stored incrementally in S3  
+Replication happens only within the same AZ
 
-**EBS Volume Types:**
+Cross-AZ replication requires snapshots
 
-- gp3 – General Purpose SSD  
-- io2 – Provisioned IOPS SSD  
-- st1 – Throughput HDD  
-- sc1 – Cold HDD  
+Snapshots are stored incrementally in S3
 
----
+EBS Volume Types:
 
-## 2️⃣ Amazon EFS (Elastic File System)
+gp3 – General Purpose SSD
 
-### What is EFS?
-Amazon EFS (Elastic File System) is a managed NFS-based shared file system.
+io2 – Provisioned IOPS SSD
 
-**Key Characteristics:**
+st1 – Throughput HDD
 
-- Regional service  
-- Multi-AZ storage  
-- POSIX compliant  
-- Automatically scalable  
-- Shared across multiple EC2 instances  
+sc1 – Cold HDD
 
-### Architecture
-
-VPC (Regional)
-├── Subnet (AZ-a)
-│ └── EC2
-├── Subnet (AZ-b)
-│ └── EC2
-└── EFS File System (Regional)
-├── Mount Target (AZ-a ENI)
-├── Mount Target (AZ-b ENI)
-└── Distributed Multi-AZ Storage Backend
-
-
-- Mount Target = NFS endpoint inside each AZ  
-- Actual storage = Regional distributed backend  
-
-### Workflow
-1. Create EFS (Regional)  
-2. Create Mount Targets (one per AZ)  
-3. Configure Security Group (Allow TCP 2049)  
-4. Install NFS client on EC2  
-5. Mount using DNS  
-6. Perform read/write operations  
-
-**Mount Example:**
-```bash
-sudo mount -t nfs4 fs-12345.efs.region.amazonaws.com:/ /mnt/efs
-Correct EFS Data Flow
-Application
-    ↓
-Linux VFS
-    ↓
-NFS Client
-    ↓
-TCP 2049
-    ↓
-VPC Network
-    ↓
-Mount Target ENI
-    ↓
-EFS Distributed Storage Backend
-    ↓
-Multi-AZ Replication
-Failure Scenario
-
-If AZ-a fails:
-
-EC2 in AZ-a becomes unavailable
-
-EFS remains available
-
-EC2 in AZ-b continues accessing data
-
-No data loss (regional replication)
-
-3️⃣ Amazon S3 (Simple Storage Service)
-What is S3?
-
-Amazon S3 is distributed object storage accessed via HTTPS API.
-
-Key Characteristics:
-
-Regional service
-
-Multi-AZ durability
-
-Virtually unlimited scale
-
-Strong read-after-write consistency
-
-Accessed via API/SDK/HTTP
-
-High-Level Architecture
-Client / Application
-        ↓
-DNS Resolution
-        ↓
-S3 Regional Endpoint
-        ↓
-S3 Front-End Fleet (Request Routers)
-        ↓
-Authentication (IAM)
-        ↓
-Partition Layer (Key-based routing)
-        ↓
-Storage Nodes
-        ↓
-Multi-AZ Replication / Erasure Coding
-Upload Workflow
-
-Client sends HTTPS PUT request
-
-DNS resolves to regional endpoint
-
-Front-end authenticates request
-
-Key-based routing determines partition
-
-Object written to storage nodes
-
-Data replicated across multiple AZs
-
-Metadata updated
-
-Success response returned
-
-Object Structure
-
-Key
-
-Value (Data)
-
-Metadata
-
-Version ID (if enabled)
-
-Storage Classes
-
-Standard
-
-Intelligent-Tiering
-
-Standard-IA
-
-One Zone-IA
-
-Glacier
-
-Glacier Deep Archive
-
-4️⃣ Control Plane vs Data Plane
-Service	Control Plane	Data Plane
-EBS	Create Volume, Attach/Detach, Snapshot	Block read/write operations
-EFS	Create file system, Create mount targets	NFS read/write traffic
-S3	Create bucket, Lifecycle policies, Bucket policies	PUT/GET/DELETE object operations
-5️⃣ Deep Architecture Comparison
-Feature	EBS	EFS	S3
-Type	Block	File	Object
-Scope	Single AZ	Regional	Regional
-Access Method	Attach to EC2	NFS Mount	HTTPS API
-Shared	No	Yes	Yes
-Multi-AZ Data	No	Yes	Yes
-Network Based	Yes	Yes	Yes
-Latency	Very Low	Low	Higher
-Best Use Case	OS, DB	Shared apps	Backup, logs, media
-6️⃣ Complete Storage Architecture View
-                ┌───────────────┐
-                │  Application  │
-                └───────┬───────┘
-                        │
-        ┌───────────────┼───────────────┐
-        │               │               │
-      EBS             EFS              S3
-   (Block)          (File)           (Object)
-   Single AZ        Regional         Regional
-   Attached         Shared           API Based
-7️⃣ 60-Second Interview Summary
-
-AWS provides three primary storage models:
-
-EBS → Network-attached block storage (Single AZ)
-
-EFS → Regional distributed shared file system
-
-S3 → Highly durable multi-AZ object storage
-
-Selection depends on:
-
-Access pattern
-
-Performance requirement
-
-Sharing requirement
-
-Availability architecture
-
-Memory Trick:
-
-Block → Attach → EBS → EC2 Disk
-
-File → Mount → EFS → Shared Folder
-
-Object → API → S3 → Internet Storage
