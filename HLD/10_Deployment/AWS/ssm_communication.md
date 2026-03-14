@@ -1,4 +1,4 @@
-├── Part VII – SSM Communication
+├─SSM Communication
 │
 │   ├── EC2 Instance Launch
 │   │   → Instance starts the operating system
@@ -9,15 +9,15 @@
 │   │
 │   ├── IAM Role Attached to EC2
 │   │   → Instance has IAM role (AmazonSSMManagedInstanceCore)
-│   │   → Grants permission to communicate with :contentReference[oaicite:0]{index=0}
+│   │   → Grants permission to communicate with AWS Systems Manager
 │   │
 │   ├── Credential Retrieval
 │   │   → SSM Agent requests temporary credentials
-│   │   → Retrieved from :contentReference[oaicite:1]{index=1} (IMDS)
+│   │   → Retrieved from Instance Metadata Service (IMDS)
 │   │
 │   ├── Agent Authentication
-│   │   → Using temporary credentials, SSM Agent authenticates with
-│   │     :contentReference[oaicite:2]{index=2} APIs
+│   │   → Using temporary credentials
+│   │   → SSM Agent authenticates with Systems Manager APIs
 │   │
 │   ├── Agent Polling
 │   │   → SSM Agent periodically checks Systems Manager
@@ -25,19 +25,17 @@
 │   │
 │   ├── Admin Interaction
 │   │   → Admin sends command using:
-│   │        • AWS Management Console
-│   │        • :contentReference[oaicite:3]{index=3}
-│   │        • SDK / automation tools
+│   │       • AWS Management Console
+│   │       • AWS CLI
+│   │       • SDK / Automation tools
 │   │
 │   ├── Command Retrieval
 │   │   → Systems Manager stores the command
 │   │   → SSM Agent retrieves it during polling
 │   │
 │   ├── Command Execution
-│   │   → SSM Agent executes the command inside the EC2 operating system
+│   │   → SSM Agent executes the command inside the EC2 OS
 │   │
 │   └── Logging & Output
 │       → Execution results returned to Systems Manager
-│       → Logs optionally stored in:
-│            • :contentReference[oaicite:4]{index=4}
-│            • :contentReference[oaicite:5]{index=5}
+│       → Logs stored in CloudWatch / S3 (optional)
