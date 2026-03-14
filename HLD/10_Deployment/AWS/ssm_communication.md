@@ -1,4 +1,4 @@
-## Part VII – SSM Communication
+Part VII – SSM Communication
 
 ├── EC2 Instance Launch
 │   → Instance starts the operating system
@@ -38,4 +38,4 @@
 │
 └── Logging & Output
     → Execution results returned to Systems Manager
-    → Logs stored in CloudWatch Logs or S3 (optional)
+    → Logs can be stored in CloudWatch Logs or Amazon S3
