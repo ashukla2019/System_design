@@ -1,833 +1,487 @@
-# AWS Complete Architecture & Communication Guide
+# AWS Complete Architecture Guide
 
-This document explains the **complete AWS architecture** including:
+A structured guide to understanding the architecture and communication inside AWS.
 
-* Global infrastructure
-* Datacenter architecture
-* Hypervisor (Nitro)
-* VPC networking
-* Internet connectivity
-* Security layers
-* Compute architecture
-* Storage systems
-* Monitoring systems
-* Service communication
-* Control plane vs data plane
+This document covers:
 
-Each section explains:
-
-* What it is
-* Architecture diagram
-* Why it was required
+- Global infrastructure
+- Networking
+- Compute
+- Storage
+- Security
+- Monitoring
+- Service communication
+- Scaling systems
 
 ---
 
-# PART 1 — AWS GLOBAL INFRASTRUCTURE
+# Table of Contents
 
-## What it is
-
-AWS infrastructure is globally distributed to provide **high availability, fault tolerance, and scalability**.
-
-```
-AWS Global Network
-        │
-        ▼
-Regions
-        │
-        ▼
-Availability Zones
-        │
-        ▼
-Data Centers
-        │
-        ▼
-Physical Servers
-        │
-        ▼
-Hypervisor
-        │
-        ▼
-Virtual Machines (EC2)
-```
-
-## Why it was required
-
-Traditional hosting had problems:
-
-* single datacenter failures
-* natural disasters
-* scaling limitations
-
-AWS solved this by distributing infrastructure across **regions and availability zones**.
+1. Global Infrastructure  
+2. Regions and Availability Zones  
+3. Data Center Architecture  
+4. Nitro Hypervisor  
+5. Virtual Private Cloud  
+6. Subnets  
+7. Internet Gateway  
+8. NAT Gateway  
+9. Security Layers  
+10. EC2 Architecture  
+11. EBS Storage  
+12. EFS Storage  
+13. S3 Object Storage  
+14. Load Balancing  
+15. Auto Scaling  
+16. IAM Authentication  
+17. Systems Manager  
+18. CloudWatch Monitoring  
+19. Service Communication  
+20. VPC Endpoints  
+21. Production Architecture  
+22. Request Flow  
+23. Control Plane vs Data Plane  
 
 ---
 
-# PART 2 — REGIONS AND AVAILABILITY ZONES
+# 1. AWS Global Infrastructure
 
-## Architecture
+AWS infrastructure is globally distributed to provide high availability.
 
-```
-Region
- ├── AZ1
- │   ├── Data Center
- │   └── Data Center
- │
- ├── AZ2
- │   ├── Data Center
- │   └── Data Center
- │
- └── AZ3
-     ├── Data Center
-     └── Data Center
+```mermaid
+graph TD
+AWS_Global_Network --> Regions
+Regions --> Availability_Zones
+Availability_Zones --> Data_Centers
+Data_Centers --> Physical_Servers
+Physical_Servers --> Virtual_Machines
 ```
 
-## Why it was required
+### Why this exists
 
-If a **datacenter fails**, applications would go down.
+Traditional hosting had:
 
-Availability Zones allow applications to run across **multiple isolated datacenters**.
+- single datacenter failures
+- scaling limits
+- regional outages
+
+AWS solved this using distributed infrastructure.
+
+---
+
+# 2. Regions and Availability Zones
+
+```mermaid
+graph TD
+Region --> AZ1
+Region --> AZ2
+Region --> AZ3
+AZ1 --> DataCenter1
+AZ1 --> DataCenter2
+```
 
 Benefits:
 
-* fault tolerance
-* disaster recovery
-* high availability
+- fault isolation
+- high availability
+- disaster recovery
+
+Applications should run across multiple AZs.
 
 ---
 
-# PART 3 — PHYSICAL DATA CENTER ARCHITECTURE
+# 3. Data Center Architecture
 
-Inside AWS datacenters:
+Inside AWS data centers:
 
+```mermaid
+graph TD
+Rack --> Server1
+Rack --> Server2
+Server1 --> CPU
+Server1 --> RAM
+Server1 --> NVMe
+Server1 --> NetworkCard
 ```
-Rack
- ├── Physical Servers
- │
- ├── CPU
- ├── RAM
- ├── NVMe SSD
- └── Network Interface
-```
 
-Thousands of servers are connected with **high-speed internal networking**.
+Components include:
 
-## Why it was required
-
-AWS must support:
-
-* millions of customers
-* massive compute workloads
-* petabytes of storage
-
-This requires **large-scale optimized infrastructure**.
+- compute servers
+- high speed networking
+- redundant power
 
 ---
 
-# PART 4 — AWS HYPERVISOR (NITRO SYSTEM)
+# 4. Nitro Hypervisor
 
-AWS runs EC2 instances using the **Nitro Hypervisor**.
+AWS uses the Nitro system for virtualization.
 
-```
-Physical Server
-     │
-     ▼
-Nitro Hypervisor
-     │
-     ▼
-Virtual Machines (EC2)
+```mermaid
+graph TD
+PhysicalServer --> NitroHypervisor
+NitroHypervisor --> EC2_Instance_1
+NitroHypervisor --> EC2_Instance_2
+NitroHypervisor --> EC2_Instance_3
 ```
 
 Nitro components:
 
-```
-Nitro System
- ├── Nitro Hypervisor
- ├── Nitro Security Chip
- ├── Nitro Card for Networking
- └── Nitro Card for Storage
-```
-
-## Why it was required
-
-Without virtualization:
-
-```
-Hardware
-  ↓
-Operating System
-  ↓
-Application
-```
-
-Only **one application per server**.
-
-With hypervisor:
-
-```
-Hardware
-  ↓
-Hypervisor
-  ↓
-Multiple Virtual Machines
-```
-
-Benefits:
-
-* better hardware utilization
-* cost efficiency
-* isolation
+- Nitro Hypervisor
+- Nitro Security Chip
+- Nitro Network Card
+- Nitro Storage Card
 
 ---
 
-# PART 5 — VIRTUAL PRIVATE CLOUD (VPC)
+# 5. Virtual Private Cloud (VPC)
 
-## What it is
+A VPC is a logically isolated network.
 
-A **VPC** is a logically isolated virtual network in AWS.
-
-```
-AWS Region
-    │
-    ▼
-VPC (10.0.0.0/16)
-    │
-    ├── Public Subnet
-    └── Private Subnet
+```mermaid
+graph TD
+AWS_Region --> VPC
+VPC --> Public_Subnet
+VPC --> Private_Subnet
 ```
 
-## Why it was required
+Purpose:
 
-Companies need:
-
-* isolated networks
-* private IP addressing
-* routing control
-* firewall rules
-
-VPC allows building **enterprise-like networks in the cloud**.
+- network isolation
+- IP address control
+- routing configuration
+- security policies
 
 ---
 
-# PART 6 — SUBNET ARCHITECTURE
+# 6. Subnets
 
-Subnets divide the VPC network.
+Subnets divide a VPC network.
 
-```
-VPC
- │
- ├── Public Subnet
- │      │
- │      ├── EC2
- │      └── Load Balancer
- │
- └── Private Subnet
-        │
-        ├── EC2
-        └── RDS
+```mermaid
+graph TD
+VPC --> Public_Subnet
+VPC --> Private_Subnet
+
+Public_Subnet --> Load_Balancer
+Private_Subnet --> Database
 ```
 
-## Why it was required
+Typical architecture:
 
-Infrastructure layers should be separated.
-
-Example:
-
-Public Layer
-
-* load balancer
-* web servers
-
-Private Layer
-
-* application servers
-* databases
-
-This improves **security and architecture design**.
+| Layer | Components |
+|------|-------------|
+| Public | Load balancer |
+| App | EC2 |
+| Data | Database |
 
 ---
 
-# PART 7 — INTERNET CONNECTIVITY
+# 7. Internet Gateway
 
-Internet connectivity is provided by **Internet Gateway (IGW)**.
+Internet access requires an Internet Gateway.
 
-```
-Internet
-   │
-   ▼
-Internet Gateway
-   │
-   ▼
-Route Table
-   │
-   ▼
-Public Subnet
+```mermaid
+graph TD
+User --> Internet
+Internet --> Internet_Gateway
+Internet_Gateway --> Route_Table
+Route_Table --> Public_Subnet
 ```
 
-Request flow:
-
-```
-User
- ↓
-Internet
- ↓
-IGW
- ↓
-Route Table
- ↓
-EC2
-```
-
-## Why it was required
-
-Instances must communicate with:
-
-* users
-* external APIs
-* external systems
-
-IGW enables **public internet access**.
+Without an IGW, instances cannot access the internet.
 
 ---
 
-# PART 8 — PRIVATE INTERNET ACCESS (NAT GATEWAY)
+# 8. NAT Gateway
 
-Private instances cannot be accessed from the internet.
+Private instances use NAT Gateway for outbound access.
 
-Outbound internet access is enabled using **NAT Gateway**.
-
-```
-Private EC2
-     │
-     ▼
-Route Table
-     │
-     ▼
-NAT Gateway
-     │
-     ▼
-Internet Gateway
-     │
-     ▼
-Internet
+```mermaid
+graph TD
+Private_EC2 --> Route_Table
+Route_Table --> NAT_Gateway
+NAT_Gateway --> Internet_Gateway
+Internet_Gateway --> Internet
 ```
 
-## Why it was required
+Purpose:
 
-Private servers often need to:
-
-* download updates
-* access APIs
-* pull packages
-
-But they should **not accept inbound internet traffic**.
-
-NAT solves this.
+- outbound internet access
+- no inbound traffic allowed
 
 ---
 
-# PART 9 — SECURITY LAYERS
+# 9. Security Layers
 
-AWS networking security has two layers.
-
-```
-Layer 1 → Security Groups
-Layer 2 → Network ACLs
-```
-
----
+AWS provides two network security layers.
 
 ## Security Groups
 
-```
-EC2
- │
- ▼
-Security Group
- ├── Inbound Rules
- └── Outbound Rules
+Instance firewall.
+
+```mermaid
+graph TD
+Internet --> Security_Group
+Security_Group --> EC2
 ```
 
 Characteristics:
 
-* Stateful
-* Instance-level firewall
-
-### Why it was required
-
-Applications require **fine-grained security rules**.
-
-Example:
-
-Allow:
-
-* HTTP
-* SSH
-
-Block everything else.
+- stateful
+- instance level
 
 ---
 
 ## Network ACL
 
-```
-Subnet
- │
- ▼
-Network ACL
+Subnet firewall.
+
+```mermaid
+graph TD
+Internet --> Network_ACL
+Network_ACL --> Subnet
 ```
 
 Characteristics:
 
-* Stateless
-* Subnet-level firewall
-
-### Why it was required
-
-Security groups protect **instances**.
-
-NACL protects **entire subnet boundaries**.
-
-This creates **defense in depth**.
+- stateless
+- subnet boundary protection
 
 ---
 
-# PART 10 — EC2 INSTANCE ARCHITECTURE
+# 10. EC2 Architecture
 
-```
-User Request
-      │
-      ▼
-Internet
-      │
-      ▼
-Load Balancer
-      │
-      ▼
-EC2 Instance
-      │
-      ▼
-Application
+EC2 provides virtual servers.
+
+```mermaid
+graph TD
+User --> DNS
+DNS --> Load_Balancer
+Load_Balancer --> EC2
+EC2 --> Application
 ```
 
 Inside EC2:
 
-```
-EC2
- │
- ├── Operating System
- ├── Application
- ├── SSM Agent
- └── Monitoring Agent
-```
-
-## Why it was required
-
-Companies need **on-demand compute resources**.
-
-Instead of buying hardware:
-
-* launch VM in minutes
-* scale instantly
-* pay for usage
+- operating system
+- application
+- management agents
 
 ---
 
-# PART 11 — AMAZON EBS ARCHITECTURE
+# 11. EBS Storage
 
-Amazon EBS provides **block storage**.
+Block storage for EC2.
 
-```
-EC2
- │
- ▼
-AWS Internal Storage Network
- │
- ▼
-EBS Storage Cluster
+```mermaid
+graph TD
+EC2 --> Storage_Network
+Storage_Network --> EBS_Cluster
 ```
 
-Characteristics:
+Use cases:
 
-* block device
-* low latency
-* AZ-scoped
-
-## Why it was required
-
-Applications need **persistent disks**.
-
-Examples:
-
-* operating system disks
-* databases
-* transactional workloads
+- OS disks
+- databases
+- transactional systems
 
 ---
 
-# PART 12 — AMAZON EFS ARCHITECTURE
+# 12. EFS Storage
 
-Amazon EFS provides **shared file storage**.
+Shared file system.
 
-```
-Multiple EC2
-      │
-      ▼
-NFS Protocol
-      │
-      ▼
-EFS Mount Target
-      │
-      ▼
-EFS Storage Cluster
+```mermaid
+graph TD
+EC2_A --> EFS
+EC2_B --> EFS
+EC2_C --> EFS
 ```
 
-## Why it was required
+Used for:
 
-Some workloads require **shared file systems**.
-
-Examples:
-
-* container clusters
-* ML workloads
-* shared content platforms
+- shared content
+- container storage
+- ML workloads
 
 ---
 
-# PART 13 — AMAZON S3 ARCHITECTURE
+# 13. S3 Object Storage
 
-Amazon S3 provides **object storage**.
+Object storage service.
 
-```
-User / EC2
-     │
-     ▼
-S3 API Endpoint
-     │
-     ▼
-S3 Control Plane
-     │
-     ▼
-S3 Storage Nodes
+```mermaid
+graph TD
+Client --> S3_API
+S3_API --> Storage_Nodes
+Storage_Nodes --> Replication
 ```
 
-Data structure:
+Structure:
 
-```
-Bucket
-   │
-   └── Objects
-```
+- Bucket
+- Object
 
-## Why it was required
+Benefits:
 
-Block storage cannot scale to billions of files.
-
-S3 provides:
-
-* massive scalability
-* durability
-* cost-efficient storage
+- massive scalability
+- high durability
 
 ---
 
-# PART 14 — LOAD BALANCER COMMUNICATION
+# 14. Load Balancing
 
-```
-User
- │
- ▼
-DNS (Route53)
- │
- ▼
-Load Balancer
- │
- ▼
-Target Group
- │
- ▼
-EC2 Instances
+Traffic distribution system.
+
+```mermaid
+graph TD
+User --> Route53
+Route53 --> Load_Balancer
+Load_Balancer --> EC2_A
+Load_Balancer --> EC2_B
+Load_Balancer --> EC2_C
 ```
 
 Types:
 
-```
-ALB → HTTP / HTTPS
-NLB → TCP / UDP
-GWLB → Security appliances
-```
-
-## Why it was required
-
-Without load balancing:
-
-* single server overload
-* application downtime
-
-Load balancers distribute traffic across servers.
+- Application Load Balancer
+- Network Load Balancer
+- Gateway Load Balancer
 
 ---
 
-# PART 15 — AUTO SCALING
+# 15. Auto Scaling
 
+Automatically adjusts infrastructure.
+
+```mermaid
+graph TD
+CloudWatch --> Scaling_Policy
+Scaling_Policy --> Launch_EC2
+Scaling_Policy --> Terminate_EC2
 ```
-CloudWatch Metrics
-        │
-        ▼
-Auto Scaling Policy
-        │
-        ▼
-Launch / Terminate EC2
+
+Example rule:
+
+CPU > 70% → Launch new instance.
+
+---
+
+# 16. IAM Authentication
+
+Identity and access management.
+
+```mermaid
+graph TD
+User --> IAM_Policy
+IAM_Policy --> AWS_Service
 ```
 
 Example:
 
-```
-CPU > 70%
-   │
-   ▼
-Launch new EC2
-```
-
-## Why it was required
-
-Traffic varies dramatically.
-
-Example:
-
-* product launches
-* seasonal traffic
-
-Auto scaling automatically adjusts infrastructure.
+EC2 → IAM Role → S3 access.
 
 ---
 
-# PART 16 — IAM AUTHENTICATION FLOW
+# 17. Systems Manager
 
+Server management without SSH.
+
+```mermaid
+graph TD
+EC2 --> SSM_Agent
+SSM_Agent --> Systems_Manager
 ```
-User / Service
-      │
-      ▼
-IAM Policy
-      │
-      ▼
-AWS Service
-```
-
-Example:
-
-```
-EC2
- │
- ▼
-IAM Role
- │
- ▼
-S3 Access
-```
-
-## Why it was required
-
-Cloud environments require **secure access control**.
-
-IAM provides:
-
-* authentication
-* authorization
-* least privilege access
-
----
-
-# PART 17 — SYSTEMS MANAGER (SSM)
-
-```
-EC2 Instance
-     │
-     ▼
-SSM Agent
-     │
-     ▼
-SSM Endpoint
-     │
-     ▼
-Systems Manager Service
-```
-
-Protocol:
-
-```
-HTTPS (443)
-```
-
-## Why it was required
-
-Traditional server access used:
-
-* SSH
-* RDP
-
-Problems:
-
-* open ports
-* security risks
-* key management
-
-SSM removes the need for direct access.
-
----
-
-# PART 18 — CLOUDWATCH MONITORING
-
-```
-EC2 Instance
-      │
-      ▼
-CloudWatch Agent
-      │
-      ▼
-CloudWatch Service
-      │
-      ▼
-Metrics / Logs
-      │
-      ▼
-Alarms
-```
-
-## Why it was required
-
-Production systems require monitoring of:
-
-* CPU usage
-* memory usage
-* logs
-* failures
-
-CloudWatch centralizes monitoring.
-
----
-
-# PART 19 — SERVICE COMMUNICATION
-
-Example: EC2 accessing S3.
-
-```
-EC2
- │
- ▼
-IAM Role
- │
- ▼
-Network Path
- │
- ▼
-S3 Service
-```
-
-## Why it was required
-
-AWS services must communicate securely using:
-
-* authentication
-* authorization
-* controlled networking
-
----
-
-# PART 20 — VPC ENDPOINT
-
-Private service access:
-
-```
-EC2
- │
- ▼
-VPC Endpoint
- │
- ▼
-AWS Service
-```
-
-Without endpoint:
-
-```
-EC2 → Internet → AWS Service
-```
-
-With endpoint:
-
-```
-EC2 → AWS Private Network → AWS Service
-```
-
-## Why it was required
 
 Benefits:
 
-* better security
-* reduced latency
-* no internet exposure
+- secure access
+- centralized automation
+- patch management
 
 ---
 
-# PART 21 — COMPLETE APPLICATION ARCHITECTURE
+# 18. CloudWatch Monitoring
 
-Typical production architecture:
+Monitoring and observability system.
 
-```
-User
- │
- ▼
-Route53
- │
- ▼
-CloudFront
- │
- ▼
-Load Balancer
- │
- ▼
-EC2 Auto Scaling
- │
- ▼
-RDS Database
- │
- ▼
-EBS Storage
+```mermaid
+graph TD
+Server --> Monitoring_Agent
+Monitoring_Agent --> CloudWatch
+CloudWatch --> Alerts
 ```
 
-## Why it was required
+Tracks:
 
-Modern applications require:
-
-* global distribution
-* high availability
-* scalability
+- CPU
+- memory
+- logs
+- custom metrics
 
 ---
 
-# PART 22 — DATA FLOW SUMMARY
+# 19. Service Communication
 
-```
-User
- │
- ▼
-DNS
- │
- ▼
-Load Balancer
- │
- ▼
-Application Servers
- │
- ▼
-Database / Storage
+Example communication flow.
+
+```mermaid
+graph TD
+EC2 --> IAM_Role
+IAM_Role --> S3_Service
 ```
 
-This represents the **typical request lifecycle**.
+Services communicate using secure APIs.
 
 ---
 
-# PART 23 — CONTROL PLANE VS DATA PLANE
+# 20. VPC Endpoints
+
+Private access to AWS services.
+
+```mermaid
+graph TD
+EC2 --> VPC_Endpoint
+VPC_Endpoint --> AWS_Service
+```
+
+Benefits:
+
+- private networking
+- improved security
+- no internet exposure
+
+---
+
+# 21. Production Architecture
+
+Typical production setup.
+
+```mermaid
+graph TD
+User --> Route53
+Route53 --> CloudFront
+CloudFront --> Load_Balancer
+Load_Balancer --> AutoScaling_EC2
+AutoScaling_EC2 --> RDS
+```
+
+---
+
+# 22. Request Flow
+
+Application request lifecycle.
+
+```mermaid
+graph TD
+User --> DNS
+DNS --> Load_Balancer
+Load_Balancer --> Application_Server
+Application_Server --> Database
+```
+
+---
+
+# 23. Control Plane vs Data Plane
 
 ## Control Plane
 
@@ -835,20 +489,9 @@ Infrastructure management operations.
 
 Examples:
 
-```
-Create EC2
-Create VPC
-Create S3 Bucket
-```
-
-API examples:
-
-```
-RunInstances
-CreateBucket
-```
-
----
+- create EC2
+- create VPC
+- create S3 bucket
 
 ## Data Plane
 
@@ -856,29 +499,22 @@ Operations interacting with data.
 
 Examples:
 
-```
-Upload file
-Download file
-Send request
-```
-
-API examples:
-
-```
-GET Object
-PUT Object
-```
-
-## Why it was required
-
-Separating planes improves:
-
-* reliability
-* scalability
-* security
-
-Control plane failures do **not impact running workloads**.
+- upload files
+- read objects
+- application requests
 
 ---
 
-# END OF DOCUMENT
+# Final Cloud Stack Model
+
+```mermaid
+graph TD
+Hardware --> Virtualization
+Virtualization --> Networking
+Networking --> Compute
+Compute --> Storage
+Storage --> Security
+Security --> Monitoring
+```
+
+This layered stack powers modern cloud platforms.
