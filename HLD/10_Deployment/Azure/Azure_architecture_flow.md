@@ -2,14 +2,14 @@
 
 ### Interactive + Memory-Friendly Guide
 
-This guide explains **how Azure works internally**.  
+This guide explains **how Azure works internally**.
 
-Goals:
+**Goals:**
 
-✔ Understand **Azure architecture**  
-✔ Learn **why each service exists**  
-✔ Build **mental models you can remember**  
-✔ Quickly revise before interviews  
+✔ Understand Azure architecture  
+✔ Learn why each service exists  
+✔ Build mental models you can remember  
+✔ Quickly revise before interviews
 
 ---
 
@@ -41,7 +41,7 @@ Goals:
 
 # 🧠 Mental Model of Azure
 
-Most internet systems follow this **simple architecture**:
+Most internet systems follow this simple architecture:
 
 
 Internet
@@ -55,7 +55,7 @@ Application Servers
 Database / Storage
 
 
-> Most Azure services exist to **support this flow**.
+> Most Azure services exist to support this flow.
 
 ---
 
@@ -82,18 +82,18 @@ Physical Servers
 
 Traditional hosting problems:
 
-❌ single datacenter failure  
-❌ natural disasters  
-❌ limited scalability  
+❌ Single datacenter failure  
+❌ Natural disasters  
+❌ Limited scalability  
 
 Azure solution:
 
-✔ multiple regions  
-✔ multiple AZs  
-✔ isolated infrastructure
+✔ Multiple regions  
+✔ Multiple AZs  
+✔ Infrastructure isolation
 </details>
 
-**Memory Trick**:
+**Memory Trick**:  
 
 
 Region > AZ > Datacenter > Server
@@ -215,7 +215,7 @@ Route Table
 Public Subnet
 
 
-> Acts as **front door** of your VNet.
+> Acts as the **front door** of your VNet.
 
 ---
 
@@ -231,17 +231,18 @@ NAT Gateway
 Internet
 
 
-✔ outbound allowed  
-❌ inbound blocked
+✔ Outbound allowed  
+❌ Inbound blocked
 
 <details>
 <summary>Why NAT exists</summary>
 
 Private VMs often need to:
 
-* download updates  
-* access APIs  
-* fetch packages  
+* Download updates  
+* Access APIs  
+* Fetch packages  
+
 But must **not expose themselves publicly**
 </details>
 
@@ -249,10 +250,10 @@ But must **not expose themselves publicly**
 
 # 🔐 PART 8 — SECURITY LAYERS
 
-| Layer          | Scope    |
-| -------------- | -------- |
-| Network Security Group (NSG) | VM / Subnet |
-| Azure Firewall / Route Table   | VNet / Subnet |
+| Layer                       | Scope         |
+| ---------------------------- | ------------- |
+| Network Security Group (NSG) | VM / Subnet   |
+| Azure Firewall / Route Table | VNet / Subnet |
 
 ### NSG
 
@@ -322,7 +323,7 @@ Without it:
 
 * One server gets all traffic → crash  
 
-Load balancers **distribute traffic evenly**.
+Load balancers **distribute traffic evenly**
 </details>
 
 ---
@@ -341,11 +342,11 @@ Scale Set deploys new VM
 
 # 💾 PART 12 — STORAGE ACCOUNTS
 
-| Storage | Type           |
-| ------- | -------------- |
-| Managed Disks | Block storage  |
-| Azure Files  | File storage   |
-| Blob Storage | Object storage |
+| Storage         | Type           |
+| --------------- | -------------- |
+| Managed Disks   | Block storage  |
+| Azure Files     | File storage   |
+| Blob Storage    | Object storage |
 
 ---
 
@@ -358,13 +359,16 @@ Container
 
 Used for:
 
-* images, videos, backups, logs
+* images  
+* videos  
+* backups  
+* logs
 
 <details>
 <summary>Why Blob Storage</summary>
 
 Traditional file storage cannot scale to **billions of files**  
-Blob Storage solves this problem.
+Blob Storage solves this problem
 </details>
 
 ---
@@ -539,6 +543,8 @@ Customers Eating → Data Plane
 
 # 🚀 60-Second Revision
 
+Architecture stack:
+
 
 Region
 ↓
@@ -577,3 +583,12 @@ User visits website
 → Load Balancer distributes traffic
 → VM runs application
 → Database stores data
+
+
+> That explains **most Azure architectures**
+
+You can save this as azure-complete-architecture.md and it will be fully self-contained, interactive, readable, and collapsible.
+
+If you want, I can also add full visual diagrams using Mermaid syntax for VNet, VM → Storage communication, and Control/Data Plane flows inside the same Markdown file. That will make it fully visual like your AWS version.
+
+Do you want me to add those diagrams next?
