@@ -1,19 +1,8 @@
-# ☁️ AWS Complete Architecture Master Notes
-
-### Interactive + Memory-Friendly Guide
-
-This guide explains how cloud architecture works inside **Amazon Web Services**.
-
-Goals:
-
-✔ Understand **how AWS works internally**
-✔ Learn **why each service exists**
-✔ Build **easy mental models**
-✔ Quickly revise before interviews
+# AWS Complete Architecture Master Notes
 
 ---
 
-# 📚 Table of Contents
+# Table of Contents
 
 1. Mental Model of AWS
 2. AWS Global Infrastructure
@@ -39,7 +28,7 @@ Goals:
 
 ---
 
-# 🧠 Mental Model of AWS
+# Mental Model of AWS
 
 Most internet systems follow this architecture:
 
@@ -59,7 +48,7 @@ Most AWS services exist to support **this flow**.
 
 ---
 
-# 🌍 PART 1 — AWS GLOBAL INFRASTRUCTURE
+# PART 1 — AWS GLOBAL INFRASTRUCTURE
 
 ```
 AWS Global Network
@@ -106,7 +95,7 @@ Region > AZ > Datacenter > Server
 
 ---
 
-# 🏢 PART 2 — DATACENTER ARCHITECTURE
+#  PART 2 — DATACENTER ARCHITECTURE
 
 Inside AWS datacenters:
 
@@ -124,7 +113,7 @@ Thousands of racks exist in a facility.
 
 ---
 
-# ⚙️ PART 3 — HYPERVISOR (NITRO)
+#  PART 3 — HYPERVISOR (NITRO)
 
 Virtualization layer:
 
@@ -148,7 +137,7 @@ Hypervisor = Building manager
 
 ---
 
-# 🌐 PART 4 — VIRTUAL PRIVATE CLOUD (VPC)
+#  PART 4 — VIRTUAL PRIVATE CLOUD (VPC)
 
 Your private AWS network.
 
@@ -164,7 +153,7 @@ VPC
 
 ---
 
-# 🔀 PART 5 — SUBNETS
+#  PART 5 — SUBNETS
 
 Subnets divide a VPC.
 
@@ -182,7 +171,7 @@ VPC
 
 ---
 
-# 🌍 PART 6 — INTERNET GATEWAY
+#  PART 6 — INTERNET GATEWAY
 
 Connects VPC to the internet.
 
@@ -203,7 +192,7 @@ Think of it as the **front door of your VPC**.
 
 ---
 
-# 🔁 PART 7 — NAT GATEWAY
+#  PART 7 — NAT GATEWAY
 
 Allows private servers to access the internet securely.
 
@@ -222,7 +211,7 @@ Internet
 
 ---
 
-# 🔐 PART 8 — SECURITY LAYERS
+#  PART 8 — SECURITY LAYERS
 
 Two main network security layers.
 
@@ -259,7 +248,7 @@ Stateless firewall.
 
 ---
 
-# 🖥 PART 9 — EC2 COMPUTE
+#  PART 9 — EC2 COMPUTE
 
 Typical request flow.
 
@@ -281,7 +270,7 @@ Application
 
 ---
 
-# ⚖️ PART 10 — LOAD BALANCER
+#  PART 10 — LOAD BALANCER
 
 Distributes traffic.
 
@@ -298,7 +287,7 @@ Load Balancer
 
 ---
 
-# 📈 PART 11 — AUTO SCALING
+#  PART 11 — AUTO SCALING
 
 Automatically launches servers.
 
@@ -310,7 +299,7 @@ Launch new EC2
 
 ---
 
-# 💾 PART 12 — STORAGE TYPES
+#  PART 12 — STORAGE TYPES
 
 Three primary AWS storage systems.
 
@@ -322,7 +311,7 @@ Three primary AWS storage systems.
 
 ---
 
-# 🪣 S3 OBJECT STORAGE
+#  S3 OBJECT STORAGE
 
 ```
 Bucket
@@ -338,7 +327,7 @@ Used for:
 
 ---
 
-# 🔑 PART 13 — IAM (Identity & Access)
+#  PART 13 — IAM (Identity & Access)
 
 Controls permissions.
 
@@ -358,7 +347,7 @@ Security principle:
 
 ---
 
-# 📊 PART 14 — CLOUDWATCH
+#  PART 14 — CLOUDWATCH
 
 Monitoring system.
 
@@ -380,7 +369,7 @@ Monitors:
 
 ---
 
-# 🖥 PART 15 — SYSTEMS MANAGER
+#  PART 15 — SYSTEMS MANAGER
 
 Server management without SSH.
 
@@ -396,7 +385,7 @@ Systems Manager
 
 ---
 
-# 🔗 PART 16 — SERVICE COMMUNICATION
+#  PART 16 — SERVICE COMMUNICATION
 
 Example: EC2 accessing storage.
 
@@ -412,7 +401,7 @@ S3
 
 ---
 
-# 🔒 PART 17 — VPC ENDPOINTS
+#  PART 17 — VPC ENDPOINTS
 
 Private access to AWS services.
 
@@ -430,7 +419,7 @@ No internet required.
 
 ---
 
-# 🏗 PART 18 — PRODUCTION ARCHITECTURE
+#  PART 18 — PRODUCTION ARCHITECTURE
 
 Typical production system.
 
@@ -455,7 +444,7 @@ Database
 
 ---
 
-# 🔄 PART 19 — DATA FLOW
+#  PART 19 — DATA FLOW
 
 Application request lifecycle.
 
@@ -475,7 +464,7 @@ Response
 
 ---
 
-# ⚙️ PART 20 — CONTROL PLANE VS DATA PLANE
+#  PART 20 — CONTROL PLANE VS DATA PLANE
 
 AWS services operate using **two layers**.
 
@@ -538,7 +527,7 @@ Infrastructure vs real usage.
 
 ---
 
-# 🚀 60-Second Revision
+#  60-Second Revision
 
 Architecture stack:
 
@@ -572,7 +561,7 @@ CloudWatch
 
 ---
 
-# 🧠 Final Memory Story
+#  Final Memory Story
 
 ```
 User visits website
