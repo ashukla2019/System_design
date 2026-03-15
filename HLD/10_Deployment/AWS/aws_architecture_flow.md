@@ -80,6 +80,8 @@ You have a website hosted on Server 1.
 If traffic spikes, you might buy another server.
 If Server 1 fails, your website goes down.
 
+All servers and storage are in one building or campus(Single datacenters)
+
 Example:
 
 Datacenter (Single location)
