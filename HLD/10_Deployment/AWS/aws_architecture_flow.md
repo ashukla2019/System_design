@@ -71,6 +71,21 @@ Physical Servers
 <details>
 <summary>Show explanation</summary>
 
+What is Traditional Hosting?
+Traditional hosting is the old-school way companies hosted their websites or applications.
+You rent or own physical servers in a single datacenter.
+You manually install operating systems, databases, and applications.
+Everything runs on fixed hardware, often in one location.
+You have a website hosted on Server 1.
+If traffic spikes, you might buy another server.
+If Server 1 fails, your website goes down.
+
+Example:
+
+Datacenter (Single location)
+  ├── Server 1 → Website
+  ├── Server 2 → Database
+  └── Server 3 → Backup
 Problems with traditional hosting:
 
 ❌ single datacenter failure
