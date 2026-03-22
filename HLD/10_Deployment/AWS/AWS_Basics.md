@@ -298,7 +298,30 @@ AWS Cloud Computing
 │   │   ├── Static files (images, videos, documents)
 │   │   ├── Backups / logs / analytics
 │   │   └── Large-scale storage (TBs–PBs)
+|   |  
+│   │├── Large Scale Storage
+│
+│   ├── Best Choice
+│   │   → Amazon S3
 │   │
+│   ├── Why
+│   │   → Unlimited storage (TBs → PBs → Exabytes)
+│   │   → High durability (11 9’s)
+│   │   → Cost-effective for huge data
+│   │
+│   ├── When to Use
+│   │   ├── Big data / analytics
+│   │   ├── Logs, backups
+│   │   ├── Media storage (images/videos)
+│   │   └── Data lakes
+│   │
+│   ├── Not Suitable
+│   │   ├── OS / boot disk
+│   │   ├── Databases (high I/O)
+│   │   └── Low-latency workloads
+│   │
+│   └── Memory
+│       → “If data is huge → S3”
 │   ├── How It Works
 │   │   ├── Stores data as objects in buckets
 │   │   └── EC2/App → API (HTTP) → S3
