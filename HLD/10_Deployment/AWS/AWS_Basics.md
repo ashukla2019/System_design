@@ -359,6 +359,11 @@ AWS Cloud Computing
 │   ├── How It Works
 │   │   ├── Network file system (NFS)
 │   │   └── EC2 → Network → EFS
+|   |    
+│   │   ├── How It Works
+│ → EFS is created inside a VPC
+│ → Mounted to EC2 using NFS protocol (port 2049)
+│ → EC2 instances connect via mount targets in each AZ
 │   │
 │   └── Analogy
 │       → Shared network drive
