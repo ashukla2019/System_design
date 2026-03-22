@@ -245,7 +245,10 @@ AWS Cloud Computing
 │   └── Analogy
 │       → Building blocks of cloud compute architecture
 │
-├── 6. Load Balancing
+├── 6. Load Balancing(ALB, NLB, GWLB)
+| ALB: allplication load balancing(http,         https: level7)
+| NLB(network: tcp/udp)layer4
+| GWLB: Gateway(security appliances)
 │
 │   ├── Why Load Balancer
 │   │   → Distributes traffic efficiently across multiple EC2 instances
