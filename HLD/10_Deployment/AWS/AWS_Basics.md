@@ -72,9 +72,7 @@ AWS Cloud Computing
 │           → Data protection
 │           → IAM policies and user access
 │
-│
-|
-|├── 2. AWS Global Infrastructure
+│── 2. AWS Global Infrastructure
 │
 ├── Regions
 │
@@ -84,15 +82,15 @@ AWS Cloud Computing
 │   │   → Provide disaster recovery across countries
 │   │
 │   ├── What it Provides
-│   │   ├── Large geographic locations containing multiple data centers
-│   │   ├── Isolation from other regions for fault tolerance
+│   │   ├── Large geographic locations containing multiple Availability Zones (AZs)
+│   │   ├── Complete isolation from other regions for fault tolerance
 │   │   └── Examples:
 │   │       ├── us-east-1 → Northern Virginia
 │   │       ├── eu-west-1 → Ireland
 │   │       └── ap-south-1 → Mumbai
 │   │
 │   └── Analogy
-│       → Like “different cities” in the cloud, each with multiple office buildings (data centers)
+│       → Like “different cities” in the cloud
 │
 ├── Availability Zones (AZs)
 │
@@ -100,15 +98,46 @@ AWS Cloud Computing
 │   │   → Ensure high availability and fault tolerance within a region
 │   │
 │   ├── What it Provides
-│   │   ├── Independent data centers inside a region
-│   │   ├── Connected with low-latency network
+│   │   ├── Logical grouping of one or more Data Centers
+│   │   ├── Isolated from other AZs (fault isolation)
+│   │   ├── Connected with high-speed, low-latency network
 │   │   └── Examples:
 │   │       ├── us-east-1a
 │   │       ├── us-east-1b
 │   │       └── us-east-1c
 │   │
 │   └── Analogy
-│       → Like “multiple buildings in the same city” to ensure services keep running if one building fails
+│       → Like “multiple safe zones (clusters of buildings) in the same city”
+│
+├── Data Centers (Physical Layer)
+│
+│   ├── Why Data Centers
+│   │   → Provide physical infrastructure for computing
+│   │
+│   ├── What it Provides
+│   │   ├── Actual buildings containing hardware
+│   │   ├── Power, cooling, and networking systems
+│   │   ├── Multiple data centers can exist inside one AZ
+│   │   └── Hidden from users (managed by AWS)
+│   │
+│   └── Analogy
+│       → Like “individual buildings inside a safe zone (AZ)”
+│
+├── Physical Servers / Machines
+│
+│   ├── Why Servers
+│   │   → Execute applications and store data
+│   │
+│   ├── What it Provides
+│   │   ├── CPU, RAM, Storage (real hardware)
+│   │   ├── Run:
+│   │   │   ├── Virtual Machines (EC2)
+│   │   │   ├── Containers
+│   │   │   └── Storage systems
+│   │   └── Multiple servers exist inside each data center
+│   │
+│   └── Analogy
+│       → Like “rooms inside a building where actual work happens”
 │
 ├── Edge Locations
 │
@@ -116,29 +145,41 @@ AWS Cloud Computing
 │   │   → Deliver content to users with minimal latency
 │   │
 │   ├── What it Provides
-│   │   ├── Global caching locations for content delivery
+│   │   ├── Global caching locations
 │   │   └── Example: CloudFront CDN
 │   │
 │   └── Analogy
-│       → Like “local pickup stations” near users to deliver files faster
+│       → Like “local pickup stations” near users
 │
 ├── High Availability Concepts
 │
 │   ├── Why
-│   │   → To ensure systems remain available and fault-tolerant
+│   │   → Ensure systems remain available and fault-tolerant
 │   │
 │   ├── What it Provides
-│   │   ├── Multi-AZ deployment → Applications run across multiple AZs
-│   │   ├── Fault-tolerant systems → Continue operating even if some components fail
-│   │   └── Automatic failover → Switch to healthy resources on failure
+│   │   ├── Multi-AZ deployment → Run apps across multiple AZs
+│   │   ├── Fault tolerance → System continues even if one AZ fails
+│   │   ├── Data replication across AZs
+│   │   └── Automatic failover → Switch to healthy resources
 │   │
 │   └── Analogy
-│       → Like having multiple backup offices and automatic rerouting to avoid downtime
+│       → Like having backup offices in different zones of a city
 │
 ├── Key Insight
-│   → Edge locations = speed to the user
-│   → AZs = reliability, redundancy, and actual processing power
+│   → Region = Geographic boundary
+│   → AZ = Fault-isolated infrastructure unit (contains multiple Data Centers)
+│   → Data Center = Physical building
+│   → Server = Actual machine
+│   → Edge locations = Speed (closer to users)
+│   → AZs = Reliability + Compute power
 │
+└── Final Hierarchy (Must Remember)
+    Region
+     └── Availability Zones (AZs)
+          └── Data Centers
+               └── Physical Servers
+|
+|
 |├── Part II – Networking in AWS
 │
 ├── 3. Virtual Private Cloud (VPC)
