@@ -289,60 +289,61 @@ AWS Cloud Computing
 │
 | ├── Part IV – Storage Services
 │
-├── 9. Amazon S3
+├├── 9. Amazon S3
 │
 │   ├── Why
-│   │   → Store and retrieve files at massive scale from anywhere
+│   │   → Store files at massive scale (object storage)
 │   │
-│   ├── Use Cases / When to Use
+│   ├── When to Use
 │   │   ├── Static files (images, videos, documents)
-│   │   ├── Backups and disaster recovery
-│   │   ├── Archival / infrequent access → Glacier or Infrequent Access
+│   │   ├── Backups / logs / analytics
+│   │   └── Large-scale storage (TBs–PBs)
 │   │
-│   ├── Key Features
-│   │   ├── Object storage in buckets
-│   │   ├── Versioning → Maintains object history
-│   │   ├── Lifecycle Policies → Automatic tiering
-│   │   └── Encryption → AWS KMS
+│   ├── How It Works
+│   │   ├── Stores data as objects in buckets
+│   │   └── EC2/App → API (HTTP) → S3
 │   │
 │   └── Analogy
-│       → Like a “cloud hard drive for objects” that scales infinitely
+│       → Cloud storage (like Google Drive)
 │
 ├── 10. Elastic Block Store (EBS)
 │
 │   ├── Why
-│   │   → Persistent block-level storage attached to EC2
+│   │   → Disk storage for EC2 (block storage)
 │   │
-│   ├── Use Cases / When to Use
-│   │   ├── OS disks, application files, databases, logs
-│   │   ├── Persistent storage → Data remains if EC2 stops
-│   │   └── High-performance workloads → gp3/io2; large throughput → st1
+│   ├── When to Use
+│   │   ├── OS (boot disk)
+│   │   ├── Databases
+│   │   └── Applications (low latency)
 │   │
-│   ├── Key Features
-│   │   ├── Virtual hard drive for EC2
-│   │   ├── Snapshots → Backups stored in S3
-│   │   └── Encryption → AWS KMS
+│   ├── How It Works
+│   │   ├── Attached to EC2 as disk
+│   │   └── OS → File System → EBS
 │   │
 │   └── Analogy
-│       → Like attaching a hard drive to your cloud server
+│       → Internal hard drive of server
 │
 ├── 11. Elastic File System (EFS)
 │
 │   ├── Why
-│   │   → Shared network file storage for multiple EC2 instances
+│   │   → Shared storage for multiple EC2
 │   │
-│   ├── Use Cases / When to Use
-│   │   ├── Shared files across multiple servers
-│   │   ├── Centralized storage → Single source of truth
-│   │   ├── Low-latency workloads → General Purpose
-│   │   └── Big data / analytics → Max I/O
+│   ├── When to Use
+│   │   ├── Shared files across servers
+│   │   ├── Microservices / web servers
+│   │   └── Common storage
 │   │
-│   ├── Key Features
-│   │   ├── File sharing between servers
-│   │   └── Performance modes (General Purpose / Max I/O)
+│   ├── How It Works
+│   │   ├── Network file system (NFS)
+│   │   └── EC2 → Network → EFS
 │   │
 │   └── Analogy
-│       → Like a “shared network drive” accessible by many servers at once
+│       → Shared network drive
+│
+└── Quick Memory
+    → S3 = Store
+    → EBS = Run
+    → EFS = Share
 |
 ├── Part V – Database Services
 │
