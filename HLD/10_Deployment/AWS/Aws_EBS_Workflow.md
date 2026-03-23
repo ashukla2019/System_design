@@ -128,6 +128,21 @@ EBS Volume (Block Device)
         │
         ▼
 AWS Network Layer
+
+
+
+What “making a filesystem” means
+Raw block device:
+When you attach a new EBS volume (/dev/xvdf), it’s just a series of raw blocks.
+The OS has no idea what these blocks mean — it’s just a chunk of storage.
+mkfs creates a filesystem:
+mkfs = make filesystem
+-t ext4 tells Linux to use the ext4 filesystem format.
+It writes metadata structures to the disk:
+Superblock: info about the filesystem (size, block count, etc.)
+Inode table: stores info about files (permissions, timestamps, block pointers)
+Block bitmap: tracks which blocks are used/free
+Directory structure: maps file names → inodes
         │
         ▼
 EBS Storage Cluster (AZ)
