@@ -12,6 +12,7 @@ In AWS, block storage is provided by **Amazon EBS (Elastic Block Store)**.
 ---
 
 ## 🔹 Architecture Overview
+```
 EC2 Instance (OS)
 │
 ▼
@@ -22,7 +23,7 @@ EBS Service (replicated within AZ)
 │
 ▼
 Physical Storage (disks in data center)
-
+```
 
 ---
 
