@@ -201,18 +201,7 @@ AWS Cloud Computing
 │   │   │   │   → Connected to Internet Gateway
 │   │   │   │   → Hosts resources needing direct internet access (Web Servers, Load Balancers, Bastion Hosts)
 │   │   │   │   → Example flow: Internet → Internet Gateway → Public Subnet → Web Server
-│   │   │   └── Private Subnet
-│   │   │       → No direct internet access (for security)
-│   │   │       → Outbound internet via NAT Gateway / NAT Instance
-│   │   │       → Hosts Databases, Application Servers, Internal Services
-│   │   ├── Route Tables → Controls traffic flow inside VPC
-│   │   ├── Internet Gateway (IGW) → Enables inbound/outbound internet access
-│   │   ├── NAT Gateway / NAT Instance → Allows private subnet instances to access internet (outbound only)
-│   │   ├── Security Groups → Instance-level, stateful firewall(supports allow rules)
-│   │   ├── Network ACLs → Subnet-level, stateless firewall(supports allow and deny rule)
-│   │   ├── VPC Peering → Direct network connection between VPCs
-│   │   └── VPC Flow Logs → Capture network traffic information
-                    Internet
+                     Internet
                        │
                        ▼
                     Internet Gateway (IGW)
@@ -228,6 +217,32 @@ AWS Cloud Computing
                        │
                        ▼
                     EC2
+
+│   │   │   └── Private Subnet
+│   │   │       → No direct internet access (for security)
+│   │   │       → Outbound internet via NAT Gateway / NAT Instance
+│   │   │       → Hosts Databases, Application Servers, Internal Services
+                         Private EC2
+                           │
+                           ▼
+                      (VPC uses Route Table to decide next hop → NAT Gateway)
+                           │
+                           ▼
+                      NAT Gateway
+                           │
+                           ▼
+                      Internet Gateway
+                           │
+                           ▼
+                      Internet
+│   │   ├── Route Tables → Controls traffic flow inside VPC
+│   │   ├── Internet Gateway (IGW) → Enables inbound/outbound internet access
+│   │   ├── NAT Gateway / NAT Instance → Allows private subnet instances to access internet (outbound only)
+│   │   ├── Security Groups → Instance-level, stateful firewall(supports allow rules)
+│   │   ├── Network ACLs → Subnet-level, stateless firewall(supports allow and deny rule)
+│   │   ├── VPC Peering → Direct network connection between VPCs
+│   │   └── VPC Flow Logs → Capture network traffic information
+               
 
 
 │   │
@@ -464,5 +479,25 @@ AWS Cloud Computing
 │       → Threat detection service monitoring suspicious activity
 │
 │
+          Total production architecture
+                    User
+                     │
+                     ▼
+                    Route53
+                     │
+                     ▼
+                    CloudFront
+                     │
+                     ▼
+                    Load Balancer
+                     │
+                     ▼
+                    EC2 Auto Scaling
+                     │
+                     ▼
+                    RDS Database
+                     │
+                     ▼
+                    EBS Storage
 ├
 ```
