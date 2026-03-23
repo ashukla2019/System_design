@@ -60,17 +60,6 @@ AWS Cloud Computing
 │   │
 │   └── Shared Responsibility Model
 │
-│       ├── AWS Responsibility (Security OF the Cloud)
-│       │   → Physical data centers
-│       │   → Hardware infrastructure
-│       │   → Networking infrastructure
-│       │   → Global infrastructure
-│       │
-│       └── Customer Responsibility (Security IN the Cloud)
-│           → Operating systems
-│           → Applications
-│           → Data protection
-│           → IAM policies and user access
 │
 │── 2. AWS Global Infrastructure
 │
