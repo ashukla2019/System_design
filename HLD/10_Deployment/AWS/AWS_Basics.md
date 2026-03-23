@@ -94,6 +94,19 @@ AWS Cloud Computing
 │   │       ├── us-east-1a
 │   │       ├── us-east-1b
 │   │       └── us-east-1c
+
+             Region
+             ├── AZ1
+             │   ├── Data Center
+             │   └── Data Center
+             │
+             ├── AZ2
+             │   ├── Data Center
+             │   └── Data Center
+             │
+             └── AZ3
+                 ├── Data Center
+                 └── Data Center
 │   │
 │   └── Analogy
 │       → Like “multiple safe zones (clusters of buildings) in the same city”
@@ -166,7 +179,9 @@ AWS Cloud Computing
     Region
      └── Availability Zones (AZs)
           └── Data Centers
-               └── Physical Servers
+               └── Physical Servers(CPU, RAM, SSD, Networking interface)
+                        └── Hypervisor(A hypervisor is the virtualization layer that sits on physical hardware and enables multiple isolated EC2 instances to run on a single server)
+                              └── EC2
 |
 |
 |├── Part II – Networking in AWS
@@ -197,6 +212,24 @@ AWS Cloud Computing
 │   │   ├── Network ACLs → Subnet-level, stateless firewall(supports allow and deny rule)
 │   │   ├── VPC Peering → Direct network connection between VPCs
 │   │   └── VPC Flow Logs → Capture network traffic information
+                    Internet
+                       │
+                       ▼
+                    Internet Gateway (IGW)
+                       │
+                       ▼
+                    VPC
+                       │
+                       ▼
+                    Route Table
+                       │
+                       ▼
+                    Public Subnet
+                       │
+                       ▼
+                    EC2
+
+
 │   │
 │   └── Analogy
 │       → Like creating your own “private neighborhood” in the cloud, with roads, gates, and security rules
