@@ -115,17 +115,28 @@ Disaster recovery
 Volume cloning
 
 Full End-to-End Flow
-User/Application
+User / Application
         │
         ▼
-EC2 Instance (OS + File System)
+EC2 Instance (Operating System + File System)
         │
+        │  OS uses VFS + filesystem (e.g., ext4) to map
+        │  file names → inodes → logical blocks
         ▼
 EBS Volume (Block Device)
         │
+        │  Block device driver (NVMe / virtio-blk) queues I/O
+        │  Sends requests over the AWS internal network
         ▼
 AWS Network Layer
-
+        │
+        │  Transfers block I/O to the EBS service within the same AZ
+        ▼
+EBS Storage Cluster (AZ)
+        │
+        │  Handles replication, snapshots, encryption, and IOPS
+        ▼
+Physical Disks (SSD/HDD)
 
 
 What “making a filesystem” means
@@ -139,10 +150,3 @@ It writes metadata structures to the disk:
 Superblock: info about the filesystem (size, block count, etc.)
 Inode table: stores info about files (permissions, timestamps, block pointers)
 Block bitmap: tracks which blocks are used/free
-Directory structure: maps file names → inodes
-        │
-        ▼
-EBS Storage Cluster (AZ)
-        │
-        ▼
-Physical Disks
