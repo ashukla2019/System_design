@@ -20,7 +20,7 @@ In AWS, object storage is provided by **Amazon S3 (Simple Storage Service)**.
 ---
 
 ## 🔹 Architecture Overview
-
+```
 User/Application
 │
 ▼
@@ -34,7 +34,7 @@ Multiple AZ Replication
 │
 ▼
 Physical Storage (Disks)
-
+```
 
 ---
 
@@ -99,6 +99,7 @@ Standard-IA (infrequent access)
 Glacier (archival)
 Glacier Deep Archive
 
+Full working:
 User/Application
         │
         ▼
