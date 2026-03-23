@@ -166,6 +166,7 @@ Region
 - Azure VM Agent + Azure Run Command / Azure Automation + Azure Bastion
 
 **Flow:**
+'''
 Admin/User (Console / CLI / PowerShell / SDK)
 │
 ▼
@@ -179,3 +180,4 @@ Azure VM (Execution / Session)
 │
 ▼
 Output & Logs → Azure Monitor / Storage / Log Analytics
+'''
