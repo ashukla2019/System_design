@@ -66,42 +66,39 @@ mount /dev/xvdf /data
 Now it behaves like a local disk.
 
 4️⃣ Read/Write Flow
-```
 Application (syscalls: read/write)
     │
-    │  The app calls read(), write(), open(), close() etc.
-    │  These are **user-space → kernel-space transitions (system calls)**.
+    │ The application calls system calls like read(), write(), open(), close(), etc.
+    │ These are **user-space → kernel-space transitions**.
     ▼
 VFS + ext4 (maps file → block)
     │
-    │  VFS (Virtual File System) abstracts the filesystem.
-    │  ext4 maps file paths and offsets → specific logical blocks.
-    │  Handles journaling, metadata, inode management.
+    │ The **VFS (Virtual File System)** abstracts the filesystem.
+    │ ext4 maps file paths and file offsets → specific logical blocks on the device.
+    │ Handles **journaling, metadata management, inode structures**, and directories.
     ▼
 Block Device Driver (queues I/O)
     │
-    │  Converts filesystem block requests → device-level I/O.
-    │  Manages queues, caching, and error handling.
-    │  For EBS, this is usually the NVMe or virtio-blk driver.
+    │ Converts filesystem block requests → device-level I/O operations.
+    │ Manages **I/O queues, caching, and error handling**.
+    │ For EBS, this is usually the **NVMe** or **virtio-blk** driver in Linux.
     ▼
 AWS Internal Network
     │
-    │  The block request travels over the AWS AZ network to EBS.
-    │  Even though the volume seems “attached”, it is **remote storage**.
-    │  Network latency is minimal but exists.
+    │ The block I/O request travels over the **AWS Availability Zone network** to the EBS service.
+    │ Although the volume appears “attached,” it is actually **remote storage**.
+    │ Network latency exists but is usually minimal within the same AZ.
     ▼
 EBS Volume (replication, durability)
     │
-    │  AWS service receives the request.
-    │  Ensures data is replicated (usually 3 copies in AZ).
-    │  Handles IOPS provisioning, snapshots, encryption if enabled.
+    │ The **EBS service** receives the request.
+    │ Ensures **data replication** (usually 3 copies in the same AZ).
+    │ Handles **IOPS provisioning, snapshots, and encryption** if enabled.
     ▼
 Physical Disks (SSD/HDD)
     │
-    │  Data is finally written to persistent storage media.
-    │  For reads, the process reverses back to the app.
-Data travels over AWS internal network (not truly local)
-```
+    │ Data is finally written to persistent storage media.
+    │ For reads, the process is **reversed**: data → EBS → AWS network → block driver → VFS → application.
 
 5️⃣ Data Storage Internals
 Data is split into blocks (e.g., 4KB, 8KB)
