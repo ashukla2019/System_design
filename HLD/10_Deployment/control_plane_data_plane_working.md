@@ -73,7 +73,7 @@ Cloud services operate using two key planes:
 ## 🔹 Global Infrastructure Mapping
 
 **Control Plane (management)**
-
+```
 Region / Location
 │ ├── AWS: us-east-1, eu-west-1
 │ └── Azure: East US, West Europe
@@ -92,11 +92,10 @@ Resource provisioning & configuration
 ├── Load balancer setup
 ├── Auto scaling policies
 └── DNS / Traffic routing rules
-
+```
 
 **Data Plane (execution / I/O)**
-
-
+```
 Actual compute workloads
 │ ├── EC2 / VM running applications
 │ └── Containers / Functions
@@ -114,7 +113,7 @@ Network traffic
 Logs & Monitoring
 ├── CloudWatch / Azure Monitor
 └── Data plane metrics collection
-
+```
 
 ---
 
@@ -124,6 +123,7 @@ Logs & Monitoring
 **Azure:** Virtual Machine (VM)
 
 **Control Plane:**
+```
 User/Admin ──► Launch EC2 / VM
 │
 ▼
@@ -131,6 +131,7 @@ Configure instance type, OS, networking, IAM
 │
 ▼
 Attach Storage / Security / Scaling Policies
+```
 
 **Data Plane:**
 EC2 / VM ──► Processes application workload
