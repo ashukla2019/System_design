@@ -49,7 +49,7 @@ Hypervisor
         ▼
 Virtual Machines (EC2)
 ```
-
+A hypervisor is the virtualization layer that sits on physical hardware and enables multiple isolated EC2 instances to run on a single server.
 ## Why it was required
 
 Traditional hosting had problems:
