@@ -32,6 +32,10 @@ Physical Storage (disks in data center)
 ### 1️⃣ Create Volume
 Create an EBS (Elastic Block Store) volume in a specific Availability Zone.
 Example: 20 GB SSD
+**Steps to Create an EBS Volume**
+Log in to AWS Management Console
+Navigate to “Volumes”
+Click “Create Volume”
 
 Note: EBS is block storage, not traditional network-attached storage. It behaves like a virtual hard drive attached to a single EC2 instance, though it can be accessed over the network by that instance. For shared network storage, consider Amazon EFS.
 
