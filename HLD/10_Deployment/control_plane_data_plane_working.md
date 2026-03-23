@@ -73,7 +73,7 @@ Cloud services operate using two key planes:
 ## 🔹 Global Infrastructure Mapping
 
 **Control Plane (management)**
-```
+
 Region / Location
 │ ├── AWS: us-east-1, eu-west-1
 │ └── Azure: East US, West Europe
@@ -92,10 +92,10 @@ Resource provisioning & configuration
 ├── Load balancer setup
 ├── Auto scaling policies
 └── DNS / Traffic routing rules
-```
+
 
 **Data Plane (execution / I/O)**
-```
+
 Actual compute workloads
 │ ├── EC2 / VM running applications
 │ └── Containers / Functions
@@ -113,7 +113,7 @@ Network traffic
 Logs & Monitoring
 ├── CloudWatch / Azure Monitor
 └── Data plane metrics collection
-```
+
 
 ---
 
@@ -148,13 +148,15 @@ EC2 / VM ──► Processes application workload
 **Azure:** Managed Disks, Blob, Azure Files
 
 **Control Plane:**
+```
 Create volume / disk / bucket / file system
 │
 Attach to instance / VM
 │
 Configure access permissions, lifecycle, replication
-
+```
 **Data Plane:**
+```
 Application → File System / Object Storage
 │
 Read / Write operations
@@ -162,7 +164,7 @@ Read / Write operations
 Replication across AZs / regions
 │
 Snapshot / Backup in progress
-
+```
 
 ---
 
@@ -172,19 +174,22 @@ Snapshot / Backup in progress
 **Azure:** VNet, Subnets, Azure Firewall, NSG, VPN/ExpressRoute
 
 **Control Plane:**
+```
 Create VPC / VNet
 │
 Create subnets / route tables
 │
 Attach Security Groups / NSGs / Firewalls
+```
 
 **Data Plane:**
+```
 Instance → Sends/receives network traffic
 │
 Traffic flows via Load Balancer / NAT / Application Gateway
 │
 Data plane routing executed
-
+```
 
 ---
 
@@ -198,7 +203,7 @@ Deploy function, set triggers, configure permissions
 
 
 **Data Plane:**
-
+```
 Trigger event occurs
 │
 Function executes
@@ -206,7 +211,7 @@ Function executes
 Reads/Writes data to S3 / Blob / Database
 │
 Logs sent to CloudWatch / Azure Monitor
-
+```
 
 ---
 
@@ -216,7 +221,7 @@ Logs sent to CloudWatch / Azure Monitor
 **Azure:** VM Agent / Azure Bastion / Run Command
 
 **Control Plane:**
-
+```
 Admin/User → AWS Management Console / CLI / SDK
 │
 Send command / session request
@@ -224,10 +229,10 @@ Send command / session request
 Policy / IAM / RBAC validated
 │
 Command stored in Control Plane
-
+```
 
 **Data Plane:**
-
+```
 VM Agent on EC2 / Azure VM
 │
 Pulls command
@@ -235,7 +240,7 @@ Pulls command
 Executes command inside VM
 │
 Output / logs returned to Management / Monitor
-
+```
 
 ---
 
