@@ -55,7 +55,14 @@ EC2 ───── attaches ─────► EBS Volume
 
 ```bash
 mkfs -t ext4 /dev/xvdf
+      mkfs -t ext4 /dev/xvdf
+      mkfs = make filesystem → this command formats a block device with a filesystem.
+      -t ext4 = specifies the type of filesystem. ext4 is a common Linux filesystem that supports large volumes and journaling.
+      /dev/xvdf = the device you are formatting (the additional EBS volume).
 mount /dev/xvdf /data
+      mount = attaches a filesystem to a directory so you can access it.
+      /dev/xvdf = the device you formatted.
+      /data = the directory in your EC2 instance where you want the volume to be accessible.
 Now it behaves like a local disk.
 
 4️⃣ Read/Write Flow
