@@ -66,23 +66,42 @@ mount /dev/xvdf /data
 Now it behaves like a local disk.
 
 4️⃣ Read/Write Flow
-Application
-   │
-   ▼
-Operating System (File System)
-   │
-   ▼
-Block Device Driver
-   │
-   ▼
+```
+Application (syscalls: read/write)
+    │
+    │  The app calls read(), write(), open(), close() etc.
+    │  These are **user-space → kernel-space transitions (system calls)**.
+    ▼
+VFS + ext4 (maps file → block)
+    │
+    │  VFS (Virtual File System) abstracts the filesystem.
+    │  ext4 maps file paths and offsets → specific logical blocks.
+    │  Handles journaling, metadata, inode management.
+    ▼
+Block Device Driver (queues I/O)
+    │
+    │  Converts filesystem block requests → device-level I/O.
+    │  Manages queues, caching, and error handling.
+    │  For EBS, this is usually the NVMe or virtio-blk driver.
+    ▼
 AWS Internal Network
-   │
-   ▼
-EBS Volume
-   │
-   ▼
-Physical Disks
+    │
+    │  The block request travels over the AWS AZ network to EBS.
+    │  Even though the volume seems “attached”, it is **remote storage**.
+    │  Network latency is minimal but exists.
+    ▼
+EBS Volume (replication, durability)
+    │
+    │  AWS service receives the request.
+    │  Ensures data is replicated (usually 3 copies in AZ).
+    │  Handles IOPS provisioning, snapshots, encryption if enabled.
+    ▼
+Physical Disks (SSD/HDD)
+    │
+    │  Data is finally written to persistent storage media.
+    │  For reads, the process reverses back to the app.
 Data travels over AWS internal network (not truly local)
+```
 
 5️⃣ Data Storage Internals
 Data is split into blocks (e.g., 4KB, 8KB)
