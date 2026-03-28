@@ -76,14 +76,25 @@ First of all open is done:
     ▼
 Path Resolution (VFS)
     │
-    │ "/home/file.txt"
-    │ → dentry (name lookup)
-    │ → inode (actual file)
-    │
-    │ Filesystem (ext4) sets:
-    │   inode->i_fop = ext4_file_operations
+    │"/home/file.txt"
+          ↓
+      VFS path lookup
+          ↓
+      dentry found
+          ↓
+      dentry contains:
+          inode number = 12345
+          super_block → ext4
+          ↓
+      inode not in memory
+          ↓
+      VFS calls ext4_iget(sb, 12345)
+          ↓
+      inode loaded into memory
+          ↓
+       ext4 sets:
+       inode->i_fop = ext4_file_operations
     ▼
-
 struct file Creation (VFS)
     │
     │ Kernel allocates struct file
