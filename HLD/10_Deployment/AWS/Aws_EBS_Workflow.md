@@ -72,7 +72,7 @@ Application
     │ open(), read(), write()
     │ → triggers system calls (user → kernel transition)
 
-open:
+First of all open is done:
     ▼
 Path Resolution (VFS)
     │
