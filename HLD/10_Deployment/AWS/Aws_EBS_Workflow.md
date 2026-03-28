@@ -66,39 +66,36 @@ mount /dev/xvdf /data
 Now it behaves like a local disk.
 
 4️⃣ Read/Write Flow
-Application (syscalls: read/write)
+
+Application
     │
-    │ The application calls system calls like read(), write(), open(), close(), etc.
-    │ These are **user-space → kernel-space transitions**.
+    │ open(), read(), write()
+    │ → triggers system calls (user → kernel transition)
+
+open:
     ▼
-VFS + ext4 (maps file → block)
+Path Resolution (VFS)
     │
-    │ The **VFS (Virtual File System)** abstracts the filesystem.
-    │ ext4 maps file paths and file offsets → specific logical blocks on the device.
-    │ Handles **journaling, metadata management, inode structures**, and directories.
+    │ "/home/file.txt"
+    │ → dentry (name lookup)
+    │ → inode (actual file)
+    │
+    │ Filesystem (ext4) sets:
+    │   inode->i_fop = ext4_file_operations
     ▼
-Block Device Driver (queues I/O)
+
+struct file Creation (VFS)
     │
-    │ Converts filesystem block requests → device-level I/O operations.
-    │ Manages **I/O queues, caching, and error handling**.
-    │ For EBS, this is usually the **NVMe** or **virtio-blk** driver in Linux.
+    │ Kernel allocates struct file
+    │ Initializes:
+    │   file->f_inode = inode
+    │   file->f_pos   = 0
+    │   file->f_op    = inode->i_fop   🔥
+    │
+    │ fd → struct file mapping stored
     ▼
-AWS Internal Network
-    │
-    │ The block I/O request travels over the **AWS Availability Zone network** to the EBS service.
-    │ Although the volume appears “attached,” it is actually **remote storage**.
-    │ Network latency exists but is usually minimal within the same AZ.
-    ▼
-EBS Volume (replication, durability)
-    │
-    │ The **EBS service** receives the request.
-    │ Ensures **data replication** (usually 3 copies in the same AZ).
-    │ Handles **IOPS provisioning, snapshots, and encryption** if enabled.
-    ▼
-Physical Disks (SSD/HDD)
-    │
-    │ Data is finally written to persistent storage media.
-    │ For reads, the process is **reversed**: data → EBS → AWS network → block driver → VFS → application.
+
+
 
 5️⃣ Data Storage Internals
 Data is split into blocks (e.g., 4KB, 8KB)
