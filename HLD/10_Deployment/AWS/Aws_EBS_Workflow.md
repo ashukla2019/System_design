@@ -94,10 +94,118 @@ struct file Creation (VFS)
     │
     │ fd → struct file mapping stored
     ▼
+Read/Write:
 
+VFS Entry (read/write)
+    │
+    │ read(fd, ...) / write(fd, ...)
+    │
+    │ fd → struct file
+    │
+    │ VFS calls:
+    │   file->f_op->read_iter()
+    │   file->f_op->write_iter()
+    │
+    │ (filesystem-specific function)
+    ▼
 
+Filesystem Layer (ext4 — Mapping happens here 🔥)
+ext4 Filesystem
+    │
+    │ Uses inode + offset
+    │
+    │ Mapping:
+    │   offset → logical block
+    │   inode → physical disk block
+    │
+    │ Example:
+    │   offset 8192 → block 2
+    │   inode → disk block 876
+    │
+    │ Handles:
+    │   - journaling
+    │   - metadata
+    │   - block allocation
+    ▼
+page cache:
 
-5️⃣ Data Storage Internals
+Page Cache (RAM)
+    │
+    │ WRITE:
+    │   data written to memory first (dirty pages)
+    │   later flushed to disk
+    │
+    │ READ:
+    │   if data in cache → return immediately
+    │   else → go to disk
+    ▼
+
+Block Layer
+    │
+    │ Converts:
+    │   filesystem block → sectors
+    │
+    │ Example:
+    │   block 876 → sectors 7008–7015
+    │
+    │ Handles:
+    │   - I/O scheduling
+    │   - request merging
+    │   - queueing
+    ▼
+
+Block Device Driver
+    │
+    │ Converts request → hardware command
+    │
+    │ Example:
+    │   READ/WRITE sectors → NVMe command
+    │
+    │ For EBS:
+    │   appears as NVMe device (/dev/nvmeX)
+    ▼
+
+AWS Network Layer
+    │
+    │ NVMe request → Nitro → AWS internal network
+    │
+    │ EBS is NOT local disk
+    │ → remote block storage in same AZ
+    ▼
+
+EBS Service(EBS volume)
+    │
+    │ Receives LBA (sector) request
+    │
+    │ Maps:
+    │   LBA → physical storage nodes
+    │
+    │ Handles:
+    │   - replication (multiple copies)
+    │   - durability
+    │   - snapshots (copy-on-write)
+    │   - encryption
+    ▼
+Physical Disk
+    │
+    │ LBA → NAND flash / disk sectors
+    │
+    │ Data is persisted
+
+Two critical mapping:
+File → inode → blocks        (filesystem)
+LBA → physical storage       (EBS)
+
+VFS role:
+fd → struct file → f_op → ext4
+
+struct file is bridge:
+
+fd → file → inode → blocks
+
+read/write = fd → file → ext4 → block → sector → EBS → disk
+
+5️⃣ Data fd → file → inode → blocks Internals
 Data is split into blocks (e.g., 4KB, 8KB)
 Stored across multiple disks in the same AZ
 Automatically replicated
