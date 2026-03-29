@@ -67,141 +67,252 @@ Now it behaves like a local disk.
 
 4️⃣ Read/Write Flow
 
-Application
-    │
-    │ open(), read(), write()
-    │ → triggers system calls (user → kernel transition)
+USER SPACE
+   ↓
+open("/home/user/file.txt")
+   ↓
+────────────────────────────────────
+KERNEL SPACE (VFS)
+────────────────────────────────────
 
-First of all open is done:
-    ▼
-Path Resolution (VFS)
-    │
-    │"/home/file.txt"
-          ↓
-      VFS path lookup
-          ↓
-      dentry found
-          ↓
-      dentry contains:
-          inode number = 12345
-          super_block → ext4
-          ↓
-      inode not in memory
-          ↓
-      VFS calls ext4_iget(sb, 12345)
-          ↓
-      inode loaded into memory
-          ↓
-       ext4 sets:
-       inode->i_fop = ext4_file_operations
-    ▼
-struct file Creation (VFS)
-    │
-    │ Kernel allocates struct file
-    │ Initializes:
-    │   file->f_inode = inode
-    │   file->f_pos   = 0
-    │   file->f_op    = inode->i_fop  
-    │
-    │ fd → struct file mapping stored
-    ▼
-Read/Write:
+[1] PATH STRING
+   "/home/user/file.txt"
+   ↓
+Split into components
+["home", "user", "file.txt"]
+   ↓
 
-VFS Entry (read/write)
-    │
-    │ read(fd, ...) / write(fd, ...)
-    │
-    │ fd → struct file
-    │
-    │ VFS calls:
-    │   file->f_op->read_iter()
-    │   file->f_op->write_iter()
-    │
-    │ (filesystem-specific function)
-    ▼
+[2] DENTRY CACHE LOOKUP (for each component)
+   ↓
+(parent_inode, name) → dentry ?
 
-Filesystem Layer (ext4 — Mapping happens here 🔥)
-ext4 Filesystem
-    │
-    │ Uses inode + offset
-    │
-    │ Mapping:
-    │   offset → logical block
-    │   inode → physical disk block
-    │
-    │ Example:
-    │   offset 8192 → block 2
-    │   inode → disk block 876
-    │
-    │ Handles:
-    │   - journaling
-    │   - metadata
-    │   - block allocation
-    ▼
-page cache:
+   ├── YES (cache hit) ✔
+   │       ↓
+   │    dentry → inode
+   │
+   └── NO (cache miss) ❌
+           ↓
+     [3] FILESYSTEM LOOKUP
+           ↓
+     inode = inode->i_op->lookup()
+           ↓
+     ext4_lookup(parent_inode, name)
+           ↓
+     get inode number from directory
+           ↓
+     ext4_iget(inode_number)
+           ↓
+     inode loaded into memory
+           ↓
+     [4] INODE INITIALIZATION
+           ↓
+     inode->i_op  = ext4_inode_operations
+     inode->i_fop = ext4_file_operations
+           ↓
+     [5] CREATE DENTRY
+           ↓
+     dentry->d_inode = inode
+     (cached in dcache)
 
-Page Cache (RAM)
-    │
-    │ WRITE:
-    │   data written to memory first (dirty pages)
-    │   later flushed to disk
-    │
-    │ READ:
-    │   if data in cache → return immediately
-    │   else → go to disk
-    ▼
+────────────────────────────────────
+[6] OPEN() PHASE
+────────────────────────────────────
 
-Block Layer
-    │
-    │ Converts:
-    │   filesystem block → sectors
-    │
-    │ Example:
-    │   block 876 → sectors 7008–7015
-    │
-    │ Handles:
-    │   - I/O scheduling
-    │   - request merging
-    │   - queueing
-    ▼
+struct file *file
+   ↓
+file->f_inode = inode
+file->f_op    = inode->i_fop
+file->f_pos   = 0
+   ↓
+file->f_op->open() → ext4_file_open()
+   ↓
+fdtable[fd] → file*
 
-Block Device Driver
-    │
-    │ Converts request → hardware command
-    │
-    │ Example:
-    │   READ/WRITE sectors → NVMe command
-    │
-    │ For EBS:
-    │   appears as NVMe device (/dev/nvmeX)
-    ▼
+────────────────────────────────────
+[8] READ SYSTEM CALL
+────────────────────────────────────
 
-AWS Network Layer
-    │
-    │ NVMe request → Nitro → AWS internal network
-    │
-    │ EBS is NOT local disk
-    │ → remote block storage in same AZ
-    ▼
+read(fd, buf, size)
+   ↓
+file = fdtable[fd]
+   ↓
+file->f_op->read_iter()
+   ↓
+ext4_file_read_iter()
+   ↓
+generic_file_read_iter()
+   ↓
 
-EBS Service(EBS volume)
-    │
-    │ Receives LBA (sector) request
-    │
-    │ Maps:
-    │   LBA → physical storage nodes
-    │
-    │ Handles:
-    │   - replication (multiple copies)
-    │   - durability
-    │   - snapshots (copy-on-write)
-    │   - encryption
-    ▼
-Physical Disk
-    │
-    │ LBA → NAND flash / disk sectors
-    │
-    │ Data is persisted
+─────────────── 🧠 KEY PART STARTS ───────────────
+
+filemap_read()   ← PAGE CACHE LAYER
+   ↓
+(offset = file->f_pos)
+
+👉 LOGICAL FLOW:
+   file offset (bytes)
+        ↓
+   page index = offset / PAGE_SIZE
+        ↓
+   page cache lookup
+
+(page present?) ── YES ✔ → copy to user
+        │
+        NO ❌
+        ↓
+
+─────────────── EXT4 MAPPING ───────────────
+
+ext4_map_blocks()
+   ↓
+Convert:
+   file offset → logical block number
+
+formula:
+   logical_block = offset / block_size
+
+Example:
+   offset = 8192 bytes
+   block_size = 4096
+   → logical_block = 2
+
+   ↓
+inode → extent tree lookup
+   ↓
+(ext4 uses extents, not direct blocks)
+
+extent:
+   logical_block → physical_block
+
+Example:
+   logical 2 → physical block 5000
+
+   ↓
+
+─────────────── BLOCK LAYER MAPPING ───────────────
+
+physical block → sector
+
+formula:
+   sector = (block * block_size) / 512
+
+Example:
+   block_size = 4096
+   → 1 block = 8 sectors
+
+   block 5000 → sector 40000
+
+   ↓
+
+mpage_readpages()
+   ↓
+submit_bio(READ)
+
+─────────────── BLOCK I/O STACK ───────────────
+
+bio:
+   contains:
+     - sector number
+     - size
+     - buffer
+
+   ↓
+I/O scheduler
+   ↓
+blk-mq
+   ↓
+request queue
+   ↓
+device driver
+
+─────────────── AWS EBS ───────────────
+
+virtual block device
+   ↓
+network virtualization
+   ↓
+AWS storage backend
+   ↓
+SSD disk
+
+   ↓
+data returned ↑ (reverse path)
+   ↓
+page cache updated
+   ↓
+copy_to_user()
+
+────────────────────────────────────
+[9] WRITE SYSTEM CALL
+────────────────────────────────────
+
+write(fd, buf, size)
+   ↓
+file = fdtable[fd]
+   ↓
+file->f_op->write_iter()
+   ↓
+ext4_file_write_iter()
+   ↓
+generic_perform_write()
+
+─────────────── WRITE PATH ───────────────
+
+copy data → page cache
+   ↓
+mark page DIRTY
+   ↓
+update file offset
+   ↓
+(return to user immediately) ✔
+
+─────────────── WRITEBACK (ASYNC) ───────────────
+
+writeback thread
+   ↓
+ext4_writepages()
+   ↓
+
+👉 SAME MAPPING HAPPENS:
+
+offset → logical block → physical block → sector
+
+   ↓
+mpage_writepages()
+   ↓
+submit_bio(WRITE)
+   ↓
+block layer → driver → EBS → disk
+
+────────────────────────────────────
+🔗 COMPLETE DATA TRANSFORMATION
+────────────────────────────────────
+
+USER BUFFER
+   ↓
+file offset (bytes)
+   ↓
+PAGE CACHE (4KB pages)
+   ↓
+EXT4:
+   offset → logical block
+   ↓
+EXTENTS:
+   logical → physical block
+   ↓
+BLOCK LAYER:
+   block → sector (512B units)
+   ↓
+BIO:
+   sector-based I/O
+   ↓
+DRIVER:
+   hardware command
+   ↓
+EBS:
+   network storage
+   ↓
+SSD
 
 Two critical mapping:
 File → inode → blocks        (filesystem)
