@@ -101,7 +101,7 @@ struct file Creation (VFS)
     │ Initializes:
     │   file->f_inode = inode
     │   file->f_pos   = 0
-    │   file->f_op    = inode->i_fop   🔥
+    │   file->f_op    = inode->i_fop  
     │
     │ fd → struct file mapping stored
     ▼
@@ -266,3 +266,20 @@ It writes metadata structures to the disk:
 Superblock: info about the filesystem (size, block count, etc.)
 Inode table: stores info about files (permissions, timestamps, block pointers)
 Block bitmap: tracks which blocks are used/free
+
+
+VFS path lookup:
+
+open("/home/user/file.txt")
+
+1. Start at root inode
+2. Lookup "home"
+   → found in dcache ✔
+3. Lookup "user"
+   → not in cache ❌
+   → call ext4_lookup()
+   → create dentry + inode ✔
+4. Lookup "file.txt"
+   → found in cache ✔
+
+Final inode returned
