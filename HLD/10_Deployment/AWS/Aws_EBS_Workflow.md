@@ -134,115 +134,66 @@ fdtable[fd] → file*
 [8] READ SYSTEM CALL
 ────────────────────────────────────
 
+[ USER CALL ]
 read(fd, buf, size)
-   ↓
-file = fdtable[fd]
-   ↓
-file->f_op->read_iter()
-   ↓
-ext4_file_read_iter()
-   ↓
-generic_file_read_iter()
-   ↓
-
-─────────────── KEY PART STARTS ───────────────
-
-filemap_read()   ← PAGE CACHE LAYER
-   ↓
-(offset = file->f_pos)
-
- LOGICAL FLOW:
-   file offset (bytes)
         ↓
-   page index = offset / PAGE_SIZE
+[ GET FILE OBJECT ]
+fd → file
         ↓
-   page cache lookup
-
-(page present?) ── YES  → copy to user
-        │
-        NO 
+[ CALL FILE OPERATION ]
+file → f_op → read_iter()
         ↓
-
-─────────────── EXT4 MAPPING ───────────────
-
-ext4_map_blocks()
-   ↓
-Convert:
-   file offset → logical block number
-
-formula:
-   logical_block = offset / block_size
-
-Example:
-   offset = 8192 bytes
-   block_size = 4096
-   → logical_block = 2
-
-   ↓
-inode → extent tree lookup
-   ↓
-(ext4 uses extents, not direct blocks)
-
-extent:
-   logical_block → physical_block
-
-Example:
-   logical 2 → physical block 5000
-
-   ↓
-
-─────────────── BLOCK LAYER MAPPING ───────────────
-
-physical block → sector
-
-formula:
-   sector = (block * block_size) / 512
-
-Example:
-   block_size = 4096
-   → 1 block = 8 sectors
-
-   block 5000 → sector 40000
-
-   ↓
-
-mpage_readpages()
-   ↓
-submit_bio(READ)
-
-─────────────── BLOCK I/O STACK ───────────────
-
-bio:
-   contains:
-     - sector number
-     - size
-     - buffer
-
-   ↓
-I/O scheduler
-   ↓
-blk-mq
-   ↓
-request queue
-   ↓
-device driver
-
-─────────────── AWS EBS ───────────────
-
-virtual block device
-   ↓
-network virtualization
-   ↓
-AWS storage backend
-   ↓
-SSD disk
-
-   ↓
-data returned ↑ (reverse path)
-   ↓
-page cache updated
-   ↓
-copy_to_user()
+[ PAGE CACHE CHECK ]
+filemap_read()
+        ↓
+ ┌───────────────────────────────┐
+ │ Is data in PAGE CACHE (RAM)? │
+ └──────────────┬────────────────┘
+                │
+        ┌───────┴────────┐
+        │                │
+      YES                NO 
+        │                │
+        ▼                ▼
+[ COPY TO USER ]     [ FIND DATA ON DISK ]
+copy_to_user()            ↓
+        │          offset = file->f_pos
+        │                ↓
+        │      logical_block = offset / block_size
+        │                ↓
+        │      ext4_map_blocks()
+        │                ↓
+        │   inode → extent tree lookup
+        │                ↓
+        │   logical → physical block
+        │                ↓
+        │   convert to sector number
+        │                ↓
+        │      submit_bio(READ)
+        │                ↓
+        │   ┌──────────────────────────────┐
+        │   │   BLOCK LAYER (Linux)        │
+        │   │   I/O scheduler + blk-mq     │
+        │   └──────────────┬───────────────┘
+        │                  ↓
+        │        [ VIRTUAL BLOCK DEVICE ]
+        │        (EBS volume attached)
+        │                  ↓
+        │   ┌──────────────────────────────┐
+        │   │   NETWORK (inside cloud)     │
+        │   └──────────────┬───────────────┘
+        │                  ↓
+        │        [ AWS STORAGE BACKEND ]
+        │              (SSD)
+        │                  ↓
+        │        data returned ↑
+        │                  ↓
+        │     data → PAGE CACHE (RAM)
+        │                  ↓
+        └────────► [ COPY TO USER ]
+                       copy_to_user()
+                            ↓
+                         DONE 
 
 ────────────────────────────────────
 [9] WRITE SYSTEM CALL
