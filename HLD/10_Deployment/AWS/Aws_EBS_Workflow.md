@@ -55,10 +55,12 @@ EC2 ───── attaches ─────► EBS Volume
 
 ```bash
 mkfs -t ext4 /dev/xvdf
-      mkfs -t ext4 /dev/xvdf
-      mkfs = make filesystem → this command formats a block device with a filesystem.
-      -t ext4 = specifies the type of filesystem. ext4 is a common Linux filesystem that supports large volumes and journaling.
-      /dev/xvdf = the device you are formatting (the additional EBS volume).
+      Erase existing data on /dev/xvdf (if any)
+      Create a fresh ext4 filesystem structure, including:
+      Superblock (metadata about the filesystem)
+      Inodes (file metadata structures)
+      Journaling system (for crash recovery)
+      Make the device ready to be mounted and used for storing files
 mount /dev/xvdf /data
       mount = attaches a filesystem to a directory so you can access it.
       /dev/xvdf = the device you formatted.
@@ -94,7 +96,7 @@ Split into components
            ↓
      [3] FILESYSTEM LOOKUP
            ↓
-     inode = inode->i_op->lookup()
+     inode = inode->i_op->lookup() //Call the filesystem-specific lookup function for this inode.”
            ↓
      ext4_lookup(parent_inode, name)
            ↓
