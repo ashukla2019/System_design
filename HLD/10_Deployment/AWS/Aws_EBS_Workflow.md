@@ -86,11 +86,11 @@ Split into components
    ↓
 (parent_inode, name) → dentry ?
 
-   ├── YES (cache hit) ✔
+   ├── YES (cache hit) 
    │       ↓
    │    dentry → inode
    │
-   └── NO (cache miss) ❌
+   └── NO (cache miss) 
            ↓
      [3] FILESYSTEM LOOKUP
            ↓
@@ -143,22 +143,22 @@ ext4_file_read_iter()
 generic_file_read_iter()
    ↓
 
-─────────────── 🧠 KEY PART STARTS ───────────────
+─────────────── KEY PART STARTS ───────────────
 
 filemap_read()   ← PAGE CACHE LAYER
    ↓
 (offset = file->f_pos)
 
-👉 LOGICAL FLOW:
+ LOGICAL FLOW:
    file offset (bytes)
         ↓
    page index = offset / PAGE_SIZE
         ↓
    page cache lookup
 
-(page present?) ── YES ✔ → copy to user
+(page present?) ── YES  → copy to user
         │
-        NO ❌
+        NO 
         ↓
 
 ─────────────── EXT4 MAPPING ───────────────
@@ -264,7 +264,7 @@ mark page DIRTY
    ↓
 update file offset
    ↓
-(return to user immediately) ✔
+(return to user immediately) 
 
 ─────────────── WRITEBACK (ASYNC) ───────────────
 
@@ -273,7 +273,7 @@ writeback thread
 ext4_writepages()
    ↓
 
-👉 SAME MAPPING HAPPENS:
+ SAME MAPPING HAPPENS:
 
 offset → logical block → physical block → sector
 
@@ -285,7 +285,7 @@ submit_bio(WRITE)
 block layer → driver → EBS → disk
 
 ────────────────────────────────────
-🔗 COMPLETE DATA TRANSFORMATION
+ COMPLETE DATA TRANSFORMATION
 ────────────────────────────────────
 
 USER BUFFER
@@ -385,12 +385,12 @@ open("/home/user/file.txt")
 
 1. Start at root inode
 2. Lookup "home"
-   → found in dcache ✔
+   → found in dcache 
 3. Lookup "user"
-   → not in cache ❌
+   → not in cache 
    → call ext4_lookup()
-   → create dentry + inode ✔
+   → create dentry + inode 
 4. Lookup "file.txt"
-   → found in cache ✔
+   → found in cache 
 
 Final inode returned
