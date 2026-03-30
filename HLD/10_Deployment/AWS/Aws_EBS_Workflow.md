@@ -90,13 +90,13 @@ Split into components
 
    ├── YES (cache hit) 
    │       ↓
-   │    dentry → inode
+   │    dentry → d_inode → inode
    │
    └── NO (cache miss) 
            ↓
      [3] FILESYSTEM LOOKUP
            ↓
-     inode = inode->i_op->lookup() //Call the filesystem-specific lookup function for this inode.”
+     inode = parent_inode->i_op->lookup(parent_inode, dentry, flags); => will call inode->i_op->lookup()
            ↓
      ext4_lookup(parent_inode, name)
            ↓
@@ -111,7 +111,7 @@ Split into components
      inode->i_op  = ext4_inode_operations
      inode->i_fop = ext4_file_operations
            ↓
-     [5] CREATE DENTRY
+     [5] CREATE DENTRY (next time, direct cache hit, not miss)
            ↓
      dentry->d_inode = inode
      (cached in dcache)
