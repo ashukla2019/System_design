@@ -86,35 +86,35 @@ Split into components
 
 [2] DENTRY CACHE LOOKUP (for each component)
    ↓
-(parent_inode, name) → dentry ?
-
-   ├── YES (cache hit) 
-   │       ↓
-   │    dentry → d_inode → inode
-   │
-   └── NO (cache miss) 
-           ↓
-     [3] FILESYSTEM LOOKUP
-           ↓
-     inode = parent_inode->i_op->lookup(parent_inode, dentry, flags); => will call inode->i_op->lookup()
-           ↓
-     ext4_lookup(parent_inode, name)
-           ↓
-     get inode number from directory
-           ↓
-     ext4_iget(inode_number)
-           ↓
-     inode loaded into memory
-           ↓
-     [4] INODE INITIALIZATION
-           ↓
-     inode->i_op  = ext4_inode_operations
-     inode->i_fop = ext4_file_operations
-           ↓
-     [5] CREATE DENTRY (next time, direct cache hit, not miss)
-           ↓
-     dentry->d_inode = inode
-     (cached in dcache)
+[ PATH COMPONENT ]
+(parent_inode, name)
+        │
+        ▼
+   ┌───────────────┐
+   │ dcache lookup │
+   └───────────────┘
+        │
+ ┌──────┴───────┐
+ │              │
+YES            NO
+ │              │
+ ▼              ▼
+dentry->inode   parent_inode->i_op->lookup()
+  │                │
+  │         ┌───────────────────────────┐
+  │         │ filesystem finds inode    │
+  │         │ (disk may be accessed)    │
+  │         └──────────────┬────────────┘
+  │                        ▼
+  │              [4] INODE INITIALIZATION
+  │                 inode->i_op = ext4_inode_operations
+  │                 inode->i_fop = ext4_file_operations
+  │                        ▼
+  │              [5] CREATE DENTRY
+  │                 dentry->d_inode = inode
+  │                 (cached in parent + name)
+  │                        ▼
+  └───────────────► next time cache hit!
 
 ────────────────────────────────────
 [6] OPEN() PHASE
@@ -133,67 +133,71 @@ fdtable[fd] → file*
 ────────────────────────────────────
 [8] READ SYSTEM CALL
 ────────────────────────────────────
-
-[ USER CALL ]
+[1] User calls read()
 read(fd, buf, size)
-        ↓
-[ GET FILE OBJECT ]
+        │
+        ▼
+[2] Get file object from fdtable
 fd → file
-        ↓
-[ CALL FILE OPERATION ]
-file → f_op → read_iter()
-        ↓
-[ PAGE CACHE CHECK ]
+        │
+        ▼
+[3] Call file operation
+file->f_op->read_iter()
+        │
+        ▼
+[4] Check PAGE CACHE (RAM)
 filemap_read()
-        ↓
- ┌───────────────────────────────┐
- │ Is data in PAGE CACHE (RAM)? │
- └──────────────┬────────────────┘
-                │
-        ┌───────┴────────┐
-        │                │
-      YES                NO 
-        │                │
-        ▼                ▼
-[ COPY TO USER ]     [ FIND DATA ON DISK ]
-copy_to_user()            ↓
-        │          offset = file->f_pos
-        │                ↓
-        │      logical_block = offset / block_size
-        │                ↓
-        │      ext4_map_blocks()
-        │                ↓
-        │   inode → extent tree lookup
-        │                ↓
-        │   logical → physical block
-        │                ↓
-        │   convert to sector number
-        │                ↓
-        │      submit_bio(READ)
-        │                ↓
-        │   ┌──────────────────────────────┐
-        │   │   BLOCK LAYER (Linux)        │
-        │   │   I/O scheduler + blk-mq     │
-        │   └──────────────┬───────────────┘
-        │                  ↓
-        │        [ VIRTUAL BLOCK DEVICE ]
-        │        (EBS volume attached)
-        │                  ↓
-        │   ┌──────────────────────────────┐
-        │   │   NETWORK (inside cloud)     │
-        │   └──────────────┬───────────────┘
-        │                  ↓
-        │        [ AWS STORAGE BACKEND ]
-        │              (SSD)
-        │                  ↓
-        │        data returned ↑
-        │                  ↓
-        │     data → PAGE CACHE (RAM)
-        │                  ↓
-        └────────► [ COPY TO USER ]
-                       copy_to_user()
-                            ↓
-                         DONE 
+        │
+ ┌──────┴───────┐
+ │              │
+YES            NO
+ │              │
+ ▼              ▼
+[Copy to user]   [5] Map file offset to disk block
+copy_to_user()      offset = file->f_pos
+                    logical_block = offset / block_size
+
+                    ↓
+[6] Filesystem mapping (EXT4)
+ext4_map_blocks()
+inode → extent tree lookup
+logical_block → physical_block
+
+                    ↓
+[7] Convert block to disk sector
+sector = physical_block * (block_size / 512)
+
+                    ↓
+[8] Submit read request (submit_bio)
+submit_bio(READ)
+
+                    ↓
+[9] Block layer + I/O scheduler
+Linux kernel schedules request via blk-mq
+physical sectors → request queue
+
+                    ↓
+[10] Virtual block device (EBS)
+Disk request sent to virtual block device (EBS volume)
+
+                    ↓
+[11] Network (inside cloud)
+Request traverses AWS network virtualization
+
+                    ↓
+[12] AWS storage backend (SSD)
+EBS retrieves data from SSD
+
+                    ↓
+[13] Data returned to Linux kernel
+Data copied into page cache (RAM)
+
+                    ↓
+[14] Copy to user buffer
+copy_to_user()
+        │
+        ▼
+[DONE] User buffer filled
 
 ────────────────────────────────────
 [9] WRITE SYSTEM CALL
