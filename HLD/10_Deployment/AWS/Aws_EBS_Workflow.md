@@ -133,6 +133,7 @@ fdtable[fd] → file*
 ────────────────────────────────────
 [8] READ SYSTEM CALL
 ────────────────────────────────────
+
 [1] User calls read()
 read(fd, buf, size)
         │
