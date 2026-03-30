@@ -154,18 +154,18 @@ filemap_read()
 YES            NO
  │              │
  ▼              ▼
-[Copy to user]   [5] Map file offset to disk block
+[Copy to user]   [5]  Map file offset to logical block
 copy_to_user()      offset = file->f_pos
                     logical_block = offset / block_size
 
                     ↓
-[6] Filesystem mapping (EXT4)
+[6] Filesystem mapping (EXT4)-> (logical_block → physical_block)
 ext4_map_blocks()
 inode → extent tree lookup
 logical_block → physical_block
 
                     ↓
-[7] Convert block to disk sector
+[7] Convert physical block to disk sector
 sector = physical_block * (block_size / 512)
 
                     ↓
