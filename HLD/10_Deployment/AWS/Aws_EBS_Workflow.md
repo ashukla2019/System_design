@@ -1,4 +1,4 @@
-# AWS Block Storage (EBS) – Complete Guide
+# AWS Block Storage (EBS) 
 
 ## 🔹 What is Block Storage?
 
