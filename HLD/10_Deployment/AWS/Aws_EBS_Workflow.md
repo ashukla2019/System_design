@@ -69,7 +69,83 @@ Now it behaves like a local disk.
 
 4️⃣ Read/Write Flow
 
+USER SPACE
+   │
+   ▼
+[1] Application requests data
+   read(file, buffer)
 
+   │
+   ▼
+KERNEL SPACE
+────────────────────────────
+
+[2] VFS (Virtual File System)
+   → Understands "this is a file read"
+   → Routes request to correct filesystem (ext4, xfs, etc.)
+
+   │
+   ▼
+[3] Page Cache Check (RAM)
+   → Is data already in memory?
+
+   ┌───────────────┐
+   │  Cache Hit?   │
+   └──────┬────────┘
+          │
+     YES  │  NO
+          │
+          ▼
+   Return data     Go to disk
+
+                 │
+                 ▼
+
+[4] Filesystem (e.g., ext4)
+   → Converts:
+     File Offset → Logical Block
+
+   │
+   ▼
+[5] Block Mapping
+   → Logical Block → Physical Block (on disk)
+
+   │
+   ▼
+[6] Sector Calculation
+   → Physical Block → Disk Sector
+
+   │
+   ▼
+[7] Block Layer
+   → Prepares I/O request
+   → Merges & schedules requests
+
+   │
+   ▼
+[8] Device Driver
+   → Talks to actual device (NVMe / SSD)
+
+   │
+   ▼
+[9] Storage Device
+   (Local Disk OR Cloud like AWS EBS)
+   → Reads data from physical storage
+
+   │
+   ▼
+[10] Data Returned to RAM
+   → Stored in Page Cache
+
+   │
+   ▼
+[11] Copy to User Buffer
+   → Kernel → Application memory
+
+   │
+   ▼
+USER SPACE
+   → Application receives data
   
 ────────────────────────────────────
 [9] WRITE SYSTEM CALL
