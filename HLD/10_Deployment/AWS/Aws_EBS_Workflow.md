@@ -133,88 +133,100 @@ fdtable[fd] → file*
 ────────────────────────────────────
 [8] READ SYSTEM CALL
 ────────────────────────────────────
-
 [1] User calls read()
 read(fd, buf, size)
         │
         ▼
-[2] Get file object from fdtable
-fd → file
+[2] fd → struct file
+fdtable lookup → file*
         │
         ▼
-[3] Call file operation
+[3] VFS read path
+vfs_read()
+ → new kernels use:
 file->f_op->read_iter()
         │
         ▼
-[4] Check PAGE CACHE (RAM)
-filemap_read()
+[4] Generic buffered read path
+filemap_read()   ← (page cache handler)
         │
- ┌──────┴───────┐
- │              │
-YES            NO
- │              │
- ▼              ▼
-[Copy to user]   
-
+        ▼
 [5] File Offset Handling
-offset = file->f_pos
-logical_block = offset / block_size
-
-                    ↓
-[6] Page Cache Lookup
-Check if page exists in page cache
-→ HIT → go to step [14]
-→ MISS → proceed to disk read
-
-                    ↓
-[7] Filesystem Mapping (EXT4)
-ext4 maps:
-logical_block → physical_block
+pos = file->f_pos   (or passed iocb position)
+        │
+        ▼
+[6] Page Cache Lookup (per page)
+For each required page:
+ ┌───────────────┐
+ │ Page present? │
+ └──────┬────────┘
+        │
+   YES  │  NO
+        │
+        ▼
+   (cache hit)      (cache miss)
+        │                │
+        │                ▼
+        │        [7] Allocate page
+        │        add to page cache
+        │
+        ▼
+[8] If MISS → Read from disk
+        │
+        ▼
+[9] Filesystem Mapping (EXT4)
+logical_block = pos / block_size
+ext4_map_blocks()
+→ logical_block → physical_block
 (using extent tree in inode)
-
-                    ↓
-[8] Convert to Sector
+        │
+        ▼
+[10] Block → Sector conversion
 sector = physical_block * (block_size / 512)
-
-                    ↓
-[9] Create BIO
-bio created with:
-→ target sector
-→ memory page (page cache page)
-→ operation = READ
-
-                    ↓
-[10] Submit I/O
-submit_bio(READ)
-
-                    ↓
-[11] Block Layer (blk-mq)
+        │
+        ▼
+[11] Create BIO
+bio:
+ → target sector
+ → page cache page
+ → READ operation
+        │
+        ▼
+[12] Submit I/O
+submit_bio()
+        │
+        ▼
+[13] Block Layer (blk-mq)
 bio → request
-→ merged/scheduled
-→ placed into hardware queue
-
-                    ↓
-[12] Device Driver (NVMe / Xen)
-Driver converts request
-→ NVMe command
-→ submits to device queue
-
-                    ↓
-[13] Virtual Device → AWS Path
-/dev/nvme0n1
-→ Nitro hypervisor
-→ AWS internal network
-→ EBS backend (SSD)
-
-                    ↓
-[14] Data Completion
-→ Device DMA writes into page cache
-→ Driver marks I/O complete
-
-                    ↓
-[15] Copy to User
+ → merge / schedule
+ → dispatch to device queue
+        │
+        ▼
+[14] Device Driver (NVMe / Xen)
+ → build device command (NVMe)
+ → submit to hardware queue
+        │
+        ▼
+[15] (Cloud case - AWS EBS)
+NVMe device
+ → Nitro Hypervisor
+ → Network
+ → EBS storage backend
+        │
+        ▼
+[16] I/O Completion
+ → DMA writes into page cache page
+ → page marked Uptodate
+        │
+        ▼
+[17] Copy to User
 copy_to_user()
-→ data copied from page cache → user buffer 
+(page cache → user buffer)
+        │
+        ▼
+[18] Update file offset
+file->f_pos += bytes_read
+ 
   
 ────────────────────────────────────
 [9] WRITE SYSTEM CALL
