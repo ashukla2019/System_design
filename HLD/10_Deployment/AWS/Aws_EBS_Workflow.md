@@ -172,26 +172,36 @@ sector = physical_block * (block_size / 512)
 [8] Submit read request (submit_bio)
 submit_bio(READ)
 
-                    ↓
-[9] Block layer + I/O scheduler
-Linux kernel schedules request via blk-mq
-physical sectors → request queue
+[9] Block Layer + I/O Scheduler
+Linux uses blk-mq (multi-queue)
+bio (logical block I/O)
+→ merged into requests
+→ queued in hardware/software queues
 
                     ↓
-[10] Virtual block device (EBS)
-Disk request sent to virtual block device (EBS volume)
+[10] Device Driver (NVMe / Xen)
+Driver translates block requests
+→ submits to virtual device
 
                     ↓
-[11] Network (inside cloud)
-Request traverses AWS network virtualization
+[11] Virtual Block Device
+/dev/nvme0n1 (NVMe device backed by EBS)
 
                     ↓
-[12] AWS storage backend (SSD)
-EBS retrieves data from SSD
+[12] AWS Nitro / Hypervisor Layer
+Request handled by Nitro system
+→ forwarded via AWS internal storage network
 
                     ↓
-[13] Data returned to Linux kernel
-Data copied into page cache (RAM)
+[13] AWS Storage Backend
+EBS service retrieves data
+→ from replicated SSD storage
+
+                    ↓
+[14] Data Returned to Kernel
+→ Driver completes request
+→ Data copied into page cache (buffered I/O)
+→ Returned to user space                ↓
 
                     ↓
 [14] Copy to user buffer
