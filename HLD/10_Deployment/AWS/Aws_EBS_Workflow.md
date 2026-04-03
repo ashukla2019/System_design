@@ -72,22 +72,21 @@ Now it behaves like a local disk.
 USER SPACE
    │
    ▼
-[1] Application requests data
-   read(file, buffer)
+[1] Application
+   → read(file)
 
    │
    ▼
 KERNEL SPACE
 ────────────────────────────
 
-[2] VFS (Virtual File System)
-   → Understands "this is a file read"
-   → Routes request to correct filesystem (ext4, xfs, etc.)
+[2] VFS
+   → Identifies filesystem (ext4, xfs…)
 
    │
    ▼
-[3] Page Cache Check (RAM)
-   → Is data already in memory?
+[3] Page Cache (RAM)
+   → Data already in memory?
 
    ┌───────────────┐
    │  Cache Hit?   │
@@ -101,51 +100,55 @@ KERNEL SPACE
                  │
                  ▼
 
-[4] Filesystem (e.g., ext4)
-   → Converts:
-     File Offset → Logical Block
+[4] Filesystem (ext4)
+   → Offset → Logical Block
 
    │
    ▼
 [5] Block Mapping
-   → Logical Block → Physical Block (on disk)
+   → Logical Block → Physical Block
 
    │
    ▼
-[6] Sector Calculation
-   → Physical Block → Disk Sector
+[6] Sector Conversion ⭐
+   → Physical Block → Sector
+   (smallest unit disk understands)
 
    │
    ▼
 [7] Block Layer
-   → Prepares I/O request
-   → Merges & schedules requests
+   → Builds I/O request
+   → Merges / schedules
 
    │
    ▼
 [8] Device Driver
-   → Talks to actual device (NVMe / SSD)
+   → Converts request → hardware command
 
    │
    ▼
-[9] Storage Device
-   (Local Disk OR Cloud like AWS EBS)
-   → Reads data from physical storage
+[9] Device (NVMe / SSD)
+   → Reads data from sectors
 
    │
    ▼
-[10] Data Returned to RAM
+[10] Cloud Layer (if AWS EBS)
+   → NVMe → Nitro → Network → EBS storage
+
+   │
+   ▼
+[11] Data comes back
    → Stored in Page Cache
 
    │
    ▼
-[11] Copy to User Buffer
-   → Kernel → Application memory
+[12] Copy to User
+   → Kernel → user buffer
 
    │
    ▼
 USER SPACE
-   → Application receives data
+   → Data received
   
 ────────────────────────────────────
 [9] WRITE SYSTEM CALL
