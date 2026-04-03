@@ -154,62 +154,68 @@ filemap_read()
 YES            NO
  │              │
  ▼              ▼
-[Copy to user]   [5]  Map file offset to logical block
-copy_to_user()      offset = file->f_pos
-                    logical_block = offset / block_size
+[Copy to user]   
+
+[5] File Offset Handling
+offset = file->f_pos
+logical_block = offset / block_size
 
                     ↓
-[6] Filesystem mapping (EXT4)-> (logical_block → physical_block)
-ext4_map_blocks()
-inode → extent tree lookup
+[6] Page Cache Lookup
+Check if page exists in page cache
+→ HIT → go to step [14]
+→ MISS → proceed to disk read
+
+                    ↓
+[7] Filesystem Mapping (EXT4)
+ext4 maps:
 logical_block → physical_block
+(using extent tree in inode)
 
                     ↓
-[7] Convert physical block to disk sector
+[8] Convert to Sector
 sector = physical_block * (block_size / 512)
 
                     ↓
-[8] Submit read request (submit_bio)
+[9] Create BIO
+bio created with:
+→ target sector
+→ memory page (page cache page)
+→ operation = READ
+
+                    ↓
+[10] Submit I/O
 submit_bio(READ)
 
-[9] Block Layer + I/O Scheduler
-Linux uses blk-mq (multi-queue)
-bio (logical block I/O)
-→ merged into requests
-→ queued in hardware/software queues
+                    ↓
+[11] Block Layer (blk-mq)
+bio → request
+→ merged/scheduled
+→ placed into hardware queue
 
                     ↓
-[10] Device Driver (NVMe / Xen)
-Driver translates block requests
-→ submits to virtual device
+[12] Device Driver (NVMe / Xen)
+Driver converts request
+→ NVMe command
+→ submits to device queue
 
                     ↓
-[11] Virtual Block Device
-/dev/nvme0n1 (NVMe device backed by EBS)
+[13] Virtual Device → AWS Path
+/dev/nvme0n1
+→ Nitro hypervisor
+→ AWS internal network
+→ EBS backend (SSD)
 
                     ↓
-[12] AWS Nitro / Hypervisor Layer
-Request handled by Nitro system
-→ forwarded via AWS internal storage network
+[14] Data Completion
+→ Device DMA writes into page cache
+→ Driver marks I/O complete
 
                     ↓
-[13] AWS Storage Backend
-EBS service retrieves data
-→ from replicated SSD storage
-
-                    ↓
-[14] Data Returned to Kernel
-→ Driver completes request
-→ Data copied into page cache (buffered I/O)
-→ Returned to user space                ↓
-
-                    ↓
-[14] Copy to user buffer
+[15] Copy to User
 copy_to_user()
-        │
-        ▼
-[DONE] User buffer filled
-
+→ data copied from page cache → user buffer 
+  
 ────────────────────────────────────
 [9] WRITE SYSTEM CALL
 ────────────────────────────────────
