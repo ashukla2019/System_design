@@ -115,3 +115,36 @@ EFS File System (Regional)
         │
         ▼
 Distributed Storage across AZs
+
+
+
+Step-by-step meaning
+1. mount
+Linux command to attach a filesystem
+
+Makes remote storage appear like a local directory
+
+2. -t nfs4
+Specifies filesystem type = NFS version 4
+
+NFS = Network File System (file-level protocol)
+
+This tells Linux:
+
+“This is not a disk — it's a network filesystem”
+
+3. fs-123456:/
+This is your EFS file system ID
+
+/ = root directory of that EFS
+
+In reality, this resolves to an NFS endpoint like:
+
+fs-123456.efs.<region>.amazonaws.com
+4. /mnt/efs
+Local mount point on your EC2 instance
+
+After mounting:
+
+/mnt/efs → points to EFS
+
