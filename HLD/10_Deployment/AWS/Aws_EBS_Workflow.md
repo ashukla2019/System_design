@@ -154,87 +154,109 @@ USER SPACE
 [9] WRITE SYSTEM CALL
 ────────────────────────────────────
 
-write(fd, buf, size)
-   ↓
-file = fdtable[fd]
-   ↓
-file->f_op->write_iter()
-   ↓
-ext4_file_write_iter()
-   ↓
-generic_perform_write()
+USER SPACE
+   │
+   ▼
+[1] Application
+   → write(fd, buf, size)
 
-─────────────── WRITE PATH ───────────────
+   │
+   ▼
+KERNEL SPACE
+────────────────────────────
 
-copy data → page cache
-   ↓
-mark page DIRTY
-   ↓
-update file offset
-   ↓
-(return to user immediately) 
+[2] VFS
+   → Resolves fd → file
+   → Identifies filesystem (ext4, xfs…)
 
-─────────────── WRITEBACK (ASYNC) ───────────────
+   │
+   ▼
+[3] Page Cache (RAM)
+   → Data copied from user → kernel page cache
+   → Mark page as DIRTY ⭐
 
-writeback thread
-   ↓
-ext4_writepages()
-   ↓
+   │
+   ▼
+[4] Return to User (FAST)
+   → write() returns immediately (usually)
+   → Actual disk write is deferred
 
- SAME MAPPING HAPPENS:
+   │
+   ▼
+[5] Writeback Trigger
+   → Background flush (pdflush / kworker)
+   → OR fsync() / sync() forces write
 
-offset → logical block → physical block → sector
+   │
+   ▼
+[6] Filesystem (ext4)
+   → File offset → Logical Block
+   → May allocate new blocks if needed
 
-   ↓
-mpage_writepages()
-   ↓
-submit_bio(WRITE)
-   ↓
-block layer → driver → EBS → disk
+   │
+   ▼
+[7] Block Mapping
+   → Logical Block → Physical Block
+   → Uses inode + extent tree
 
-────────────────────────────────────
- COMPLETE DATA TRANSFORMATION
-────────────────────────────────────
+   │
+   ▼
+[8] Journaling (ext4) ⭐
+   → Metadata written to journal first
+   → Ensures crash consistency
 
-USER BUFFER
-   ↓
-file offset (bytes)
-   ↓
-PAGE CACHE (4KB pages)
-   ↓
-EXT4:
-   offset → logical block
-   ↓
-EXTENTS:
-   logical → physical block
-   ↓
-BLOCK LAYER:
-   block → sector (512B units)
-   ↓
-BIO:
-   sector-based I/O
-   ↓
-DRIVER:
-   hardware command
-   ↓
-EBS:
-   network storage
-   ↓
-SSD
+   │
+   ▼
+[9] Sector Conversion ⭐
+   → Physical Block → Sector
+   (sector = block * (block_size / 512))
 
-Two critical mapping:
-File → inode → blocks        (filesystem)
-LBA → physical storage       (EBS)
+   │
+   ▼
+[10] Block Layer
+   → Builds BIO request
+   → Merges adjacent writes
+   → I/O scheduling
 
-VFS role:
-fd → struct file → f_op → ext4
+   │
+   ▼
+[11] Device Driver (NVMe)
+   → Converts BIO → NVMe commands
 
-struct file is bridge:
+   │
+   ▼
+[12] Device (NVMe SSD)
+   → Sends write over PCIe
 
-fd → file → inode → blocks
+   │
+   ▼
+[13] Cloud Layer (AWS EBS) ⭐
+   → NVMe → Nitro Hypervisor → Network
+   → Data sent to remote EBS storage
 
-read/write = fd → file → ext4 → block → sector → EBS → disk
+   │
+   ▼
+[14] EBS Storage
+   → Data replicated across AZ storage nodes
+   → Acknowledgement sent back
 
+   │
+   ▼
+[15] Completion Path
+   → NVMe completion queue
+   → Interrupt to kernel
+
+   │
+   ▼
+[16] Page Cache Update
+   → Dirty page marked CLEAN
+   → Write complete
+
+   │
+   ▼
+USER SPACE
+   → write fully persisted (after fsync / flush)
+-------------------------,---------
 5️⃣ Data fd → file → inode → blocks Internals
 Data is split into blocks (e.g., 4KB, 8KB)
 Stored across multiple disks in the same AZ
