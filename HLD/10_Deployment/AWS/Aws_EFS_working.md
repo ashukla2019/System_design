@@ -76,19 +76,20 @@ EC2-3 ─┘
 ### 5️⃣ Read/Write Flow
 
 ``` id="efsflow2"
+
 Application
      │
      ▼
-Operating System
+VFS (Virtual File System)
      │
      ▼
-NFS Client
+NFS Client (kernel)
      │
      ▼
-AWS Network
+AWS Network (TCP/IP)
      │
      ▼
-Mount Target
+EFS Mount Target
      │
      ▼
 EFS File System
