@@ -11,29 +11,65 @@ High-Level Architecture
 USER SPACE
    │
    ▼
-System Calls (open, read, write)
+System Calls (read, write, open)
    │
    ▼
 KERNEL SPACE
-────────────────────────────
+────────────────────────────────────────
+
 [1] VFS (Virtual File System)
+   - Provides unified interface
+   - Resolves path → dentry → inode → file
+   - Does NOT do block mapping
+
    │
    ▼
-[2] Filesystem (ext4, xfs, btrfs)
+
+[2] Page Cache (RAM)
+   - First stop for read/write
+   - Read: check cache (hit/miss)
+   - Write: store data, mark DIRTY
+
    │
    ▼
-[3] Page Cache (RAM)
+
+[3] Filesystem (ext4, xfs, btrfs)
+    CORE MAPPING LAYER
+
+   - Offset → Logical Block
+     logical_block = offset / block_size
+
+   - Logical Block → Physical Block
+     (via inode, extent tree, metadata)
+
+   - Responsible for:
+     block allocation
+     metadata
+     journaling
+
    │
    ▼
+
 [4] Block Layer
+   - Physical Block → Sector conversion
+     sector = physical_block × (block_size / 512)
+
+   - Creates BIO requests
+   - I/O scheduling, merging
+
    │
    ▼
+
 [5] Device Driver
+   - Converts BIO → hardware commands
+   - Handles device-specific protocol
+     (SATA / NVMe / virtio for EBS)
+
    │
    ▼
+
 [6] Storage Device (HDD / SSD / NVMe / EBS)
-
-
+   - Executes read/write on sectors
 -------------------☆☆☆☆-
 Key Layers Explained
 [1] VFS (Virtual File System)
