@@ -21,6 +21,8 @@ In AWS, file storage is provided by **Amazon EFS (Elastic File System)**.
 ---
 
 ## 🔹 Architecture Overview
+
+```
 EC2 Instances (multiple)
 │
 ▼
@@ -35,6 +37,7 @@ Storage distributed across multiple AZs
 ▼
 Physical Storage (disks)
 
+```
 
 ---
 
