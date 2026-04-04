@@ -110,7 +110,7 @@ KERNEL SPACE
 
    │
    ▼
-[6] Sector Conversion ⭐
+[6] Sector Conversion 
    → Physical Block → Sector
    (smallest unit disk understands)
 
@@ -173,7 +173,7 @@ KERNEL SPACE
    ▼
 [3] Page Cache (RAM)
    → Data copied from user → kernel page cache
-   → Mark page as DIRTY ⭐
+   → Mark page as DIRTY 
 
    │
    ▼
@@ -201,13 +201,13 @@ KERNEL SPACE
 
    │
    ▼
-[8] Journaling (ext4) ⭐
+[8] Journaling (ext4) 
    → Metadata written to journal first
    → Ensures crash consistency
 
    │
    ▼
-[9] Sector Conversion ⭐
+[9] Sector Conversion 
    → Physical Block → Sector
    (sector = block * (block_size / 512))
 
