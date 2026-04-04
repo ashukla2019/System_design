@@ -1,8 +1,6 @@
 
 What is a Filesystem?
-
 A filesystem (FS) is a layer that:
-
 Organizes data on storage (disk, SSD, NVMe, EBS)
 Provides abstraction: files, directories, paths
 Translates user operations → disk operations
@@ -37,90 +35,42 @@ KERNEL SPACE
 
 
 -------------------☆☆☆☆-
-
-
-
-Need detailed notes on filesystem and how it works architecture etc
-
-Here’s a clear but deep set of notes on filesystem architecture, how it works internally (Linux-focused), and how all layers connect — especially useful given your interest in VFS, EBS, and I/O flow.
-
-🧠 1. What is a Filesystem?
-A filesystem (FS) is a layer that:
-
-Organizes data on storage (disk, SSD, NVMe, EBS)
-
-Provides abstraction: files, directories, paths
-
-Translates user operations → disk operations
-
-🏗️ 2. High-Level Architecture
-USER SPACE
-   │
-   ▼
-System Calls (open, read, write)
-   │
-   ▼
-KERNEL SPACE
-────────────────────────────
+Key Layers Explained
 [1] VFS (Virtual File System)
-   │
-   ▼
-[2] Filesystem (ext4, xfs, btrfs)
-   │
-   ▼
-[3] Page Cache (RAM)
-   │
-   ▼
-[4] Block Layer
-   │
-   ▼
-[5] Device Driver
-   │
-   ▼
-[6] Storage Device (HDD / SSD / NVMe / EBS)
-🔍 3. Key Layers Explained
-🧩 [1] VFS (Virtual File System)
 Acts as a unified interface.
 
 You call:
-
 read("file.txt")
 VFS decides:
 
 Which filesystem? (ext4, xfs, nfs)
 
 Which inode?
-
 Key Data Structures:
+
 super_block → filesystem metadata
-
 inode → file metadata
-
 dentry → directory cache
-
 file → open file instance
 
-👉 VFS = abstraction layer
+VFS = abstraction layer
 
-📂 [2] Filesystem Layer (ext4 example)
+[2] Filesystem Layer (ext4 example)
 Handles:
 
 File layout
-
 Block mapping
-
 Metadata management
 
 Example: ext4
 Uses:
-
 Inodes
-
 Extent trees (efficient block mapping)
 
 Mapping flow:
 File offset → Logical block → Physical block
-⚡ [3] Page Cache (VERY IMPORTANT)
+
+[3] Page Cache (VERY IMPORTANT)
 RAM cache for file data
 
 Avoids disk access
@@ -137,13 +87,11 @@ Marked dirty
 
 Later flushed to disk (writeback)
 
-🔁 [4] Block Layer
+[4] Block Layer
 Responsible for:
 
 Request merging
-
 Scheduling
-
 Queueing I/O
 
 Converts:
@@ -161,11 +109,8 @@ Converts generic I/O → device-specific commands
 💾 [6] Storage Device
 Types:
 HDD → mechanical, slow
-
 SSD → flash-based
-
 NVMe → ultra-fast, parallel queues
-
 EBS → network-attached block storage
 
 🔄 4. Read Flow (End-to-End)
@@ -197,7 +142,8 @@ EBS → network-attached block storage
          │
          ▼
 [8] copy_to_user()
-✍️ 5. Write Flow (Critical for Interviews)
+
+ 5. Write Flow (Critical for Interviews)
 [1] write(fd, buf)
    │
    ▼
@@ -218,7 +164,8 @@ EBS → network-attached block storage
    │
    ▼
 [7] Device write
-🔥 6. Important Concepts
+
+6. Important Concepts
 🧹 Dirty Pages
 Modified data in RAM not yet on disk
 
