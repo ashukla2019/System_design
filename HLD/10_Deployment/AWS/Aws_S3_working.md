@@ -164,6 +164,8 @@ No real “folder” → just key prefixes
 
 Example:
 my-bucket/photos/img1.jpg
+
+
 5. Object Storage Cluster
 Now the real magic happens internally inside AWS.
 
