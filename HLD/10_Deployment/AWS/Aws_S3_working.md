@@ -122,103 +122,78 @@ working:
  
 1. User / Application
 This is your code or tool:
-
 CLI (aws s3 cp)
-
 SDK (Python boto3, Java SDK)
-
 Browser upload
 
-👉 You create a request like:
-
+You create a request like:
 PUT /my-bucket/file.txt
+
+
 2. Internet / AWS Network
 Request travels over:
-
 Public Internet OR
-
 Private AWS network (if using VPC endpoint)
 
 Uses:
-
 HTTPS (TLS encrypted)
-
 DNS resolves S3 URL → nearest AWS endpoint
+
 
 3. S3 Endpoint
 This is the entry point of Amazon S3.
 
-👉 Think of it as:
-
+Think of it as:
 API gateway for S3
-
 Handles:
-
 Authentication (IAM, signatures)
-
 Authorization (bucket policies)
-
 Request routing
 
 Example:
-
 https://my-bucket.s3.amazonaws.com
+
 4. S3 Bucket
 Logical container:
-
 Like a namespace / folder
-
 Stores objects (files)
 
-👉 Important:
-
+Important:
 Buckets are global (name unique)
-
 No real “folder” → just key prefixes
 
 Example:
-
 my-bucket/photos/img1.jpg
 5. Object Storage Cluster
 Now the real magic happens internally inside AWS.
 
 When you upload:
-
 File is split into chunks
-
 Metadata created:
-
 Object key
-
 Size
-
 version
-
 checksum
 
-👉 Stored in:
-
+Stored in:
 Distributed storage system
-
 Spread across many machines
 
 6. Data Replicated Across Multiple AZs
 This is why S3 is highly durable (11 9’s).
 
-👉 Internally:
+Internally:
 
 Data is replicated across multiple Availability Zones
 
 Not just copied — often uses:
-
 Erasure coding (efficient redundancy)
-
 Automatic healing if disk/node fails
 
 So:
 
 Your file → split → distributed → replicated → self-healing
-🔥 Full Flow (Simple Visualization)
+Full Flow (Simple Visualization)
 Application (PUT request)
         │
         ▼
@@ -235,19 +210,16 @@ Distributed Object Storage System
         │
         ▼
 Replication across multiple AZs (durability)
-⚡ Key Concepts (Very Important)
+Key Concepts (Very Important)
 1. S3 is NOT like EBS/EFS
-❌ No block storage
+No block storage
 
-❌ No filesystem
+No filesystem
 
 ✅ Object storage (key-value)
 
 2. No “mounting”
 Unlike EFS:
-
 You don’t mount S3
-
 You access via:
-
 API (HTTP)
