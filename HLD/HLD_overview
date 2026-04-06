@@ -6,29 +6,34 @@ System Design
 │   │
 │   └── Non-Functional Requirements (SCALD)
 │       ├── Scaling → Ability to handle growing users/traffic
-│       ├── Consistency → Data correctness across nodes
+│       ├── Consistency → Data correctness across nodes/same data visible to all at any time
 │       ├── Availability → System uptime and accessibility
-│       ├── Latency → Response time of requests
+│       ├── Latency → Response time of requests should be low
 │       └── Durability → Data persistence even after failures
 │
 ├── 2. Architecture
-│   ├── Monolith
+│   ├── Monolithic
 │   │   → Single application where all components are tightly coupled.
+│   │       When to use: Small apps / MVPs, Simple business logic
 │   │
 │   ├── Microservices
 │   │   → System split into small independent services communicating via APIs.
+|   |       When to use: Large, complex systems, Independent scaling needed
 │   │
 │   ├── Event-Driven
 │   │   → Components communicate through events/messages (publish-subscribe).
-│   │
+│   │       When to use:Real-time processing (notifications, streams), asynchronous
 │   ├── Serverless
 │   │   → Cloud provider manages infrastructure; code runs on demand.
+|   |       When to use: Variable/low traffic
 │   │
 │   ├── Stateful
 │   │   → Services store session/state information locally.
+|   |      When to use: Sessions needed (e.g., carts, gaming)
 │   │
 │   └── Stateless
 │       → Each request is independent; easier to scale horizontally.
+|   |      When to use: Cloud-native apps
 │
 ├── 3. Communication & Networking
 │   │
@@ -41,15 +46,37 @@ System Design
 │   ├── Communication Patterns
 │   │   ├── Synchronous
 │   │   │   → Immediate response required (HTTP, REST, SOAP, GraphQL, gRPC).
+|   |         REST-> HTTP-based, resource-oriented, Uses GET, POST, PUT, DELETE
+|   |                  When to Use-> Simple CRUD APIs, Public-facing services
+|   |
+|   |              GraphQL-> Single endpoint, Client requests exact fields
+|   |             When to Use -> Complex UI data needs, Avoid over/under-fetching
+|   |
+|   |              SOAP-> XML-based protocol
+|   |                  When to Use-> Banking systems, Enterprise & legacy apps
+|   |
+|   |             gRPC-> Uses HTTP/2, Binary protocol (Protobuf)
+|   |                 When to Use-> Microservices, Internal service communication, Low-latency systems
+|   |
+|   |              WebSocket-> Persistent, full-duplex connection, Real-time data flow
+|   |                  When to Use-> Chat apps, Live dashboards
 │   │   │
 │   │   └── Asynchronous
 │   │       → Message-based communication using queues/streams.
 │   │       (RabbitMQ, Kafka)
+|   |      -> RabbitMQ: Uses queues, Producers → send messages → queue → consumers receive & delete
+|   |         RabbitMQ is great for: Task queues (background jobs), Microservices communication (request/response), Complex routing logic
+|   |      -> Kafka: Uses topics (logs), Messages are appended and stored for a set time, Consumers read at their own pace (can replay messages)
+|   |         Kafka is ideal for: Event streaming (analytics, logs), Real-time data pipelines, Event sourcing systems
 │   │
 │   ├── Infrastructure
-│   │   ├── API Gateway → Entry point for APIs (routing, authentication).
-│   │   ├── Forward Proxy → Client-side intermediary for requests.
-│   │   └── Reverse Proxy → Server-side gateway for load balancing/security.
+│   │   ├── API Gateway →The single entry point for all client requests in a system (especially microservices). 
+|   |        (authentication & authorization, Rate limiting, logging, caching, routes requests to the right service).
+|   |        Ex: AWS API Gateway, NGINX
+│   │   ├── Forward Proxy → A forward proxy sits between the client and the internet.
+|   |       Hides client identity (IP masking), Bypasses restrictions, Caches responses
+│   │   └── Reverse Proxy → A reverse proxy sits in front of servers and represents them to clients.
+|   |       Load balancing, SSL termination: Ex: NGINX, HAProxy
 │   │
 │   └── Traffic Control
 │       └── Rate Limiting
@@ -57,8 +84,16 @@ System Design
 │
 ├── 4. Data Management
 │   ├── Databases
-│   │   ├── SQL → Structured relational databases with strong consistency.
+│   │   ├── SQL → Structured relational databases with strong consistency.(ACID)
+│   │            Atomicity → All or nothing(all transactions should pass or fail)
+│   │            Consistency → Valid state always
+│   │            Isolation → No interference(like ticket booking)
+│   │            Durability → Data is permanent
 │   │   └── NoSQL → Flexible schema, optimized for scalability.
+│   │            BASE
+│   │            Basically Available → System always responds
+│   │            Soft State → Data may change over time
+│   │            Eventual Consistency → Data becomes consistent later
 │   │
 │   ├── Data Modeling
 │   │   ├── Normalization → Reduce redundancy and improve integrity.
@@ -70,14 +105,14 @@ System Design
 │       └── CAP Theorem → Trade-off between Consistency, Availability, Partition tolerance.
 │
 ├── 5. Storage
-│   ├── Block Storage
-│   │   → Raw disk storage used for databases and VM disks.
+│   ├── Block Storage: Raw disk blocks (like a hard drive)
+│   │   When to use: OS / Boot disks, Databases, High-performance apps,( Virtual machines → Persistent disks)
 │   │
-│   ├── Object Storage
-│   │   → Stores files as objects (images, videos, backups).
-│   │
-│   ├── File Storage
-│   │   → Shared file systems accessible by multiple servers.
+│   ├── Object Storage: → Stores data as objects with metadata (flat structure)
+│   │   Whento use: Images, videos, backups, Logs, large scale data.
+|   |   
+│   ├── File Storage: Files in folders (shared filesystem)
+│   │   When to use: Shared drives (team files), Content management systems
 │   │
 │   └── Backup & Disaster Recovery
 │       → Data backup strategies to recover from failures.
