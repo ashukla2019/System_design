@@ -84,4 +84,8 @@ Updates metadata
 Splits data into chunks
 Data written to multiple AZs (replication)
 Acknowledgment sent back
+
+Full flow:
+the network to a mount target (entry point of EFS in that AZ), which then connects to the EFS file system, and EFS stores the data in distributed storage across multiple AZs.
+
 ```
