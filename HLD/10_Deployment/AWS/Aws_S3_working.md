@@ -69,19 +69,6 @@ Example:
 ### 4️⃣ Read/Write Flow
 
 ``` id="s3flow2"
-Application
-     │
-     ▼
-HTTP/HTTPS Request
-     │
-     ▼
-S3 API
-     │
-     ▼
-S3 Bucket
-     │
-     ▼
-Object Storage System
 
 5️⃣ Data Storage Internals
 Stored as objects (not blocks)
@@ -100,23 +87,20 @@ Glacier (archival)
 Glacier Deep Archive
 
 Full working:
-User/Application
-        │
-        ▼
-Internet / AWS Network
-        │
-        ▼
-S3 Endpoint
-        │
-        ▼
-S3 Bucket
-        │
-        ▼
-Object Storage Cluster
-        │
-        ▼
-Data replicated across multiple AZs
 
+Application
+   │
+   ▼
+HTTP/HTTPS (REST API)
+   │
+   ▼
+S3 API Endpoint
+   │
+   ▼
+S3 storage system
+   │
+   ▼
+Distributed storage
 
 working: 
  
