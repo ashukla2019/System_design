@@ -46,19 +46,21 @@ System Design
 │   ├── Communication Patterns
 │   │   ├── Synchronous
 │   │   │   → Immediate response required (HTTP, REST, SOAP, GraphQL, gRPC).
+|   |         Synchronous:
 |   |         REST-> HTTP-based, resource-oriented, Uses GET, POST, PUT, DELETE
 |   |                  When to Use-> Simple CRUD APIs, Public-facing services
-|   |
-|   |              GraphQL-> Single endpoint, Client requests exact fields
-|   |             When to Use -> Complex UI data needs, Avoid over/under-fetching
-|   |
-|   |              SOAP-> XML-based protocol
+              SOAP-> XML-based protocol
 |   |                  When to Use-> Banking systems, Enterprise & legacy apps
+|   |
+              Both(synchronous & asynchronous):
+|   |              GraphQL-> Single endpoint, Client requests exact fields
+|   |              When to Use -> Complex UI data needs, Avoid over/under-fetching
 |   |
 |   |             gRPC-> Uses HTTP/2, Binary protocol (Protobuf)
 |   |                 When to Use-> Microservices, Internal service communication, Low-latency systems
-|   |
-|   |              WebSocket-> Persistent, full-duplex connection, Real-time data flow
+|   |          
+|   |          Asynchronous:
+|   |             WebSocket-> Persistent, full-duplex connection, Real-time data flow
 |   |                  When to Use-> Chat apps, Live dashboards
 │   │   │
 │   │   └── Asynchronous
