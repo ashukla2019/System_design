@@ -163,15 +163,21 @@
 
 ## 6. Fault Tolerance
 
-- **Redundancy**
-  - Duplicate components  
+# Core Concepts
 
-- **Failover**
-  - Switch to standby system  
+- High availability → system accessible always (achieved via redundency)
+- Fault tolerance → system continues despite failures (replication + failover)
+- Reliability → system rarely fails
+- Consensus → nodes agree on a leader or value
 
-- **Disaster Recovery**
-  - Restore after major failures  
+---
 
+# Failure Handling
+
+- Health Checks → Detect failed/unhealthy nodes
+- Failover → Switch to backup automatically
+- Retry + Backoff → Retry with delay (1s → 2s → 4s)
+- Circuit Breaker → Stop calls to failing service temporarily
 ---
 
 ## 7. Scaling
