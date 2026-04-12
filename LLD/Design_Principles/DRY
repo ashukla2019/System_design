@@ -1,4 +1,5 @@
-"Don't Repeat Yourself" (DRY) is a software development principle that encourages developers to avoid duplicating code in a system.
+
+Can u provide in short? "Don't Repeat Yourself" (DRY) is a software development principle that encourages developers to avoid duplicating code in a system.
     When developers adhere to the DRY principle, they aim to create reusable components, functions, or modules that can be utilized in various parts of the codebase.
     This not only makes the code more maintainable but also minimizes the chances of errors since changes or updates only need to be made in one location.
     DRY is closely related to the concept of modular programming and the creation of functions, classes, or modules that encapsulate specific functionality.
@@ -27,7 +28,7 @@ using namespace std;
 
 // Without DRY
 bool validate_email_format_1(const string& email) {
-    
+
     // Validation logic
     if (email.find("@") != string::npos && email.find(".") != string::npos) {
         return true;
@@ -52,5 +53,73 @@ bool validate_email_format(const string& email) {
         return true;
     } else {
         return false;
+    }
+}
+
+Here’s a short, interview-ready version:
+
+DRY (Don't Repeat Yourself)
+Avoid duplicate code; keep logic in one place.
+
+Use reusable functions, classes, or modules.
+
+Benefits: easy maintenance, fewer bugs, better readability, consistency.
+
+Related Principle
+SRP (Single Responsibility Principle): One module = one responsibility
+
+DRY + SRP → clean, modular, maintainable code
+
+How to Apply DRY
+Create functions/methods for repeated logic
+
+Use classes/inheritance for reuse
+
+Extract constants/configs
+
+Follow modular design
+
+Example
+❌ Without DRY: duplicate functions
+✔️ With DRY: single reusable function
+
+If you want, I can convert all your system design topics into similar crisp 2–3 line interview notes 👍
+
+
+Add c++ example code
+
+Here’s a short DRY note with C++ example:
+
+DRY (Don't Repeat Yourself)
+Avoid duplicate code; keep logic in one place
+
+Use reusable functions/classes
+
+Benefits: maintainability, fewer bugs, consistency
+
+Example (C++)
+❌ Without DRY
+
+bool validateEmail1(const string& email) {
+    return email.find("@") != string::npos &&
+           email.find(".") != string::npos;
+}
+
+bool validateEmail2(const string& email) {
+    return email.find("@") != string::npos &&
+           email.find(".") != string::npos;
+}
+✔️ With DRY
+
+bool validateEmail(const string& email) {
+    return email.find("@") != string::npos &&
+           email.find(".") != string::npos;
+}
+
+int main() {
+    string email = "test@example.com";
+
+    if (validateEmail(email)) {
+        cout << "Valid\n";
     }
 }
