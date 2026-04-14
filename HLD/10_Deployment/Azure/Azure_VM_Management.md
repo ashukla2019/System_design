@@ -5,23 +5,28 @@ Admin / User
 (Console / CLI / PowerShell / SDK)
    │
    ▼
-Azure Management Plane
-  (RBAC / Control Plane)
+Azure Management Plane (RBAC / Control Plane)
    │
    ▼
-VM Agent (running on Azure VM)
+VM Agent
    │
    ▼
-Azure VM (Command Execution / Session)
+Azure VM
    │
    ▼
 Operating System / Applications
    │
    ▼
-Output & Logs
+Managed Identity (token request via metadata endpoint)
    │
    ▼
-Azure Monitor / Log Analytics / Storage Account
+Azure AD (Entra ID issues token)
+   │
+   ▼
+Azure Service (Key Vault / Storage / DB)
+   │
+   ▼
+Output / Data
 
 
 Admin / User: Initiates connection or command execution using Console, CLI, PowerShell, or SDK.
