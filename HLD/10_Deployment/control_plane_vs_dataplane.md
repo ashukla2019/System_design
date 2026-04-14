@@ -1,18 +1,5 @@
 # Azure Control Plane vs Data Plane
 
-## ✅ Is this correct?
-
-### Given Examples:
-- Creating a VM → Control Plane ✅
-- Creating a Managed Disk → Control Plane ✅
-- Configuring Azure Storage Account → Control Plane ✅
-
-✔️ These are **correct**, but slightly incomplete for interview clarity.
-
----
-
-## 🧠 Key Concept
-
 ### 🔹 Control Plane
 - Used for **management operations**
 - Creates, updates, deletes, or configures resources
