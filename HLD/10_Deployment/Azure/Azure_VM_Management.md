@@ -29,8 +29,17 @@ Azure Service (Key Vault / Storage / DB)
 Output / Data
 
 
-Admin / User: Initiates connection or command execution using Console, CLI, PowerShell, or SDK.
-Azure Management Plane: Receives request, validates permissions via RBAC, and stores command/session in the control plane.
-VM Agent: Runs on the Azure VM, handles command execution, and communicates securely with the management plane.
-Azure VM Execution: Commands/scripts are executed inside the VM operating system.
-Output & Logging: Results and logs are returned to the management plane and optionally stored in Azure Monitor, Log Analytics, or Storage Accounts.
+1. Admin / User
+Initiates command execution using Console, CLI, PowerShell, or SDK.
+
+2. Azure Management Plane (Control Plane)
+Authenticates and authorizes the request using RBAC, then registers/stores the command for the target VM.
+
+3. VM Agent (on Azure VM)
+Runs inside the VM and securely pulls the command from the management plane, then executes it.
+
+4. Azure VM (OS / Application Layer)
+The command or script is executed within the operating system environment.
+
+5. Output & Logging
+Execution results and logs are sent back to the management plane and can be stored or analyzed using services like Azure Monitor, Azure Log Analytics, or a Storage Account.
