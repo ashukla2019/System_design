@@ -272,6 +272,8 @@ Azure VM (executes)
    │
    ▼
 Logs → Azure Monitor / Log Analytics
+
+-----------------------,
 ☁️ AWS
 Admin / User
    │
@@ -305,6 +307,8 @@ Entra ID (Token issued)
    │
    ▼
 Azure Service (Key Vault / Storage)
+
+------------------------,-
 ☁️ AWS (IAM Role)
 App inside EC2
    │
