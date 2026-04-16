@@ -134,12 +134,13 @@ Attach Storage / Security / Scaling Policies
 ```
 
 **Data Plane:**
+```
 EC2 / VM ──► Processes application workload
 ├── Reads/Writes EBS / Managed Disk
 ├── Serves HTTP/S requests
 └── Logs metrics
 
-
+```
 ---
 
 ## 🔹 Storage Example
