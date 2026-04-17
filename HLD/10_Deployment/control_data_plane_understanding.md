@@ -80,7 +80,6 @@ OS Kernel
 Application Starts
 
 ```
-
 1. Identity Usage (Runtime Auth Bridge)
 Application
    │
@@ -100,7 +99,7 @@ Temporary Credentials / Token
    │
    ▼
 Used in downstream service calls
-
+```
 ```
 2. Object Storage (S3 / Azure Blob)
 
@@ -133,6 +132,7 @@ Distributed Storage Backend (Multi-AZ)
 Object Data Returned
 
 ```
+```
 3. Block Storage (EBS / Managed Disk)
 
 Application
@@ -156,6 +156,7 @@ EBS / Managed Disk Service
 Physical Storage (replicated within AZ)
 
 ```
+```
 4. File Storage (EFS / Azure Files)
 
 Application
@@ -175,6 +176,8 @@ EFS / Azure Files Endpoint
    ▼
 Distributed File Storage Backend
 
+
+```
 ```
 5. Remote Management (SSM / VM Agent)
 
@@ -196,7 +199,7 @@ Executes inside VM
    ▼
 Returns output/logs
 
-
+```
 ```
 6. Logging & Monitoring
 
