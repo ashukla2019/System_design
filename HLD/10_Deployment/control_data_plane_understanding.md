@@ -2,6 +2,7 @@ CONTROL PLANE (Management Layer)
 
 Handles provisioning, configuration, authentication, and orchestration of resources.
 
+```
 User / Admin
    │
    ▼
@@ -61,3 +62,5 @@ Resource Configuration
    ▼
 Placement Decision
 (AZ / Host / Cluster selection)
+
+```
