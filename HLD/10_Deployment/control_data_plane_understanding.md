@@ -101,7 +101,6 @@ Temporary Credentials / Token
 Used in downstream service calls
 
 
-```
 2. Object Storage (S3 / Azure Blob)
 
 Application
