@@ -79,7 +79,7 @@ OS Kernel
    ▼
 Application Starts
 
-```
+
 1. Identity Usage (Runtime Auth Bridge)
 Application
    │
