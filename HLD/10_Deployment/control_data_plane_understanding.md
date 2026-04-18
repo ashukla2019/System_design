@@ -480,17 +480,23 @@ Queried via Control Plane
    ▼
 User / System consumes insights
 
-Below is a single consolidated “what each layer does” cheat-sheet for all 6 flows. Keep this as an interview memory map.
-
+---------------------------------
 ✅ 1. Identity Usage (Runtime Auth Bridge)
 Application layer → requests credentials via SDK (no auth logic inside app)
+
 Metadata service (IMDS) → provides instance-bound identity
+
 IAM / Entra ID layer → validates identity and issues token/temporary creds
+
 STS / Token service → generates short-lived credentials (AWS creds / Azure OAuth token)
+
 SDK layer → caches credentials + auto-refreshes
+
 Signing layer → AWS SigV4 / Azure Bearer token added to every request
+
 Transport layer → HTTPS call to services using signed identity
 
+--------------------------
 ✅ 2. Object Storage (S3 / Azure Blob)
 Application layer → issues object API calls (PUT/GET)
 
@@ -512,6 +518,7 @@ Replication layer → ensures durability via multi-AZ copies
 
 Response layer → reassembles object and returns via same path
 
+----------------------------------
 3. Block storage: 
 Application layer → performs file/db read-write operations
 
@@ -531,6 +538,7 @@ Storage backend layer → distributed block replication + durability
 
 ACK path → confirmation flows back ensuring fsync durability
 
+------------------------------------
 4. File storage:
 Application layer → POSIX file operations (open/read/write)
 
@@ -548,6 +556,7 @@ Replication layer → multi-AZ redundant storage
 
 Return path → reassembled file returned to application
 
+--------------------------------
 5. Remote process:
 User/CLI layer → sends command (script/run task)
 
@@ -567,6 +576,23 @@ Output layer → logs stdout/stderr + exit status
 
 Telemetry layer → sends results to CloudWatch / Azure Monitor
 
+------------------------------------
 6. Log monitoring:
+Application/OS layer → generates logs, metrics, traces
 
+Agent layer → CloudWatch Agent / Azure Monitor Agent collects data
+
+Buffering layer → local batching + compression
+
+Ingestion API layer → secure HTTPS ingestion endpoint
+
+Monitoring backend → CloudWatch / Azure Monitor stores data
+
+Processing pipeline → parsing, indexing, aggregation
+
+Query layer → Logs Insights / KQL for analytics
+
+Alerting layer → alarms trigger SNS / Action Groups / Logic Apps
+
+Visualization layer → dashboards + metrics graphs
 ```
