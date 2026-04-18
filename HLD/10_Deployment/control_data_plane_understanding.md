@@ -519,9 +519,10 @@ Replication layer → ensures durability via multi-AZ copies
 Response layer → reassembles object and returns via same path
 
 ----------------------------------
-3. Block storage: 
-Application layer → performs file/db read-write operations
+3. Block Storage (EBS / Azure Managed Disk)
 
+Application layer → performs file/db read-write operations
+ 
 Filesystem layer → converts files → blocks (inode/MFT mapping)
 
 OS kernel layer → handles syscalls + caching + I/O scheduling
@@ -539,7 +540,7 @@ Storage backend layer → distributed block replication + durability
 ACK path → confirmation flows back ensuring fsync durability
 
 ------------------------------------
-4. File storage:
+4. File Storage (EFS / Azure Files)
 Application layer → POSIX file operations (open/read/write)
 
 Filesystem client layer → NFS (AWS) / SMB (Azure) protocol translation
@@ -557,7 +558,7 @@ Replication layer → multi-AZ redundant storage
 Return path → reassembled file returned to application
 
 --------------------------------
-5. Remote process:
+5. Remote process(Remote Process Execution (SSM / RunCommand)
 User/CLI layer → sends command (script/run task)
 
 Control plane layer → stores command + validates IAM/RBAC
@@ -577,7 +578,7 @@ Output layer → logs stdout/stderr + exit status
 Telemetry layer → sends results to CloudWatch / Azure Monitor
 
 ------------------------------------
-6. Log monitoring:
+6. Logging & Monitoring (CloudWatch / Azure Monitor)
 Application/OS layer → generates logs, metrics, traces
 
 Agent layer → CloudWatch Agent / Azure Monitor Agent collects data
