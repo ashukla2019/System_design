@@ -3,117 +3,16 @@ CONTROL PLANE (Management Layer)
 Handles provisioning, configuration, authentication, and orchestration of resources.
 
 ```
-User / Admin
-   │
-   ▼
-Console / CLI / SDK
-   │
-   ▼
-Identity & Access Layer
-   │
-   ├── AWS: IAM (Users / Roles / Policies)
-   └── Azure: RBAC + Managed Identity
-   │
-   ▼
-Authentication & Authorization
-   │
-   ├── AWS:
-   │     ├── IAM validates permissions
-   │     └── STS issues temporary credentials
-   │
-   └── Azure:
-         ├── Entra ID validates identity
-         └── Issues OAuth token (Managed Identity)
-   │
-   ▼
-Service Control Planes
-   │
-    │
-├── Compute
-│     ├── AWS: EC2 Control Plane
-│     │       → Create / terminate / start / stop instances
-│     │       → Select instance type, AMI, networking
-│     │       → Allocate physical host & capacity
-│     │       → Attach IAM role, EBS volumes
-│     │       → Orchestrate VM provisioning via hypervisor
-│     │
-│     └── Azure: VM Control Plane
-│             → Create / delete / start / stop VMs
-│             → Select VM size, image, VNet, subnet
-│             → Assign Managed Identity
-│             → Attach Managed Disks & NICs
-│             → Orchestrate VM provisioning via fabric controller
-│
-├── Object Storage
-│     ├── AWS: S3 Control Plane
-│     │       → Create / delete buckets
-│     │       → Manage bucket policies & ACLs
-│     │       → Configure versioning & lifecycle rules
-│     │       → Setup replication (CRR/SRR)
-│     │       → Maintain object metadata (index, not actual data)
-│     │
-│     └── Azure: Blob Control Plane
-│             → Create / delete storage accounts & containers
-│             → Manage RBAC & access policies
-│             → Configure lifecycle management
-│             → Setup replication (LRS/GRS/ZRS)
-│             → Maintain blob metadata
-│
-├── Block Storage
-│     ├── AWS: EBS Control Plane
-│     │       → Create / delete volumes
-│     │       → Attach / detach volumes to EC2
-│     │       → Resize volumes
-│     │       → Manage snapshots & backups
-│     │       → Configure encryption (KMS)
-│     │
-│     └── Azure: Managed Disk Control Plane
-│             → Create / delete disks
-│             → Attach / detach disks to VM
-│             → Resize disks
-│             → Snapshot & image management
-│             → Configure encryption
-│
-├── File Storage
-│     ├── AWS: EFS Control Plane
-│     │       → Create / delete file systems
-│     │       → Configure mount targets in subnets
-│     │       → Manage access policies (NFS permissions)
-│     │       → Set performance & throughput modes
-│     │
-│     └── Azure: Azure Files Control Plane
-│             → Create / delete file shares
-│             → Configure storage account & endpoints
-│             → Manage access via RBAC / keys
-│             → Set tiers (hot/cool)
-│
-├── Management
-│     ├── AWS: SSM Control Plane
-│     │       → Send commands to instances
-│     │       → Patch management & automation
-│     │       → Maintain inventory & state
-│     │       → Session Manager (no SSH)
-│     │
-│     └── Azure: VM Agent / Run Command Control Plane
-│             → Send commands to VM via agent
-│             → Run scripts remotely
-│             → Patch & configuration management
-│             → Collect VM state & extensions
-│
-   ▼
-Resource Configuration
-   │
-   ├── VM created with:
-   │     ├── IAM Role (AWS)
-   │     └── Managed Identity (Azure)
-   │
-   ├── Storage attached (EBS / Managed Disk)
-   ├── File system mounted (EFS / Azure Files)
-   └── Object storage permissions configured
-   │
-   ▼
-Placement Decision
-(AZ / Host / Cluster selection)
+Launch EC2 instance
+Create S3 bucket
+Attach IAM role
+Configure security groups
+
+Key Services
+IAM → authentication & authorization
+EC2 → compute provisioning APIs
+S3 → storage management APIs
+
 
 ```
 
@@ -131,59 +30,88 @@ OS Kernel
    ▼
 Application Starts
 
-
 1. Identity Usage (Runtime Auth Bridge)
-Application
-   │
-   ▼
-Metadata Service
-   │
-   ├── AWS: IMDS (Instance Metadata Service)
-   └── Azure: IMDS (Managed Identity endpoint)
-   │
-   ▼
-Temporary Credentials / Token
-   │
-   ├── AWS: STS credentials
-   │     (Access Key / Secret / Token)
-   │
-   └── Azure: OAuth Token (Entra ID)
-   │
-   ▼
-Used in downstream service calls
 
+Application (inside VM / Pod)
+   │
+   ▼
+Requests credentials (HTTP call)
+   │
+   ▼
+Metadata Service (link-local: 169.254.169.254)
+   │
+   ├── AWS IMDS:
+   │     ├── Validates instance + IAM Role attached
+   │     ├── Calls STS internally
+   │     └── Returns temporary credentials
+   │
+   └── Azure IMDS:
+         ├── Validates Managed Identity
+         ├── Calls Entra ID (AAD)
+         └── Returns OAuth access token
+   │
+   ▼
+Temporary Credentials Cached in Application/SDK
+   │
+   ▼
+SDK Automatically Signs Requests
+   │
+   ├── AWS: SigV4 signing
+   └── Azure: Bearer Token (Authorization header)
+   │
+   ▼
+Used in downstream API calls (S3 / Blob / DB etc.)
+
+---------------------------
 
 2. Object Storage (S3 / Azure Blob)
 
 Application
    │
    ▼
-SDK / REST API
+SDK (adds auth + retry logic)
    │
    ▼
-HTTPS Request
+HTTPS Request (over Internet / Private Endpoint)
    │
    ▼
-Auth Validation
+Edge Layer
+   │
+   ├── AWS: S3 Frontend Fleet
+   └── Azure: Blob Frontend
+   │
+   ▼
+Authentication Layer
    │
    ├── AWS:
-   │     ├── SigV4 signature validation
-   │     └── IAM policy enforcement
+   │     ├── SigV4 signature verification
+   │     └── IAM policy evaluation
    │
    └── Azure:
          ├── Token validation (Entra ID)
-         └── RBAC enforcement
+         └── RBAC check
    │
    ▼
-Object Storage Endpoint
+Request Routing Layer
+   │
+   ├── Determines partition (bucket/container shard)
    │
    ▼
-Distributed Storage Backend (Multi-AZ)
+Storage Nodes (Distributed System)
+   │
+   ├── Data replicated across multiple AZs
+   ├── Metadata stored separately
    │
    ▼
-Object Data Returned
+Data Read/Write
+   │
+   ▼
+Response returned via same path
+
+------------------------
 
 3. Block Storage (EBS / Managed Disk)
+
 
 Application
    │
@@ -191,21 +119,33 @@ Application
 File System (ext4 / NTFS)
    │
    ▼
-OS Kernel (read/write syscalls)
+System Calls (read/write)
+   │
+   ▼
+OS Kernel (I/O Scheduler)
    │
    ▼
 Block Device Driver
    │
    ▼
-Hypervisor / Virtual Storage Layer
+Virtualization Layer
+   │
+   ├── AWS: Nitro Hypervisor
+   └── Azure: Hyper-V
+   │
+   ▼
+Network Storage Protocol (internal, not public)
    │
    ▼
 EBS / Managed Disk Service
    │
    ▼
-Physical Storage (replicated within AZ)
+Replicated Storage (within AZ)
+   │
+   ▼
+ACK returned → propagated back to app
 
-
+-----------------------------
 4. File Storage (EFS / Azure Files)
 
 Application
@@ -224,10 +164,9 @@ EFS / Azure Files Endpoint
    │
    ▼
 Distributed File Storage Backend
-
+---------------------------------
 
 5. Remote Management (SSM / VM Agent)
-
 
 Agent inside VM
    │
@@ -246,7 +185,7 @@ Executes inside VM
    ▼
 Returns output/logs
 
-
+--------------------------------
 6. Logging & Monitoring
 
 Application / OS / Agent
