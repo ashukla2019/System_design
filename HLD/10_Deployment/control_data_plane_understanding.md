@@ -22,6 +22,9 @@ Handles actual workload execution, I/O operations, and runtime traffic.
 
 ```
 1. Identity Usage:
+
+IAM Roles and Managed Identities are instance-bound identities that allow workloads to securely access cloud services using temporary credentials instead of hardcoded secrets.”
+
 Application layer → requests credentials via SDK (no auth logic inside app)
 
 Metadata service (IMDS) → provides instance-bound identity
