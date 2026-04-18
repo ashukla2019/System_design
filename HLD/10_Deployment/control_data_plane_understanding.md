@@ -28,26 +28,78 @@ Authentication & Authorization
    ▼
 Service Control Planes
    │
-   ├── Compute
-   │     ├── AWS: EC2 Control Plane
-   │     └── Azure: VM Control Plane
-   │
-   ├── Object Storage
-   │     ├── AWS: S3 Control Plane
-   │     └── Azure: Blob Control Plane
-   │
-   ├── Block Storage
-   │     ├── AWS: EBS Control Plane
-   │     └── Azure: Managed Disk Control Plane
-   │
-   ├── File Storage
-   │     ├── AWS: EFS Control Plane
-   │     └── Azure: Azure Files Control Plane
-   │
-   ├── Management
-   │     ├── AWS: SSM Control Plane
-   │     └── Azure: VM Agent / Run Command Control Plane
-   │
+    │
+├── Compute
+│     ├── AWS: EC2 Control Plane
+│     │       → Create / terminate / start / stop instances
+│     │       → Select instance type, AMI, networking
+│     │       → Allocate physical host & capacity
+│     │       → Attach IAM role, EBS volumes
+│     │       → Orchestrate VM provisioning via hypervisor
+│     │
+│     └── Azure: VM Control Plane
+│             → Create / delete / start / stop VMs
+│             → Select VM size, image, VNet, subnet
+│             → Assign Managed Identity
+│             → Attach Managed Disks & NICs
+│             → Orchestrate VM provisioning via fabric controller
+│
+├── Object Storage
+│     ├── AWS: S3 Control Plane
+│     │       → Create / delete buckets
+│     │       → Manage bucket policies & ACLs
+│     │       → Configure versioning & lifecycle rules
+│     │       → Setup replication (CRR/SRR)
+│     │       → Maintain object metadata (index, not actual data)
+│     │
+│     └── Azure: Blob Control Plane
+│             → Create / delete storage accounts & containers
+│             → Manage RBAC & access policies
+│             → Configure lifecycle management
+│             → Setup replication (LRS/GRS/ZRS)
+│             → Maintain blob metadata
+│
+├── Block Storage
+│     ├── AWS: EBS Control Plane
+│     │       → Create / delete volumes
+│     │       → Attach / detach volumes to EC2
+│     │       → Resize volumes
+│     │       → Manage snapshots & backups
+│     │       → Configure encryption (KMS)
+│     │
+│     └── Azure: Managed Disk Control Plane
+│             → Create / delete disks
+│             → Attach / detach disks to VM
+│             → Resize disks
+│             → Snapshot & image management
+│             → Configure encryption
+│
+├── File Storage
+│     ├── AWS: EFS Control Plane
+│     │       → Create / delete file systems
+│     │       → Configure mount targets in subnets
+│     │       → Manage access policies (NFS permissions)
+│     │       → Set performance & throughput modes
+│     │
+│     └── Azure: Azure Files Control Plane
+│             → Create / delete file shares
+│             → Configure storage account & endpoints
+│             → Manage access via RBAC / keys
+│             → Set tiers (hot/cool)
+│
+├── Management
+│     ├── AWS: SSM Control Plane
+│     │       → Send commands to instances
+│     │       → Patch management & automation
+│     │       → Maintain inventory & state
+│     │       → Session Manager (no SSH)
+│     │
+│     └── Azure: VM Agent / Run Command Control Plane
+│             → Send commands to VM via agent
+│             → Run scripts remotely
+│             → Patch & configuration management
+│             → Collect VM state & extensions
+│
    ▼
 Resource Configuration
    │
