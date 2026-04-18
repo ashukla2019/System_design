@@ -150,20 +150,77 @@ ACK returned → propagated back to app
 
 Application
    │
+   │  read()/write() call (file.txt)
    ▼
 POSIX / File API
    │
+   │  OS treats it like local filesystem
+   │  (open, read, write syscalls)
    ▼
-NFS (AWS EFS) / SMB (Azure Files) Client
+Client Layer
+   │
+   ├── AWS: NFS Client (EFS)
+   │       - Converts syscalls → NFSv4 requests
+   │       - Handles retries, buffering, caching
+   │
+   └── Azure: SMB Client (Azure Files)
+           - Converts syscalls → SMB protocol messages
+           - Maintains session, locking, state
    │
    ▼
-Network (VPC / VNet)
+VPC / VNet Network
+   │
+   │  - DNS resolves file endpoint
+   │  - Traffic over private network (no internet)
+   │  - TCP connection established (NFS:2049 / SMB:445)
+   ▼
+Mount Target / File Endpoint
+   │
+   ├── AWS: Amazon EFS Mount Target (ENI per AZ)
+   │       - Entry point inside VPC
+   │       - Routes request to storage nodes
+   │
+   └── Azure: Azure Files Endpoint
+           - Frontend service for file share
+           - Handles request routing
    │
    ▼
-EFS / Azure Files Endpoint
+Authentication
+   │
+   ├── AWS:
+   │     - Security Group allows NFS traffic
+   │     - (Optional) IAM via Access Points
+   │     - POSIX (UID/GID) permission check
+   │
+   └── Azure:
+         - Storage Key OR Entra ID (AD auth)
+         - Maps identity → file ACL permissions
    │
    ▼
 Distributed File Storage Backend
+   │
+   │  - File split into chunks/blocks
+   │  - Metadata service tracks file structure
+   │  - Data replicated across multiple nodes/AZs
+   │  - Scales automatically
+   ▼
+Read / Write Execution
+   │
+   ├── READ:
+   │     - Locate metadata → fetch chunks → assemble
+   │
+   └── WRITE:
+         - Validate → write to replicas → ACK
+   │
+   ▼
+Data served back to client
+   │
+   │  - Travels back via same network path
+   │  - OS may cache data
+   ▼
+Application receives data
+   │
+   │  read() returns bytes (appears local)
 ---------------------------------
 
 5. Remote Management (SSM / VM Agent)
