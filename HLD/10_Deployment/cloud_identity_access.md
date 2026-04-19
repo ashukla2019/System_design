@@ -114,3 +114,22 @@ Azure Full Flow (Entra ID + Managed Identity + RBAC + Blob)
    - Blob uploaded / downloaded
 
 ===============================================================
+
+Where IAM Role is attached
+Attached to:
+EC2 instance
+Lambda
+ECS/EKS workload
+
+Where Managed Identity is attached
+Attached to:
+VM
+App Service
+Function.
+
+Trick
+
+ Disk(EBS) → No IAM(no need to call aws api)
+ File (EFS) → Mostly No IAM
+ Service/API (SSM) → IAM Required(calls aws api)
+ S3 → yes(calls aws api)
