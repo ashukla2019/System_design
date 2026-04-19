@@ -1,0 +1,42 @@
+==================== CONTROL PLANE (SETUP) ====================
+
+1. Create Identity (WHO)
+   - IAM User / Role / Group
+
+2. Define Policy (WHAT)
+   - JSON Policy:
+       Effect: Allow / Deny
+       Action: s3:GetObject, s3:PutObject
+       Resource: S3 bucket
+
+3. Attach Policy (LINK)
+   - Attach policy to User / Role / Group
+
+4. Assume Role → Get Credentials
+   - Via :contentReference[oaicite:0]{index=0}
+   - Returns:
+       Access Key
+       Secret Key
+       Session Token (temporary)
+
+===============================================================
+
+
+===================== DATA PLANE (RUNTIME) =====================
+
+5. Application Runs (EC2 / Lambda / CLI)
+
+6. Uses STS Credentials
+   - Signs request (SigV4)
+
+7. Calls S3 API
+   - PUT / GET Object
+
+8. S3 Validates
+   - Signature check
+   - IAM policy evaluation
+
+9. Action Happens
+   - File uploaded / downloaded
+
+===============================================================
