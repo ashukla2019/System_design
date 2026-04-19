@@ -45,7 +45,7 @@
 
 ===============================================================
 
-
+Azure Full Flow (Entra ID + Managed Identity + RBAC + Blob)
 ==================== CONTROL PLANE (SETUP) ====================
 
 1. Create Identity (WHO)
