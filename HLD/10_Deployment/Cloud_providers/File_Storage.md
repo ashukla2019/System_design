@@ -94,7 +94,7 @@ Azure file endpoint processes request
 Metadata lookup in storage service
 Data retrieved from Azure storage backend
 Returned to VM
-
+-------------------------------------------------------------------------------------
 🔸 Write Flow (Step-by-step)
 AWS EFS
 NFS WRITE request
