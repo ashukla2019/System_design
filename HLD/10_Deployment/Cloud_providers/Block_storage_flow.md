@@ -1,5 +1,5 @@
 
-# AWS Block Storage (EBS)
+# Cloud Block Storage: AWS EBS and Azure Managed Disks
 
 ---
 
