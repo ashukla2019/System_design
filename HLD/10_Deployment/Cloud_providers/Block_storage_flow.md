@@ -164,7 +164,11 @@ VFS                                                  | VFS
 
 Application receives final data                      | Application receives final data
 ```
-
+VFS looks up that fd: fd 3 → struct file (kernel object)
+That “file object” contains:
+ Pointer to inode (actual file metadata)
+ File offset (where you’re reading from)
+ File operations (read/write functions)
 ---
 
 ### 🔸 Write Flow
