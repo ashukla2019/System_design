@@ -43,49 +43,56 @@ EC2-2 ─┤
 EC2-3 ─┘
 ``` id="efsflow1"
 
-👉 All instances see the same files
+All instances see the same files
 
 ---
 
 ### 5️⃣ Read/Write Flow
 
 ``` id="efsflow2"
+### 🔹 Read / Write Flow (Amazon EFS)
 
 [EC2 Application]
         │
         ▼
-(NFS request over network)
+Linux Kernel (VFS + NFS Client)
+        → Converts file operation into NFS request
         │
         ▼
-[Mount Target]  ← ENTRY POINT
+NFS over Network (TCP/IP)
         │
         ▼
-[EFS File System]  ← LOGIC (files, dirs, metadata)
+Mount Target (EFS Network Interface in VPC)
+        → Entry point into EFS service
         │
         ▼
-[Distributed Storage]  ← ACTUAL DATA
+Amazon EFS Service
+        → Metadata service (file names, directories, permissions)
+        → Maps file → internal data blocks
+        │
+        ▼
+Distributed Storage Layer
+        → Stores actual file data in chunks
+        → Automatically spread across multiple AZs
 
-Step-by-step:
+🔸 Read Flow (Step-by-step)
 App calls read()
-Linux sends NFS READ via NFS
-Mount target receives request
-Amazon Elastic File System:
-Locates file metadata (inode-like info)
-Finds where data is stored
-Data fetched from distributed storage
-Sent back to EC2
+Linux NFS client converts to NFS READ request
+Request goes to Mount Target (network endpoint)
+EFS metadata service finds file location
+Data blocks fetched from distributed storage
+Data returned via NFS back to EC2
+Kernel cache + application receives data
 
-Step-by-step:
+🔸 Write Flow (Step-by-step)
 App calls write()
-NFS WRITE sent over network
-Mount target receives it
+NFS WRITE request sent over network
+Mount target forwards to EFS service
 EFS:
 Updates metadata
 Splits data into chunks
-Data written to multiple AZs (replication)
-Acknowledgment sent back
-
-Full flow:
-the network to a mount target (entry point of EFS in that AZ), which then connects to the EFS file system, and EFS stores the data in distributed storage across multiple AZs.
+Data stored in distributed storage layer
+Replication handled automatically across AZs
+Acknowledgement returned to EC2
 
 ```
