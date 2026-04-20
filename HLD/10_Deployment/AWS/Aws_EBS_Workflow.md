@@ -97,23 +97,69 @@ Creating a filesystem adds structure:
 ### 🔸 Read Flow
 
 ```
-Application
+Application (read(fd, buffer, size))
+   → Provides: file descriptor + byte offset
    ↓
+
 VFS (Virtual File System)
+   → Resolves file descriptor → file object
+   → Uses dentry cache for path resolution
+   → Forwards request to filesystem
    ↓
-Page Cache (RAM)
-   ↓ (cache miss)
+
 Filesystem (ext4)
+   → Uses inode to map file metadata
+   → Converts:
+       File Offset (bytes)
+       → Logical Block Number (LBN)
    ↓
+
+Page Cache (RAM)
+   → Checks if data is already in memory
+   → If HIT → return immediately
+   → If MISS → proceed to disk I/O
+   ↓
+
 Block Layer
+   → Converts:
+       Logical Blocks → BIO (block I/O request)
+   → Merges + optimizes I/O requests
    ↓
+
 NVMe Driver
+   → Converts BIO → NVMe commands
+   → Maps blocks → sector-level operations
+   → Sends request to device queue
    ↓
+
 AWS Nitro System
+   → Converts NVMe request → network call
+   → Forwards request over AWS internal network
    ↓
+
 EBS Storage (AZ)
+   → Reads block from distributed storage
+   → Ensures replication consistency
    ↓
-Data returned → Cache → Application
+
+──────── RESPONSE PATH ────────(from here response is sent back to upper layer)
+
+EBS → Nitro → NVMe Driver → Block Layer
+   ↓
+Filesystem (ext4)
+   → Maps blocks → file offsets
+   ↓
+
+Page Cache (RAM)
+   → Stores data for future reads
+   ↓
+
+VFS
+   → Returns data to application
+   ↓
+
+Application
+   → Receives final data
 ```
 
 ---
@@ -121,27 +167,84 @@ Data returned → Cache → Application
 ### 🔸 Write Flow
 
 ```
-Application
+Application (write(fd, buffer, size))
+   → Provides: file descriptor + data (bytes)
    ↓
-VFS
+
+VFS (Virtual File System)
+   → Resolves file descriptor → file object
+   → Forwards write request to filesystem
    ↓
-Page Cache (marked DIRTY)
+
+Filesystem (ext4)
+   → Uses inode + extent tree to map file layout
+   → Converts:
+       File Offset → Logical Block Number (LBN)
+   → Determines allocation if new data is needed
    ↓
-(Returns quickly to user)
+
+Page Cache (RAM)
+   → Copies user data → kernel memory
+   → Marks pages as DIRTY
+   → write() returns immediately (non-durable yet)
    ↓
-Background Flush / fsync()
+
+Writeback (Deferred I/O)
+   → Triggered by:
+       - kernel background threads
+       - fsync() / sync()
    ↓
-Filesystem (ext4 + journaling)
+
+Filesystem (ext4 journaling phase)
+   → Writes metadata to journal first
+   → Ensures crash consistency
+   → Prepares final block allocation
    ↓
+
 Block Layer
+   → Converts:
+       Logical Blocks → BIO (block I/O requests)
+   → Merges and schedules writes efficiently
    ↓
+
 NVMe Driver
+   → Converts BIO → NVMe commands
+   → Maps blocks → sector-level operations
+   → Submits to device queue
    ↓
-AWS Nitro → Network
+
+AWS Nitro System
+   → Virtualizes NVMe device
+   → Translates I/O into AWS network requests
+   → Sends to EBS backend
    ↓
-EBS Storage (replicated in AZ)
+
+EBS Storage (Availability Zone)
+   → Writes data to distributed storage nodes
+   → Replicates data within AZ
+   → Returns acknowledgement
    ↓
-Acknowledgement
+
+──────── RESPONSE PATH ────────
+
+EBS → Nitro → NVMe Driver → Block Layer
+   ↓
+
+Filesystem
+   → Marks pages CLEAN
+   ↓
+
+Page Cache
+   → Data now considered persisted in kernel view
+   ↓
+
+VFS
+   → Returns success to application
+   ↓
+
+Application
+   → write() completed
+   → Data is durable ONLY after fsync()
 ```
 
 ---
@@ -173,7 +276,17 @@ Acknowledgement
 ## 🔹 Snapshot (Backup)
 
 ```
-EBS Volume ─────► Snapshot ─────► Amazon S3
+EBS Volume
+   ↓
+Snapshot Trigger (manual / scheduled)
+   ↓
+AWS Snapshot Service
+   ↓
+Block-level capture (only used blocks)
+   ↓
+Incremental storage (only changes after first snapshot)
+   ↓
+Stored in Amazon S3 (managed by AWS, not directly visible)
 ```
 
 ### Use Cases
