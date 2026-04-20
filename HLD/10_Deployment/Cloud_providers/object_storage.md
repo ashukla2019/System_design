@@ -110,7 +110,7 @@ Concept:
 
 ## 🔄 Final Summary Flow
 
-
+```
 AWS (S3) Azure (Blob Storage)
 
 User / Application User / Application
@@ -135,7 +135,7 @@ Multi-AZ Replication LRS / ZRS / GRS
 │ │
 ▼ ▼
 Response Returned Response Returned
-
+```
 
 ---
 
