@@ -6,14 +6,11 @@
 ## 🔹 What is Block Storage?
 
 In AWS, block storage is provided by **Amazon EBS (Elastic Block Store)**.
-
+In Microsoft Azure, block storage is provided by **Azure Managed Disks **
 * Provides raw disk volumes
 * Works like a virtual hard drive (SSD/HDD)
 * Attached to EC2 instances/ Azure Virtual Machines (VMs)
 * Can be formatted, partitioned, and mounted
-
-> EBS is **not shared storage** (single-instance attachment in most cases).
-> For shared storage across multiple EC2 instances, use **Amazon EFS**.
 
 ---
 
