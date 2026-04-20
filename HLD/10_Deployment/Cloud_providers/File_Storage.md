@@ -1,19 +1,16 @@
 
-# AWS File Storage (EFS) – Complete Guide
-
-## 🔹 What is File Storage?
-
-In AWS, file storage is provided by **Amazon EFS (Elastic File System)**.
-
-- Fully managed file storage
-- Shared file system
-- Accessible by multiple EC2 instances at the same time
-- Uses standard file protocols (NFS)
-
+AWS File Storage (EFS) / Azure File Storage (Azure Files)
+🔹 What is File Storage?
+AWS	                             Azure
+Amazon EFS (Elastic File System)	Azure Files (Azure File Storage)
 ---
 
 ## 🔹 Key Characteristics
-
+AWS EFS	                         Azure Files
+Uses NFS protocol	                  Uses SMB (and NFS optional in premium)
+Linux-focused	                         Works with Linux + Windows
+Mount via NFS client	                  Mount via SMB/NFS client
+Regional service across AZs	           Stored in Azure Storage Account (region-redundant options available)
 ---
 
 ## 🔹 Step-by-Step Working
