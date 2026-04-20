@@ -11,7 +11,7 @@ In AWS, block storage is provided by **Amazon EBS (Elastic Block Store)**.
 * Attached to EC2 instances
 * Can be formatted, partitioned, and mounted
 
-> ⚠️ EBS is **not shared storage** (single-instance attachment in most cases).
+> EBS is **not shared storage** (single-instance attachment in most cases).
 > For shared storage across multiple EC2 instances, use **Amazon EFS**.
 
 ---
