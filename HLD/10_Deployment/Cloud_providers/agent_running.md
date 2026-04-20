@@ -1,7 +1,7 @@
 # AWS Systems Manager (SSM) vs Azure Management Flow (Arc / Run Command)
 
 ---
-
+```
 # 🔹 Unified Control Flow (AWS vs Azure)
 AWS (SSM) Azure (Arc / Run Command / Automation)
 
@@ -28,7 +28,7 @@ Output / Logs Output / Logs
 │ │
 ▼ ▼
 CloudWatch Logs / S3 Azure Monitor / Log Analytics / Storage
-
+```
 
 ---
 
