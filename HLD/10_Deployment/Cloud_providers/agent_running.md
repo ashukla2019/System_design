@@ -1,24 +1,24 @@
-# AWS Systems Manager (SSM) / Azure Management (Arc + Run Command) – Single Flow
+# AWS Systems Manager (SSM) vs Azure Management Flow (Arc / Run Command)
 
 ---
 
-# 🔹 Control & Management Flow (AWS vs Azure)
-AWS (SSM) Azure (Arc / Automation / Run Command)
+# 🔹 Unified Control Flow (AWS vs Azure)
+AWS (SSM) Azure (Arc / Run Command / Automation)
 
 Admin / User Admin / User
 (Console / CLI / SDK) (Portal / CLI / SDK / Automation)
 │ │
 ▼ ▼
-AWS Systems Manager Azure Control Plane
-(SSM Control Plane) (Azure Resource Manager - ARM)
+AWS Systems Manager Azure Resource Manager (ARM)
+(Control Plane) (Control Plane)
 │ │
 ▼ ▼
-SSM Agent (on EC2) Azure Arc Agent / VM Agent
-(polling mechanism) (connected agent)
+SSM Agent (on EC2) Azure VM Agent / Azure Arc Agent
+(polling model) (connected agent model)
 │ │
 ▼ ▼
 EC2 Instance Azure VM / Arc-enabled Server
-(command execution environment) (command execution environment)
+(Command Execution / Session) (Command Execution / Session)
 │ │
 ▼ ▼
 Operating System / Applications Operating System / Applications
@@ -32,14 +32,14 @@ CloudWatch Logs / S3 Azure Monitor / Log Analytics / Storage
 
 ---
 
-# 🔹 Step-by-Step Explanation
+# 🔹 Step-by-Step Mapping
 
 ## 1️⃣ Admin / User
 
 | AWS | Azure |
 |-----|------|
 | AWS Console / CLI / SDK | Azure Portal / CLI / SDK |
-| Sends SSM command or session | Sends Run Command / Automation |
+| Sends SSM Run Command | Sends Run Command / Automation Job |
 
 ---
 
@@ -48,8 +48,8 @@ CloudWatch Logs / S3 Azure Monitor / Log Analytics / Storage
 | AWS | Azure |
 |-----|------|
 | Systems Manager (SSM) | Azure Resource Manager (ARM) |
-| Stores commands | Stores operations / jobs |
-| Manages execution flow | Orchestrates VM actions |
+| Stores commands & sessions | Orchestrates VM operations |
+| IAM-based security | Azure AD-based security |
 
 ---
 
@@ -58,8 +58,8 @@ CloudWatch Logs / S3 Azure Monitor / Log Analytics / Storage
 | AWS | Azure |
 |-----|------|
 | SSM Agent on EC2 | Azure VM Agent / Azure Arc Agent |
-| Polls SSM service | Communicates with Azure control plane |
-| IAM-based auth | Azure AD / Managed Identity |
+| Polls SSM service | Maintains connection to Azure control plane |
+| IAM role via IMDS | Managed Identity / Azure AD auth |
 
 ---
 
@@ -69,41 +69,41 @@ CloudWatch Logs / S3 Azure Monitor / Log Analytics / Storage
 |-----|------|
 | EC2 Instance | Azure VM / Arc-enabled server |
 | Executes commands locally | Executes commands locally |
-| No SSH required | No SSH required (optional) |
+| No SSH required | No SSH required |
 
 ---
 
 ## 5️⃣ Execution Layer
 
-Both systems support:
+Both support:
 
 - Shell commands
 - Scripts
-- Remote sessions
-- Automation workflows
+- Run Command jobs
+- Session (interactive shell)
 
 ---
 
-## 6️⃣ Logging & Output
+## 6️⃣ Output & Logging
 
 | AWS | Azure |
 |-----|------|
 | CloudWatch Logs | Azure Monitor Logs |
 | Amazon S3 | Azure Storage Account |
-| Session logs | Log Analytics Workspace |
+| Session Manager logs | Log Analytics Workspace |
 
 ---
 
 # 🔹 Flow Summary
 
-## AWS (SSM)
+## AWS SSM Flow
 
 User → SSM Control Plane → SSM Agent → EC2 → OS → Logs (CloudWatch/S3)
 
 
-## Azure (Arc / Run Command)
+## Azure Flow
 
-User → ARM Control Plane → Arc/VM Agent → Azure VM → OS → Logs (Azure Monitor)
+User → ARM Control Plane → VM/Arc Agent → Azure VM → OS → Logs (Azure Monitor)
 
 
 ---
@@ -112,21 +112,23 @@ User → ARM Control Plane → Arc/VM Agent → Azure VM → OS → Logs (Azure 
 
 | AWS | Azure |
 |-----|------|
-| SSM = remote management without SSH | Azure Arc / Run Command |
+| SSM = remote execution without SSH | Azure Arc / Run Command |
 | Agent-based execution | Agent-based execution |
-| Secure (IAM-based) | Secure (Azure AD-based) |
-| No inbound SSH needed | No inbound RDP/SSH needed |
+| IAM authentication | Azure AD authentication |
+| No inbound access needed | No inbound access needed |
 
 ---
 
 # 🚀 Final Insight
 
-Both systems work the same way:
+Both systems follow the same pattern:
 
-👉 Control Plane → Agent → Compute → Logs
 
-Difference is only:
-- AWS = SSM + IAM
-- Azure = ARM + Azure AD + Arc/VM Agent
+Control Plane → Agent → Compute → OS → Logs
+
+
+Only difference:
+- AWS → SSM + IAM
+- Azure → ARM + Azure AD + Arc/VM Agent
 
 ---
