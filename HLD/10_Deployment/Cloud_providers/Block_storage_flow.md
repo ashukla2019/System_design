@@ -279,17 +279,19 @@ Application                                          | Application
 ## 🔹 Snapshot (Backup)
 
 ```
-EBS Volume
-   ↓
-Snapshot Trigger (manual / scheduled)
-   ↓
-AWS Snapshot Service
-   ↓
-Block-level capture (only used blocks)
-   ↓
-Incremental storage (only changes after first snapshot)
-   ↓
-Stored in Amazon S3 (managed by AWS, not directly visible)
+AWS (EBS Snapshot)                              | Azure (Managed Disk Snapshot)
+------------------------------------------------|------------------------------------------------
+EBS Volume                                     | Managed Disk
+   ↓                                           |    ↓
+Snapshot Trigger (manual / scheduled)          | Snapshot Trigger (manual / scheduled)
+   ↓                                           |    ↓
+AWS Snapshot Service                           | Azure Snapshot Service
+   ↓                                           |    ↓
+Block-level capture (used blocks only)         | Disk-level / incremental snapshot (used changed blocks only)
+   ↓                                           |    ↓
+Incremental storage (delta changes only)       | Incremental snapshot storage (delta changes only)
+   ↓                                           |    ↓
+Stored in Amazon S3 (backend managed)          | Stored in Azure Storage (backend managed, not directly visible)
 ```
 
 ### Use Cases
@@ -303,16 +305,18 @@ Stored in Amazon S3 (managed by AWS, not directly visible)
 ## 🔹 End-to-End Flow
 
 ```
-User / Application
-        ↓
-EC2 (OS + Filesystem)
-        ↓
-EBS Volume (Block Device)
-        ↓
-AWS Network Layer
-        ↓
-EBS Storage Cluster (AZ)
-        ↓
-Physical Disks
+AWS (EBS)                                      | Azure (Managed Disks)
+------------------------------------------------|------------------------------------------------
+User / Application                             | User / Application
+        ↓                                      |        ↓
+EC2 (OS + Filesystem)                          | Azure Virtual Machine (OS + Filesystem)
+        ↓                                      |        ↓
+EBS Volume (Block Device)                      | Azure Managed Disk (Block Device)
+        ↓                                      |        ↓
+AWS Network Layer / Nitro System               | Azure Disk Service (I/O + control layer)
+        ↓                                      |        ↓
+EBS Storage Cluster (AZ)                       | Azure Storage Fabric (Distributed storage system)
+        ↓                                      |        ↓
+Physical Disks                                 | Physical Disks (Azure Data Centers)
 ```
 
