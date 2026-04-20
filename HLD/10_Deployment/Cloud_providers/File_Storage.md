@@ -6,11 +6,13 @@ Amazon EFS (Elastic File System)	Azure Files (Azure File Storage)
 ---
 
 ## 🔹 Key Characteristics
-AWS EFS	                         Azure Files
-Uses NFS protocol	                  Uses SMB (and NFS optional in premium)
-Linux-focused	                         Works with Linux + Windows
-Mount via NFS client	                  Mount via SMB/NFS client
-Regional service across AZs	           Stored in Azure Storage Account (region-redundant options available)
+| AWS EFS                     | Azure Files                                                          |
+| --------------------------- | -------------------------------------------------------------------- |
+| Uses NFS protocol           | Uses SMB (and NFS optional in premium)                               |
+| Linux-focused               | Works with Linux + Windows                                           |
+| Mount via NFS client        | Mount via SMB/NFS client                                             |
+| Regional service across AZs | Stored in Azure Storage Account (region-redundant options available) |
+
 ---
 
 ## 🔹 Step-by-Step Working
