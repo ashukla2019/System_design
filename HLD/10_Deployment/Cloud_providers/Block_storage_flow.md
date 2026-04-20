@@ -105,64 +105,85 @@ Creating a filesystem adds structure:
 AWS (EBS)                                              | Azure (Managed Disks)
 -------------------------------------------------------|-------------------------------------------------------
 
-Application (read(fd, buffer, size))                  | Application (read(fd, buffer, size))
-   → file descriptor + byte offset                    |    → file descriptor + byte offset
-   ↓                                                  |    ↓
+Application                                            | Application
+(read(fd, buffer, size))                               | (read(fd, buffer, size))
+ → file descriptor + byte offset                       | → file descriptor + byte offset
+ ↓                                                     | ↓
 
-VFS (Virtual File System)                             | VFS (Virtual File System)
-   → resolves file object                             |    → resolves file object
-   → dentry cache lookup                              |    → dentry cache lookup
-   ↓                                                  |    ↓
+VFS (Virtual File System)                              | VFS (Virtual File System)
+ → fd → struct file (file object resolution)           | → fd → struct file
+ → pathname → dentry → inode lookup                    | → pathname → dentry → inode/MFT lookup
+ ↓                                                     | ↓
 
-Filesystem (ext4)                                    | Filesystem (NTFS / ext4 / xfs)
-   → inode mapping                                    |    → inode / MFT mapping
-   → File Offset → Logical Block Number               |    → File Offset → Logical Block Number
-   ↓                                                  |    ↓
+Filesystem (ext4)                                      | Filesystem (NTFS / ext4 / xfs)
+ → inode → file metadata                               | → inode / MFT → metadata
+ → byte offset → file logical block                    | → byte offset → file logical block
+ → file logical block → disk logical block (LBA)       | → file logical block → disk logical block (LBA)
+ ↓                                                     | ↓
 
-Page Cache (RAM)                                     | Page Cache (RAM)
-   → check cached data                                |    → check cached data
-   → HIT → return                                     |    → HIT → return
-   → MISS → disk I/O                                  |    → MISS → disk I/O
-   ↓                                                  |    ↓
+Page Cache (RAM)                                       | Page Cache (RAM)
+ → check cache (by inode + offset)                     | → check cache
+ → HIT → return data                                   | → HIT → return data
+ → MISS → generate read request                        | → MISS → generate read request
+ ↓                                                     | ↓
 
-Block Layer                                          | Block Layer
-   → Logical Blocks → BIO                             |    → Logical Blocks → BIO
-   → I/O merging + scheduling                         |    → I/O merging + scheduling
-   ↓                                                  |    ↓
+Block Layer                                            | Block Layer
+ → logical block (LBA) → BIO                           | → logical block (LBA) → BIO
+ → BIO → request (blk-mq request queue)                | → BIO → request
+ → I/O merging, splitting, scheduling                  | → I/O merging, scheduling
+ ↓                                                     | ↓
 
-NVMe Driver                                          | Azure Disk Driver
-   → BIO → NVMe commands                              |    → BIO → disk I/O requests
-   → sector mapping                                   |    → sector mapping
-   ↓                                                  |    ↓
+Device Driver Layer                                    | Device Driver Layer
+(NVMe driver)                                          | (SCSI or NVMe driver)
+ → request → device command                            | → request → device command
+ → LBA + length → NVMe READ command                    | → LBA + length → SCSI READ / NVMe READ
+ → queue submission (submission queue)                 | → queue submission
+ ❗ (No physical mapping here)                          | ❗ (No physical mapping here)
+ ↓                                                     | ↓
 
-AWS Nitro System                                     | Azure Managed Disk (Logical Abstraction)
-   → NVMe → network translation                      |    → virtual disk abstraction
-   → internal AWS network                            |    → forwards request to disk service
-   ↓                                                  |    ↓
+Device (Virtual Disk)                                  | Device (Virtual Disk)
+(NVMe device exposed by Nitro)                         | (Virtual disk exposed by Azure fabric)
+ → accepts protocol commands                           | → accepts protocol commands
+ → DMA to/from memory                                  | → DMA to/from memory
+ ↓                                                     | ↓
 
-EBS Storage (Availability Zone)                      | Azure Disk Service (I/O Control Layer)
-   → reads from distributed storage                 |    → routes read request
-   → ensures replication                             |    → manages caching + QoS
-   ↓                                                  |    ↓
+Hypervisor / Offload Layer                             | Azure Storage Fabric
+→ AWS Nitro System           | → Azure host + storage fabric
+ → NVMe command → network RPC                          | → protocol → internal storage RPC
+ → maps virtual LBA → backend storage                  | → maps virtual LBA → backend storage
+ ↓                                                     | ↓
 
--------------------------------------------------------|-------------------------------------------------------
-────────────── RESPONSE PATH ──────────────           | ────────────── RESPONSE PATH ──────────────
+Storage Backend                                        | Storage Backend
+→ Amazon Elastic Block Store             | → Azure Managed Disks
+ → LBA → physical chunk placement                      | → LBA → storage extent mapping
+ → replication within AZ                               | → replication (LRS/ZRS)
+ → distributed storage read                            | → distributed storage read
+ ↓                                                     | ↓
 
-EBS → Nitro → NVMe Driver → Block Layer              | Storage Fabric → Disk Service → Driver → Block Layer
-   ↓                                                  |    ↓
+---------------- RESPONSE PATH ------------------------|---------------- RESPONSE PATH ------------------------
 
-Filesystem (ext4)                                    | Filesystem
-   → blocks → file offset                            |    → blocks → file offset
-   ↓                                                  |    ↓
+EBS → Nitro → Device → Driver                          | Storage → Fabric → Device → Driver
+ → completion queue entry                              | → completion queue entry
+ ↓                                                     | ↓
 
-Page Cache (RAM)                                     | Page Cache (RAM)
-   → stores data                                     |    → stores data
-   ↓                                                  |    ↓
+Block Layer                                            | Block Layer
+ → request completion → BIO completion                 | → request completion
+ ↓                                                     | ↓
 
-VFS                                                  | VFS
-   ↓                                                  |    ↓
+Filesystem                                             | Filesystem
+ → disk block → file logical block                     | → disk block → file logical block
+ → logical block → byte offset                         | → logical block → byte offset
+ ↓                                                     | ↓
 
-Application receives final data                      | Application receives final data
+Page Cache                                             | Page Cache
+ → cache fill (readahead possible)                     | → cache fill
+ ↓                                                     | ↓
+
+VFS                                                    | VFS
+ ↓                                                     | ↓
+
+Application                                            | Application
+ → buffer filled                                       | → buffer filled
 ```
 VFS looks up that fd: fd 3 → struct file (kernel object)
 That “file object” contains:
@@ -177,78 +198,103 @@ That “file object” contains:
 AWS (EBS)                                              | Azure (Managed Disks)
 -------------------------------------------------------|-------------------------------------------------------
 
-Application (write(fd, buffer, size))                 | Application (write(fd, buffer, size))
-   → file descriptor + data                          |    → file descriptor + data
-   ↓                                                  |    ↓
+Application                                            | Application
+write(fd, buffer, size)                                | write(fd, buffer, size)
+ → fd + user buffer (bytes)                            | → fd + user buffer (bytes)
+ ↓                                                     | ↓
 
-VFS (Virtual File System)                             | VFS (Virtual File System)
-   → resolves file object                             |    → resolves file object
-   → forwards to filesystem                          |    → forwards to filesystem
-   ↓                                                  |    ↓
+VFS (Virtual File System)                              | VFS (Virtual File System)
+ → fd → struct file (file object)                      | → fd → struct file
+ → validates permissions, flags                        | → validates permissions
+ → forwards write(file, offset, data)                  | → forwards write()
+ ↓                                                     | ↓
 
-Filesystem (ext4)                                    | Filesystem (NTFS / ext4 / xfs)
-   → inode + extent tree                             |    → inode / MFT mapping
-   → File Offset → Logical Block Number              |    → File Offset → Logical Block Number
-   → allocates blocks if needed                      |    → allocates blocks if needed
-   ↓                                                  |    ↓
+Filesystem (ext4)                                      | Filesystem (NTFS / ext4 / xfs)
+ → inode lookup                                        | → inode / MFT lookup
+ → byte offset → file logical block                    | → byte offset → file logical block
+ → allocate blocks (if needed)                         | → allocate clusters/blocks
+ → file logical block → disk logical block (LBA)       | → file logical block → disk LBA
+ ↓                                                     | ↓
 
-Page Cache (RAM)                                     | Page Cache (RAM)
-   → copies user data                               |    → copies user data
-   → marks pages DIRTY                               |    → marks pages DIRTY
-   → write() returns immediately                     |    → write() returns immediately
-   ↓                                                  |    ↓
+Page Cache (RAM)                                       | Page Cache (RAM)
+ → copy user buffer → page cache                       | → copy user buffer → page cache
+ → mark pages DIRTY                                    | → mark pages DIRTY
+ → update in-memory inode size/mtime                   | → update metadata in memory
+ → write() RETURNS (usually)                           | → write() RETURNS (usually)
+ ❗ not durable yet                                     | ❗ not durable yet
+ ↓                                                     | ↓
 
-Writeback (Deferred I/O)                             | Writeback (Deferred I/O)
-   → background flush threads                        |    → background flush threads
-   → fsync()/sync() triggers                         |    → fsync()/flush triggers
-   ↓                                                  |    ↓
+Writeback Trigger                                      | Writeback Trigger
+ → background flusher threads                          | → background flush threads
+ → or fsync()/fdatasync()                              | → or fsync()/FlushFileBuffers
+ ↓                                                     | ↓
 
-Filesystem Journaling (ext4)                         | Filesystem Journaling (NTFS/ext4)
-   → metadata written first                          |    → metadata consistency layer
-   → crash recovery guarantee                        |    → crash recovery guarantee
-   ↓                                                  |    ↓
+Filesystem Journaling                                  | Filesystem Journaling
+(ext4 journal)                                         | (NTFS log / ext4 journal)
+ → metadata → journal log first                        | → metadata → log first
+ → ensures crash consistency                           | → ensures crash consistency
+ → may use ordered / writeback / journal mode          | → NTFS uses redo logging
+ ↓                                                     | ↓
 
-Block Layer                                          | Block Layer
-   → Logical Blocks → BIO                            |    → Logical Blocks → BIO
-   → merges + schedules writes                      |    → merges + schedules writes
-   ↓                                                  |    ↓
+Block Layer                                            | Block Layer
+ → dirty pages → BIO (LBA + length)                    | → dirty pages → BIO
+ → BIO → request (blk-mq queue)                        | → BIO → request
+ → merge / split / reorder writes                      | → merge / schedule writes
+ ↓                                                     | ↓
 
-NVMe Driver                                          | Azure Disk Driver
-   → BIO → NVMe commands                             |    → BIO → disk I/O requests
-   → sector mapping                                  |    → sector mapping
-   ↓                                                  |    ↓
+Device Driver Layer                                    | Device Driver Layer
+(NVMe driver)                                          | (SCSI or NVMe driver)
+ → request → protocol command                          | → request → protocol command
+ → LBA + length → NVMe WRITE command                   | → LBA → SCSI WRITE / NVMe WRITE
+ → enqueue to submission queue                         | → enqueue to device queue
+ ❗ no physical mapping here                            | ❗ no physical mapping here
+ ↓                                                     | ↓
 
-AWS Nitro System                                     | Azure Managed Disk (Logical Abstraction)
-   → NVMe → network translation                     |    → virtual disk abstraction
-   → sends over AWS network                         |    → forwards to disk service
-   ↓                                                  |    ↓
+Device (Virtual Disk)                                  | Device (Virtual Disk)
+(NVMe device via Nitro)                                | (Virtual disk via Azure fabric)
+ → executes command semantics                          | → executes command semantics
+ → DMA transfer from memory                            | → DMA transfer
+ ↓                                                     | ↓
 
-EBS Storage (Availability Zone)                      | Azure Disk Service (I/O Control Layer)
-   → writes to distributed storage                  |    → routes write request
-   → replicates within AZ                           |    → handles replication logic
-   → returns ACK                                    |    → returns ACK
-   ↓                                                  |    ↓
+Hypervisor / Offload Layer                             | Azure Storage Fabric
+→ AWS Nitro System           | → Azure host + storage fabric
+ → NVMe cmd → network RPC                              | → protocol → internal RPC
+ → virtual LBA → backend mapping                       | → virtual LBA → backend mapping
+ ↓                                                     | ↓
 
--------------------------------------------------------|-------------------------------------------------------
-────────────── RESPONSE PATH ──────────────           | ────────────── RESPONSE PATH ──────────────
+Storage Backend                                        | Storage Backend
+→ Amazon Elastic Block Store             | → Azure Managed Disks
+ → LBA → physical chunks                               | → LBA → extents
+ → replicated within AZ                                | → replicated (LRS/ZRS)
+ → write committed (quorum / durability policy)        | → write committed
+ → ACK returned                                        | → ACK returned
+ ↓                                                     | ↓
 
-EBS → Nitro → NVMe Driver → Block Layer              | Storage Fabric → Disk Service → Driver → Block Layer
-   ↓                                                  |    ↓
+---------------- RESPONSE PATH ------------------------|---------------- RESPONSE PATH ------------------------
 
-Filesystem                                           | Filesystem
-   → marks pages CLEAN                              |    → marks pages CLEAN
-   ↓                                                  |    ↓
+EBS → Nitro → Device → Driver                          | Storage → Fabric → Device → Driver
+ → completion queue entry                              | → completion entry
+ ↓                                                     | ↓
 
-Page Cache                                           | Page Cache
-   → data now considered persisted                  |    → data now considered persisted
-   ↓                                                  |    ↓
+Block Layer                                            | Block Layer
+ → request completion                                  | → request completion
+ ↓                                                     | ↓
 
-VFS                                                  | VFS
-   ↓                                                  |    ↓
+Filesystem                                             | Filesystem
+ → mark pages CLEAN (after writeback)                  | → mark pages CLEAN
+ → journal commit may finalize metadata                | → log commit finalizes metadata
+ ↓                                                     | ↓
 
-Application                                          | Application
-   → write() complete                               |    → write() complete
-   → durable ONLY after fsync()                     |    → durable ONLY after flush/fsync()
+Page Cache                                             | Page Cache
+ → data now synced to storage                          | → data now synced
+ ↓                                                     | ↓
+
+VFS                                                    | VFS
+ ↓                                                     | ↓
+
+Application                                            | Application
+ → fsync()/flush returns                               | → fsync()/flush returns
+ → durability guaranteed here                          | → durability guaranteed here
 ```
 
 ---
