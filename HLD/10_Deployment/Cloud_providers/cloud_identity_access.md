@@ -128,7 +128,6 @@ App Service
 Function.
 
 Trick
-
  Disk(EBS) → No IAM(no need to call aws api)
  File (EFS) → Mostly No IAM
  Service/API (SSM) → IAM Required(calls aws api)
