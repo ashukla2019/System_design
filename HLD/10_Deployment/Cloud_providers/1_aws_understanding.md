@@ -11,6 +11,7 @@ Serverless: Lambda, Fargate
 Containers: EKS, ECS
 Storage: EBS (attached), EFS (shared), S3 (object, outside VPC)
 Database: RDS/Aurora (SQL), DynamoDB (NoSQL)
+
 ---
 
 # AWS Cloud Computing Architecture Tree
