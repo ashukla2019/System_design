@@ -16,6 +16,13 @@ Storage: EBS (attached), EFS (shared), S3 (object, outside VPC)
 
 Database: RDS/Aurora (SQL), DynamoDB (NoSQL)
 
+
+“AWS resources are deployed inside a VPC, which is a logical network boundary.
+Inside the VPC, we create public and private subnets. Public subnets connect to the internet via an Internet Gateway, while private subnets use a NAT Gateway for outbound access.
+Services like EC2, RDS, and EKS run inside subnets, while services like S3 and Lambda are managed services outside the VPC but can be accessed securely.
+Security is handled using Security Groups at instance level and NACLs at subnet level.
+Underneath, AWS regions contain multiple AZs, each with data centers and physical servers running hypervisors"
+
 ---
 
 # AWS Cloud Computing Architecture Tree
