@@ -23,6 +23,16 @@ Services like EC2, RDS, and EKS run inside subnets, while services like S3 and L
 Security is handled using Security Groups(statefull: allows rule only) at instance level and NACLs(stateless: allow & deny rules) at subnet level.
 Underneath, AWS regions contain multiple AZs, each with data centers and physical servers running hypervisors"
 
+## IAM
+“In AWS, we create an IAM identity(user/role) and attach policies defining permissions. The identity obtains credentials—either access keys or temporary credentials from STS. These credentials are used to sign API requests to AWS services like S3. The service then evaluates the request against IAM policies and allows or denies access.”
+
+## permission sample: 
+
+{
+  "Effect": "Allow",
+  "Action": "s3:GetObject",
+  "Resource": "arn:aws:s3:::my-bucket/*"
+}
 ---
 
 # AWS Cloud Computing Architecture Tree
