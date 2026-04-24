@@ -33,6 +33,7 @@ Underneath, AWS regions contain multiple AZs, each with data centers and physica
   "Action": "s3:GetObject",
   "Resource": "arn:aws:s3:::my-bucket/*"
 }
+
 ---
 
 # AWS Cloud Computing Architecture Tree
