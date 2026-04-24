@@ -7,9 +7,13 @@ This document provides a structured overview of AWS core services and architectu
 
 ## Baucally these services or servers provided:
 Compute: EC2, Auto Scaling, ELB
+
 Serverless: Lambda, Fargate
+
 Containers: EKS, ECS
+
 Storage: EBS (attached), EFS (shared), S3 (object, outside VPC)
+
 Database: RDS/Aurora (SQL), DynamoDB (NoSQL)
 
 ---
