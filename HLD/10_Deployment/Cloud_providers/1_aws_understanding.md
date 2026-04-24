@@ -5,7 +5,7 @@
 This document provides a structured overview of AWS core services and architecture concepts, organized hierarchically for easier understanding and study.
 
 
-##Baucally these services or servers provided:
+## Baucally these services or servers provided:
 Compute: EC2, Auto Scaling, ELB
 Serverless: Lambda, Fargate
 Containers: EKS, ECS
