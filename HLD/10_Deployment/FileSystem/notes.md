@@ -835,6 +835,7 @@ Represents an open file instance.
 ---
 
 ## 4. 🔗 Complete Relationship (MOST ASKED)
+```
 Process
 ↓
 File Descriptor (fd)
@@ -851,7 +852,7 @@ AND:
 
 inode → superblock (filesystem info)
 
-
+```
 ---
 
 ## 5. 🧭 Path Resolution (VERY IMPORTANT)
@@ -861,6 +862,7 @@ open("/home/user/file.txt")
 
 
 ### Flow:
+```
 Start from root (/)
 ↓
 Lookup "home" in dentry cache
@@ -871,7 +873,7 @@ Lookup "file.txt"
 ↓
 Get inode
 
-
+```
 ### Uses:
 - Dentry cache
 - Inode cache
@@ -955,6 +957,7 @@ Each structure defines function pointers:
 ---
 
 ## 9. 🔌 Filesystem Stack Integration
+```
 VFS Layer
 ↓
 Filesystem (ext4 / xfs / nfs)
@@ -964,7 +967,7 @@ Block Layer
 Device Driver
 ↓
 Disk
-
+```
 
 ---
 
@@ -1053,6 +1056,7 @@ USER SPACE
 open(), read(), write()
 
 KERNEL SPACE
+```
 fd table (per process)
 ↓
 struct file (open file)
@@ -1067,7 +1071,7 @@ block layer
 ↓
 disk
 
-
+```
 ---
 
 ## 16. 🧠 Memory Trick
