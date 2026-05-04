@@ -151,41 +151,41 @@ Get inode
 
 ### 6.1 OPEN()
 open("file.txt")
-
+```
 → sys_open()
 → path lookup (dentry + inode)
 → create struct file
 → assign fd
 → return fd
 
-
+```
 ---
 
 ### 6.2 READ()
 read(fd, buf, size)
-
+```
 → get struct file via fd
 → get inode
 → call filesystem read op
 → fetch data from page cache / disk
 → copy to user buffer
 
-
+```
 ---
 
 ### 6.3 WRITE()
 write(fd, buf, size)
-
+```
 → struct file
 → inode
 → write to page cache
 → mark dirty
 → flush to disk later
-
+```
 
 ---
 
-## 7. 📦 Page Cache (CRITICAL)
+## 7. Page Cache (CRITICAL)
 
 - Caches file data in RAM
 - Reduces disk I/O
@@ -236,7 +236,7 @@ Disk
 ```
 ---
 
-## 10. 🧠 Caching Layers
+## 10. Caching Layers
 
 ### Dentry Cache:
 - Filename → inode mapping
