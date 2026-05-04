@@ -336,7 +336,6 @@ file->f_pos = 0
 install fd
 ↓
 return fd
-
 ```
 ---
 
