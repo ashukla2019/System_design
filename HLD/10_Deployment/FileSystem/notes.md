@@ -1,10 +1,10 @@
 
 
-# 📁 Filesystem + VFS Complete Notes (Interview Ready)
+# Filesystem + VFS Complete Notes (Interview Ready)
 
 ---
 
-## 1. 📌 What is a Filesystem?
+## 1.  What is a Filesystem?
 
 A filesystem is a method to store, organize, and retrieve data from storage devices.
 
@@ -22,7 +22,7 @@ A filesystem is a method to store, organize, and retrieve data from storage devi
 
 ---
 
-## 2. 🧠 What is VFS (Virtual File System)?
+## 2. What is VFS (Virtual File System)?
 
 VFS is a kernel abstraction layer that provides a uniform interface to multiple filesystems.
 
@@ -32,7 +32,7 @@ VFS is a kernel abstraction layer that provides a uniform interface to multiple 
 
 ---
 
-## 3. 🧱 Core VFS Data Structures (VERY IMPORTANT)
+## 3. Core VFS Data Structures (VERY IMPORTANT)
 
 ---
 
@@ -101,21 +101,6 @@ Represents an open file instance.
 
 ---
 
-## 4.  Complete Relationship
-```
-Process
-↓
-File Descriptor (fd)
-↓
-struct file (open instance)
-↓
-struct dentry (filename)
-↓
-struct inode (metadata)
-↓
-Data Blocks (actual data on disk)
-
-AND:
 
 inode → superblock (filesystem info)
 
@@ -197,7 +182,7 @@ write → page cache → flush later
 
 ---
 
-## 8. 🧩 VFS Operation Tables
+## 8. VFS Operation Tables
 
 Each structure defines function pointers:
 
@@ -319,19 +304,38 @@ open(), read(), write()
 
 ### KERNEL SPACE
 ```
-fd table (per process)
+open("/home/user/file.txt")
 ↓
-struct file (open file)
+sys_open()
 ↓
-dentry (filename)
+path lookup
 ↓
-inode (metadata)
+super_block → s_root
 ↓
-page cache
+dentry walk: "/", home, user, file.txt
 ↓
-block layer
+dentry("file.txt")
 ↓
-disk
+inode
+↓
+----------------------------------
+CREATE FILE OBJECT
+----------------------------------
+alloc struct file
+↓
+file->f_path = {mnt, dentry}
+↓
+file->f_inode = inode
+↓
+file->f_op = inode->i_fop   ✅ KEY LINK
+↓
+if (f_op->open) call it
+↓
+file->f_pos = 0
+↓
+install fd
+↓
+return fd
 
 ```
 ---
@@ -357,3 +361,35 @@ FD → FILE → DENTRY → INODE → DATA
 **VFS connects user syscalls to actual filesystem using:**
 file descriptor → file → dentry → inode → disk
 
+-----------------------
+1. mkfs (filesystem creation)
+   ↓
+   Disk structures created:
+   - superblock (disk)
+   - inode table
+   - data blocks
+
+--------------------------------------
+
+2. mount
+   ↓
+   Kernel creates:
+   - struct super_block
+   - root dentry
+   - root inode
+
+--------------------------------------
+
+3. path lookup (open/read/etc)
+   ↓
+   Kernel creates (on demand):
+   - dentries
+   - loads inodes into memory
+
+--------------------------------------
+
+4. open()
+   ↓
+   Kernel creates:
+   - struct file
+   - assigns fd
