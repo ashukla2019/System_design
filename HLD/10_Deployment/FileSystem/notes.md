@@ -101,87 +101,6 @@ Represents an open file instance.
 
 ---
 
-
-inode → superblock (filesystem info)
-
-```
----
-
-## 5. 🧭 Path Resolution (VERY IMPORTANT)
-
-### Example:
-open("/home/user/file.txt")
-
-
-### Flow:
-```
-Start from root (/)
-↓
-Lookup "home" in dentry cache
-↓
-Lookup "user"
-↓
-Lookup "file.txt"
-↓
-Get inode
-
-```
-### Uses:
-- Dentry cache
-- Inode cache
-
----
-
-## 6. 🔄 System Call Flow (End-to-End)
-
-### 6.1 OPEN()
-open("file.txt")
-```
-→ sys_open()
-→ path lookup (dentry + inode)
-→ create struct file
-→ assign fd
-→ return fd
-
-```
----
-
-### 6.2 READ()
-read(fd, buf, size)
-```
-→ get struct file via fd
-→ get inode
-→ call filesystem read op
-→ fetch data from page cache / disk
-→ copy to user buffer
-
-```
----
-
-### 6.3 WRITE()
-write(fd, buf, size)
-```
-→ struct file
-→ inode
-→ write to page cache
-→ mark dirty
-→ flush to disk later
-```
-
----
-
-## 7. Page Cache (CRITICAL)
-
-- Caches file data in RAM
-- Reduces disk I/O
-
-### Flow:
-read → page cache hit → return fast
-write → page cache → flush later
-
-
----
-
 ## 8. VFS Operation Tables
 
 Each structure defines function pointers:
@@ -206,7 +125,7 @@ Each structure defines function pointers:
 
 ---
 
-## 9. 🔌 Filesystem Stack Integration
+## 9. Filesystem Stack Integration
 ```
 VFS Layer
 ↓
@@ -229,7 +148,7 @@ Disk
 ### Inode Cache:
 - Stores inode objects in memory
 
-👉 Improves lookup performance
+Improves lookup performance
 
 ---
 
@@ -243,7 +162,7 @@ mount /dev/sda1 /mnt
 
 ---
 
-## 12. 📂 Directory Structure
+## 12.  Directory Structure
 
 A directory is a file containing:
 filename → inode number
@@ -251,7 +170,7 @@ filename → inode number
 
 ---
 
-## 13. 🔐 File Permissions
+## 13. File Permissions
 
 Stored in inode:
 - rwx for user / group / others
