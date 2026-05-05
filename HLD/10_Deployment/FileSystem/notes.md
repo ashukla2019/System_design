@@ -392,14 +392,22 @@ file → f_op → inode → page cache → disk
 # 🧠 KEY POINTER RELATIONSHIPS
 
 ```text
+[Mount]
 super_block → s_root → dentry
 
+[Path Resolution]
 dentry → inode
 inode → super_block
 
+[Open]
 file → f_path → dentry → inode
 file → f_inode → inode
 file → f_op → inode->i_fop
+
+[Read]
+file → f_op → read()
+file → f_inode → inode → super_block
+file → f_pos (offset update)
 ```
 
 ---
