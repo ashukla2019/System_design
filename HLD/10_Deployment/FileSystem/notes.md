@@ -392,22 +392,29 @@ file → f_op → inode → page cache → disk
 # 🧠 KEY POINTER RELATIONSHIPS
 
 ```text
+[mkfs]
+disk structures created (superblock, inode table, root dir)
+
 [Mount]
-super_block → s_root → dentry
+super_block → s_root → dentry        (filesystem loaded into RAM)
 
 [Path Resolution]
-dentry → inode
-inode → super_block
+dentry → inode                       (name → file)
+inode → super_block                 (belongs to FS)
 
 [Open]
-file → f_path → dentry → inode
-file → f_inode → inode
-file → f_op → inode->i_fop
+file → f_path → dentry → inode      (path tracking)
+file → f_inode → inode              (direct access)
+file → f_op → inode->i_fop          (operations bound)
 
 [Read]
-file → f_op → read()
-file → f_inode → inode → super_block
-file → f_pos (offset update)
+file → f_op → read()                (execute read)
+file → f_inode → inode → super_block (locate data)
+file → f_pos                        (offset updated)
+
+
+mkfs creates the filesystem on disk, mount brings it into memory, open binds a file handle to an inode, and read operates directly via file → inode without redoing path lookup.
+
 ```
 
 ---
