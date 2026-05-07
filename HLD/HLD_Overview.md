@@ -196,15 +196,33 @@
 ## 8. Security
 
 ### Cybersecurity Principles
-- **CIA Triad**
-  - Confidentiality, Integrity, Availability  
+- CIA Triad
+- Threat Modeling
+- Zero Trust
 
-- **Threat Modeling**
-  - Identify and mitigate risks  
+### Network Security
+- Firewall
+- WAF
+- Security Groups
 
-- **Zero Trust**
-  - Never trust, always verify  
+### Authentication (AuthN)
+- API Key
+- Basic Auth
+- Session-Based Auth
+- Bearer Token
+- JWT
+- OAuth 2.0
+- SSO / OpenID Connect
 
+### Authorization (AuthZ)
+- RBAC
+- ABAC
+- Scopes & Permissions
+
+### Encryption
+- SSL/TLS
+- Data Encryption
+- Hashing (bcrypt, Argon2)
 ---
 
 ### Network Security
