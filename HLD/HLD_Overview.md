@@ -45,47 +45,334 @@
 ## 3. Communication & Networking
 
 ### Networking Fundamentals
-- **DNS** → Domain → IP resolution  
-- **TCP/UDP** → Reliable vs fast communication  
-- **IP Addressing** → Device identification  
-- **VPC/Subnets** → Isolated cloud networks  
 
-### Communication Patterns
+- **DNS**
+  - Converts domain names → IP addresses
+  - Example:
+    ```text
+    google.com → 142.250.x.x
+    ```
 
-#### Synchronous
-- Immediate response required  
+- **TCP**
+  - Reliable, connection-oriented communication
+  - Guarantees delivery and order
+  - **Use:** APIs, databases, web applications
 
-- **REST**
-  - HTTP-based, CRUD (GET, POST, PUT, DELETE)  
-  - **Use:** Simple APIs, public services  
+- **UDP**
+  - Fast, connectionless communication
+  - No guarantee of delivery
+  - **Use:** Video streaming, gaming, VoIP
 
-- **SOAP**
-  - XML-based protocol  
-  - **Use:** Banking, enterprise systems  
+- **IP Addressing**
+  - Unique identifier for devices in a network
+  - IPv4 / IPv6
 
-#### Both (Sync + Async)
-- **GraphQL**
-  - Single endpoint, fetch exact data  
-  - **Use:** Complex UI  
+- **VPC (Virtual Private Cloud)**
+  - Isolated cloud network
+  - Controls routing and security
 
-- **gRPC**
-  - HTTP/2 + Protobuf (binary)  
-  - **Use:** Microservices, low latency  
+- **Subnets**
+  - Divide VPC into smaller networks
+  - Public subnet → internet accessible
+  - Private subnet → internal only
 
-#### Asynchronous
-- **WebSocket**
-  - Persistent full-duplex connection  
-  - **Use:** Chat apps, live dashboards  
+---
 
-- **Message Queues / Streams**
-  - **RabbitMQ**
-    - Queue-based (producer → queue → consumer)  
-    - **Use:** Background jobs, task queues  
+# Communication Patterns
 
-  - **Kafka**
-    - Log-based (topics, replay supported)  
-    - **Use:** Event streaming, analytics  
+Communication patterns define how services/components communicate.
 
+They are mainly:
+1. Synchronous
+2. Asynchronous
+3. Hybrid (Both Sync + Async)
+
+---
+
+## Synchronous Communication
+
+- Client sends request and waits for response
+- Blocking communication
+- Simpler but tightly coupled
+
+### Flow
+```text
+Client → Server → Response
+```
+
+### Best For
+- Immediate responses
+- CRUD operations
+- User-facing APIs
+
+---
+
+### REST
+
+- HTTP-based architectural style
+- Uses:
+  - GET
+  - POST
+  - PUT
+  - DELETE
+
+### Example
+```http
+GET /users/1
+```
+
+### Characteristics
+- Stateless
+- JSON-based
+- Easy to integrate
+- Human-readable
+
+### Advantages
+- Simple
+- Widely used
+- Browser/mobile friendly
+
+### Disadvantages
+- Over-fetching/under-fetching
+- Multiple API calls may be needed
+
+### Use Cases
+- Public APIs
+- Web/mobile backends
+- CRUD services
+
+---
+
+### SOAP
+
+- XML-based messaging protocol
+- Strict standards and contracts (WSDL)
+
+### Characteristics
+- Highly secure
+- Reliable
+- Enterprise-focused
+
+### Advantages
+- Strong security
+- Transaction support
+- Standardized
+
+### Disadvantages
+- Heavy XML payloads
+- Slower and more complex
+
+### Use Cases
+- Banking systems
+- Government systems
+- Enterprise integrations
+
+---
+
+## Both (Sync + Async)
+
+Some technologies support both request-response and event-driven communication.
+
+---
+
+### GraphQL
+
+- Query language for APIs
+- Single endpoint:
+  ```text
+  /graphql
+  ```
+
+### Key Idea
+Client requests only required data.
+
+### Example
+```graphql
+{
+  user(id: 1) {
+    name
+    email
+  }
+}
+```
+
+### Advantages
+- Avoids over-fetching
+- Flexible frontend queries
+- Reduces API calls
+
+### Disadvantages
+- Complex caching
+- Harder backend implementation
+
+### Supports
+- Synchronous queries
+- Asynchronous subscriptions
+
+### Use Cases
+- Complex frontend UIs
+- Mobile apps
+- Dashboards
+
+---
+
+### gRPC
+
+- High-performance RPC framework by Google
+- Uses:
+  - HTTP/2
+  - Protocol Buffers (binary serialization)
+
+### Characteristics
+- Very fast
+- Strongly typed
+- Supports streaming
+
+### Advantages
+- Low latency
+- Efficient binary communication
+- Excellent for internal services
+
+### Disadvantages
+- Harder browser support
+- Less human-readable
+
+### Use Cases
+- Microservices
+- Real-time internal communication
+- Distributed systems
+
+---
+
+## Asynchronous Communication
+
+- Sender does not wait for immediate response
+- Non-blocking communication
+- Highly scalable and decoupled
+
+### Flow
+```text
+Producer → Broker → Consumer
+```
+
+### Best For
+- Background processing
+- Event-driven systems
+- Real-time pipelines
+
+---
+
+### WebSocket
+
+- Persistent two-way communication channel
+- Full-duplex connection
+
+### Difference from HTTP
+HTTP:
+```text
+Request → Response → Connection closes
+```
+
+WebSocket:
+```text
+Connection stays open
+```
+
+### Advantages
+- Real-time communication
+- Low latency updates
+
+### Disadvantages
+- Persistent connection management
+- More resource usage
+
+### Use Cases
+- Chat applications
+- Live dashboards
+- Multiplayer games
+- Stock trading apps
+
+---
+
+## Message Queues / Streams
+
+Used for asynchronous service-to-service communication.
+
+---
+
+### RabbitMQ
+
+- Queue-based message broker
+
+### Flow
+```text
+Producer → Queue → Consumer
+```
+
+### Characteristics
+- Messages removed after consumption
+- Reliable delivery
+- Supports retries
+
+### Advantages
+- Decouples services
+- Good for task distribution
+- Easy retry mechanisms
+
+### Disadvantages
+- Not ideal for large event streams
+
+### Use Cases
+- Background jobs
+- Email processing
+- Payment processing
+- Task queues
+
+---
+
+### Kafka
+
+- Distributed event streaming platform
+- Uses append-only logs called topics
+
+### Flow
+```text
+Producer → Kafka Topic → Consumers
+```
+
+### Characteristics
+- Messages retained for replay
+- High throughput
+- Distributed and scalable
+
+### Advantages
+- Event replay support
+- Real-time analytics
+- Massive scalability
+
+### Disadvantages
+- More operational complexity
+
+### Use Cases
+- Event streaming
+- Analytics pipelines
+- Log aggregation
+- Fraud detection
+- Real-time monitoring
+
+---
+
+# Quick Comparison
+
+| Technology | Type | Best For |
+|---|---|---|
+| REST | Sync | Public APIs |
+| SOAP | Sync | Enterprise systems |
+| GraphQL | Sync + Async | Complex frontend |
+| gRPC | Sync + Async | Microservices |
+| WebSocket | Async | Real-time apps |
+| RabbitMQ | Async | Background jobs |
+| Kafka | Async | Event streaming |
 ---
 
 ### Infrastructure
