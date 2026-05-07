@@ -22,7 +22,8 @@
 
 ### Microservices
 - Independent services communicating via APIs  
-- **Use when:** Large, complex systems, independent scaling  
+- **Use when:** Large, complex systems, independent scaling
+- E-commerce System( User Service, Product Service(handles catalog), Order Service, Payment Service,Notification Service), Amazon, netflix etc.
 
 ### Event-Driven
 - Communication via events (pub-sub)  
