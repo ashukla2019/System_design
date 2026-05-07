@@ -178,6 +178,10 @@ Some technologies support both request-response and event-driven communication.
 ### GraphQL
 
 - Query language for APIs
+- Instead of many endpoints:
+  /users
+  /products
+  /orders
 - Single endpoint:
   ```text
   /graphql
