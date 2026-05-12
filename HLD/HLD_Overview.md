@@ -436,20 +436,31 @@ Producer → Kafka Topic → Consumers
 
 ## 5. Storage
 
+# Storage
+
 - **Block Storage**
-  - Raw disk blocks  
-  - **Use:** OS, databases, VMs  
+  - Stores data as raw disk blocks attached to servers or VMs.
+  - **Best For:** Databases, virtual machines, boot drives, high-performance applications.
+  - **Use When:** You need low latency, fast read/write performance, and direct disk-level access.
+  - **Examples:** AWS EBS, Azure Managed Disks.
 
 - **Object Storage**
-  - Stores objects with metadata  
-  - **Use:** Images, backups, logs  
+  - Stores files as objects with metadata in a flat structure.
+  - **Best For:** Images, videos, backups, logs, static assets, large-scale unstructured data.
+  - **Use When:** You need scalable, durable, and cost-effective storage accessed over the internet/API.
+  - **Examples:** AWS S3, Google Cloud Storage.
 
 - **File Storage**
-  - Shared file system  
-  - **Use:** Team files, CMS  
+  - Stores data in a shared hierarchical file system with folders and directories.
+  - **Best For:** Shared team files, content management systems, media workflows, network drives.
+  - **Use When:** Multiple users or servers need shared access to the same files.
+  - **Examples:** Amazon EFS, Azure Files.
 
 - **Backup & Disaster Recovery**
-  - Data recovery strategies  
+  - Strategies and systems used to recover data and restore services after failures or attacks.
+  - **Best For:** Business continuity, ransomware recovery, accidental deletion protection.
+  - **Use When:** You need automated backups, cross-region replication, or recovery planning.
+  - **Examples:** Snapshots, cold storage, multi-region backups.
 
 ---
 
@@ -487,52 +498,43 @@ Producer → Kafka Topic → Consumers
 
 ## 8. Security
 
-### Cybersecurity Principles
-- CIA Triad
-- Threat Modeling
-- Zero Trust
+# Security
 
-### Network Security
-- Firewall
-- WAF
-- Security Groups
+- **Cybersecurity Principles** — Core practices and strategies used to protect systems, networks, and data from cyber threats, unauthorized access, and attacks.
+- **CIA Triad** — The foundation of information security: Confidentiality, Integrity, and Availability of data and systems.
+- **Threat Modeling** — A structured process for identifying potential security threats, vulnerabilities, and attack paths in an application or system.
+- **Zero Trust** — A security model that assumes no user or system is trusted by default, requiring continuous verification for every access request.
 
-### Authentication (AuthN)
-- API Key
-- Basic Auth
-- Session-Based Auth
-- Bearer Token
-- JWT
-- OAuth 2.0
-- SSO / OpenID Connect
+# Network Security
 
-### Authorization (AuthZ)
-- RBAC
-- ABAC
-- Scopes & Permissions
+- **Firewall** — A security system that monitors and filters incoming and outgoing network traffic based on predefined rules.
+- **WAF (Web Application Firewall)** — Protects web applications from attacks like SQL injection, XSS, and malicious HTTP traffic.
+- **Security Groups** — Virtual firewall rules that control inbound and outbound traffic for cloud resources such as servers or databases.
 
-### Encryption
-- SSL/TLS
-- Data Encryption
-- Hashing (bcrypt, Argon2)
----
+# Authentication (AuthN)
 
-### Network Security
-- **Firewall** → Traffic filtering  
-- **WAF** → Protects web apps (SQLi, XSS)  
-- **Security Groups** → Cloud-level firewall  
+- **Authentication (AuthN)** — The process of verifying the identity of a user, application, or device before granting access.
+- **API Key** — A unique token used to identify and authenticate applications making API requests.
+- **Basic Auth** — A simple authentication method where username and password are sent with each request, usually encoded in Base64.
+- **Session-Based Auth** — Authentication approach where the server stores user session data after login and tracks users via session IDs.
+- **Bearer Token** — A token-based authentication method where possession of the token grants access to protected resources.
+- **JWT (JSON Web Token)** — A compact, signed token format commonly used for secure authentication and information exchange.
+- **OAuth 2.0** — An authorization framework that allows third-party applications to access resources on behalf of users without sharing passwords.
+- **SSO / OpenID Connect** — Single Sign-On enables one login across multiple applications, while OpenID Connect adds identity verification on top of OAuth 2.0.
 
----
+# Authorization (AuthZ)
 
-### Auth
-- **Authentication (AuthN)** → Verify identity  
-- **Authorization (AuthZ)** → Access control  
+- **Authorization (AuthZ)** — The process of determining what actions or resources an authenticated user is allowed to access.
+- **RBAC (Role-Based Access Control)** — Access control model where permissions are assigned based on user roles.
+- **ABAC (Attribute-Based Access Control)** — Authorization model that grants access based on attributes like user type, location, device, or time.
+- **Scopes & Permissions** — Fine-grained rules that define what resources or actions an application or user can access.
 
----
+# Encryption & Data Protection
 
-### Encryption
-- **SSL/TLS** → Secure communication  
-- **Data Encryption** → Protect stored data  
+- **Encryption** — The process of converting data into unreadable ciphertext to protect it from unauthorized access.
+- **SSL/TLS** — Cryptographic protocols used to secure communication between clients and servers over networks.
+- **Data Encryption** — Protecting stored or transmitted data using encryption algorithms to ensure confidentiality.
+- **Hashing (bcrypt, Argon2)** — One-way cryptographic techniques used for securely storing passwords and verifying integrity.
 
 ---
 
