@@ -1,6 +1,6 @@
-HTTP FLOW
-=========
+# HTTP FLOW
 
+```text
 User types:
 http://example.com
         ↓
@@ -31,12 +31,11 @@ HTTP Response generated
 Response sent back
         ↓
 Browser renders webpage
+```
 
+# HTTPS FLOW
 
-
-HTTPS FLOW
-===========
-
+```text
 User types:
 https://google.com
         ↓
@@ -81,3 +80,4 @@ Encrypted HTTP Response sent
 Browser decrypts response
         ↓
 Browser renders webpage
+```
