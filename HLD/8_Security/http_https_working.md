@@ -1,28 +1,31 @@
+HTTP FLOW
+=========
+
 User types:
 http://example.com
         ↓
-DNS lookup
-example.com → IP
+DNS Lookup
+example.com → IP Address
         ↓
-TCP Handshake
+TCP 3-Way Handshake
 SYN → SYN-ACK → ACK
         ↓
-Browser sends HTTP request
-(GET / POST etc.)
+Browser sends HTTP Request
+(GET / POST / PUT etc.)
         ↓
-HTTP data encapsulated
+Data Encapsulation
 HTTP → TCP → IP → Ethernet
         ↓
-Packets travel through routers
+Packets travel through routers/network
         ↓
 Server receives packets
         ↓
-Decapsulation
+Data Decapsulation
 Ethernet → IP → TCP → HTTP
         ↓
-Web server processes request
+Web Server processes request
         ↓
-HTTP response generated
+HTTP Response generated
 (200 OK, HTML, JSON etc.)
         ↓
 Response sent back
@@ -30,45 +33,51 @@ Response sent back
 Browser renders webpage
 
 
-------------------
+
+HTTPS FLOW
+===========
 
 User types:
 https://google.com
         ↓
-DNS lookup
+DNS Lookup
+google.com → IP Address
         ↓
-TCP Handshake
+TCP 3-Way Handshake
 SYN → SYN-ACK → ACK
         ↓
 TLS Handshake starts
         ↓
 Client Hello
-(supported TLS/ciphers)
+(Supported TLS versions, ciphers, random)
         ↓
 Server Hello
-(selected cipher)
+(Selected TLS version, cipher, random)
         ↓
 Server sends Certificate
-(public key + CA signature)
+(Public Key + CA Signature)
         ↓
-Browser verifies certificate
+Browser verifies Certificate
         ↓
 Key Exchange
-(shared secret created)
+(Shared Secret established)
         ↓
-Session Key generated
+Session Keys generated
         ↓
-Secure encrypted tunnel established
+Secure Encrypted TLS Tunnel established
         ↓
-Encrypted HTTP communication
-HTTP → TLS Encrypt → TCP → IP
+Encrypted HTTP Communication
+HTTP → TLS Encrypt → TCP → IP → Ethernet
         ↓
-Server decrypts request
+Server receives packets
         ↓
-Processes request
+TLS Decryption
+Ethernet → IP → TCP → TLS Decrypt → HTTP
         ↓
-Encrypted response sent
+Web Server processes request
+        ↓
+Encrypted HTTP Response sent
         ↓
 Browser decrypts response
         ↓
-Webpage rendered
+Browser renders webpage
