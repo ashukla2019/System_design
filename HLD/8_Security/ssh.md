@@ -200,4 +200,14 @@ Private key NEVER leaves laptop.
 6. User authenticated
 7. PTY + shell created on VM
 8. Secure remote shell session starts
+
+
+
+| Security Property     | Where in SSH              |
+| --------------------- | ------------------------- |
+| Server Authentication | Host key verification     |
+| User Authentication   | Password / SSH key login  |
+| Encryption            | After Diffie-Hellman      |
+| Integrity             | HMAC on encrypted packets |
+
 ```
