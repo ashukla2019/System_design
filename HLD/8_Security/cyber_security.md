@@ -391,36 +391,278 @@ Need proof of sender.
 
 # 22. Solution #8 — Digital Signatures
 
-Process:
-
-## Sender Side
-
-```text
-1. Hash message
-2. Encrypt hash using Private Key
-3. Send:
-   - message
-   - signature
-```
+# Digital Signature — Complete Simple Flow
 
 ---
 
-## Receiver Side
+# Goal of Digital Signature
+
+Digital signatures solve:
 
 ```text
-1. Hash received message
-2. Decrypt signature using Public Key
-3. Compare hashes
+1. Was message modified?
+2. Did message really come from sender?
+3. Can sender deny sending it later?
 ```
-
-If same:
-- message unchanged
-- sender authenticated
 
 Provides:
 - Integrity
 - Authentication
 - Non-Repudiation
+
+---
+
+# Example Scenario
+
+Alice wants to send:
+
+```text
+Transfer ₹5000
+```
+
+to Bob.
+
+---
+
+# Sender Side (Alice)
+
+---
+
+## Step 1 — Create Hash of Message
+
+Alice computes hash:
+
+```text
+Hash("Transfer ₹5000")
+= H123
+```
+
+Hash acts like:
+- fingerprint of message
+
+Even tiny message change creates different hash.
+
+---
+
+## Step 2 — Sign Hash Using Alice Private Key
+
+Alice uses her private key:
+
+```text
+Signature = Encrypt(H123, Alice_Private_Key)
+```
+
+This encrypted hash becomes:
+
+# Digital Signature
+
+Only Alice private key can create this signature.
+
+---
+
+## Step 3 — Send Message + Signature
+
+Alice sends:
+
+```text
+Message:
+Transfer ₹5000
+
+Signature:
+XYZ789
+```
+
+---
+
+# Receiver Side (Bob)
+
+Bob receives:
+- message
+- signature
+
+Now verification begins.
+
+---
+
+## Step 4 — Bob Hashes Received Message Again
+
+Bob computes hash:
+
+```text
+Hash("Transfer ₹5000")
+= H123
+```
+
+This is:
+- newly calculated hash
+
+---
+
+## Step 5 — Bob Verifies Signature Using Alice Public Key
+
+Bob uses Alice public key:
+
+```text
+Decrypt(Signature, Alice_Public_Key)
+= H123
+```
+
+This gives:
+- original signed hash
+
+---
+
+## Step 6 — Compare Both Hashes
+
+Bob compares:
+
+```text
+Calculated Hash = H123
+Signed Hash = H123
+```
+
+If equal:
+
+```text
+✓ Message unchanged
+✓ Message came from Alice
+✓ Signature is valid
+```
+
+---
+
+# If Attacker Modifies Message
+
+Suppose attacker changes:
+
+```text
+Transfer ₹5000
+```
+
+to:
+
+```text
+Transfer ₹9000
+```
+
+---
+
+## Bob Recalculates Hash
+
+Bob computes:
+
+```text
+Hash("Transfer ₹9000")
+= H999
+```
+
+But signature still contains:
+
+```text
+H123
+```
+
+Comparison:
+
+```text
+H999 != H123
+```
+
+Verification fails.
+
+Bob immediately knows:
+
+```text
+Message was modified
+OR
+signature is fake
+```
+
+---
+
+# Important Concept
+
+Digital signature is tied to:
+
+```text
+1. Exact message content
+2. Sender private key
+```
+
+So:
+- changing message invalidates signature
+- attacker cannot generate new valid signature
+without sender private key
+
+---
+
+# What Digital Signature Provides
+
+| Feature | Provided? |
+|---|---|
+| Confidentiality | No |
+| Integrity | Yes |
+| Authentication | Yes |
+| Non-Repudiation | Yes |
+
+---
+
+# Encryption vs Digital Signature
+
+| Encryption | Digital Signature |
+|---|---|
+| Hides message | Proves sender |
+| Uses receiver public key | Uses sender private key |
+| Provides confidentiality | Provides integrity/authentication |
+
+---
+
+# Complete Flow Diagram
+
+```text
+Sender Side
+-----------
+
+Message
+   ↓
+Hash Function
+   ↓
+Message Hash
+   ↓
+Encrypt Hash Using Sender Private Key
+   ↓
+Digital Signature
+   ↓
+Send:
+- Message
+- Signature
+
+
+Receiver Side
+-------------
+
+Receive:
+- Message
+- Signature
+   ↓
+Hash Message Again
+   ↓
+Decrypt Signature Using Sender Public Key
+   ↓
+Compare Hashes
+   ↓
+If Equal:
+✓ Message unchanged
+✓ Sender verified
+```
+
+---
+
+# Final One-Line Summary
+
+```text
+Digital signature works by signing the message hash using sender private key, and receiver verifies it using sender public key to ensure message integrity and sender authenticity.
+```
 
 ---
 
