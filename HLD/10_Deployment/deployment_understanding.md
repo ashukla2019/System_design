@@ -226,39 +226,42 @@ Data Center
     │
     └─ Hypervisor
         │
-        ├─ VM 1
-        ├─ VM 2
-        ├─ VM 3
-        └─ VM N
+        ├─ Control Plane VM(s)
+        │   │
+        │   └─ Operating System (Linux)
+        │       │
+        │       └─ Kubernetes Control Plane
+        │           ├─ API Server
+        │           ├─ etcd
+        │           ├─ Scheduler
+        │           └─ Controller Manager
+        │
+        └─ Worker Node VM(s)
             │
-            └─ Operating System
+            └─ Operating System (Linux/Windows)
                 │
-                ├─ Linux
-                └─ Windows
+                └─ Kubernetes Worker Node Components
                     │
-                    └─ Kubernetes Node Components
+                    ├─ kubelet
+                    ├─ kube-proxy
+                    ├─ Container Runtime
+                    │   ├─ containerd
+                    │   ├─ CRI-O
+                    │   └─ Docker (historically)
+                    │
+                    └─ Pods
                         │
-                        ├─ kubelet
-                        ├─ kube-proxy
-                        └─ Container Runtime
-                            │
-                            ├─ containerd
-                            ├─ CRI-O
-                            └─ Docker (historically)
-                                │
-                                └─ Pod
-                                    │
-                                    ├─ Container A
-                                    │   ├─ Application
-                                    │   ├─ Runtime
-                                    │   ├─ Libraries
-                                    │   └─ Dependencies
-                                    │
-                                    └─ Container B
-                                        ├─ Application
-                                        ├─ Runtime
-                                        ├─ Libraries
-                                        └─ Dependencies
+                        ├─ Container A
+                        │   ├─ Application
+                        │   ├─ Runtime
+                        │   ├─ Libraries
+                        │   └─ Dependencies
+                        │
+                        └─ Container B
+                            ├─ Application
+                            ├─ Runtime
+                            ├─ Libraries
+                            └─ Dependencies
 
 ```
 
