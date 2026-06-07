@@ -3,7 +3,7 @@ Example Application
 
 Suppose you build a backup application:
 
-backup.py
+# backup.py
 
 The application is just code.
 
@@ -40,9 +40,7 @@ Power systems
 Cooling systems
 Networking equipment
 Thousands of physical servers
-
-Examples:
-
+Examples
 AWS Data Centers
 Azure Data Centers
 Google Cloud Data Centers
@@ -55,9 +53,7 @@ Physical Server
  ├─ RAM
  ├─ Disk
  └─ Network Card
-
-Example:
-
+Example Configuration
 256 CPU Cores
 1 TB RAM
 10 TB SSD
@@ -65,8 +61,7 @@ Hypervisor
 
 A hypervisor divides a physical server into multiple Virtual Machines.
 
-Examples:
-
+Examples
 VMware ESXi
 Hyper-V
 KVM
@@ -82,8 +77,7 @@ Virtual Machine (VM)
 
 A VM behaves like a complete computer.
 
-Examples:
-
+Examples
 AWS EC2
 Azure VM
 Physical Server
@@ -136,8 +130,7 @@ Kubernetes
 
 Kubernetes manages containers.
 
-Responsibilities:
-
+Responsibilities
 Scheduling
 Scaling
 Networking
@@ -165,9 +158,7 @@ Physical Server
 Linux
       ↓
 backup.py
-
-You manage:
-
+You Manage
 Hardware
 Networking
 Security
@@ -175,9 +166,7 @@ OS
 Runtime
 Application
 Option 2: IaaS (Infrastructure as a Service)
-
-Examples:
-
+Examples
 AWS EC2
 Azure VM
 Cloud Data Center
@@ -191,17 +180,13 @@ VM
 Linux
       ↓
 backup.py
-
-Cloud manages:
-
+Cloud Manages
 Data center
 Physical servers
 Storage
 Networking
 Hypervisor
-
-You manage:
-
+You Manage
 VM
 OS
 Runtime
@@ -221,21 +206,15 @@ Linux
 Docker
       ↓
 Backup Container
-
-Cloud manages:
-
+Cloud Manages
 Physical infrastructure
-
-You manage:
-
+You Manage
 VM
 OS
 Docker
 Containers
 Application
-
-Example:
-
+Example
 sudo apt install docker.io
 Option 4: Self-Managed Kubernetes
 
@@ -254,17 +233,13 @@ VM
 Kubernetes
  ↓
 Containers
-
-You manage:
-
+You Manage
 VMs
 Kubernetes
 Containers
 Applications
 Option 5: Managed Kubernetes
-
-Examples:
-
+Examples
 AKS
 EKS
 GKE
@@ -278,64 +253,46 @@ You
  ├─ Pods
  ├─ Deployments
  └─ Applications
-
-Cloud manages:
-
+Cloud Manages
 Kubernetes control plane
 Infrastructure
-
-You manage:
-
+You Manage
 Workloads
 Containers
 Applications
 Option 6: Platform as a Service (PaaS)
-
-Examples:
-
+Examples
 Azure App Service
 Google App Engine
 Application
       ↓
 App Service
-
-Cloud manages:
-
+Cloud Manages
 Servers
 VMs
 OS
 Runtime
 Scaling
-
-You manage:
-
+You Manage
 Application
 Option 7: Container PaaS
-
-Examples:
-
+Examples
 Azure Container Apps
 AWS Fargate
 Container Image
       ↓
 Cloud Platform
-
-Cloud manages:
-
+Cloud Manages
 Servers
 VMs
 Docker runtime
 Scaling
 Networking
-
-You manage:
-
+You Manage
 Container image
 Application
 Option 8: Serverless (FaaS)
-
-Examples:
-
+Examples
 AWS Lambda
 Azure Functions
 Event
@@ -343,21 +300,15 @@ Event
 Function
  ↓
 Response
-
-Cloud manages:
-
+Cloud Manages
 Servers
 VMs
 Containers
 Runtime
 Scaling
-
-You manage:
-
+You Manage
 Function code
-
-Example:
-
+Example
 def lambda_handler(event, context):
     return "Hello"
 What Happens Under Lambda?
@@ -378,52 +329,49 @@ The cloud provider simply hides these layers.
 
 Responsibility Comparison
 On-Prem
-You manage everything
+
+You manage everything.
+
 VM (IaaS)
-Cloud manages:
-- Hardware
-- Networking
-
-You manage:
-- VM
-- OS
-- Runtime
-- App
+Cloud Manages
+Hardware
+Networking
+You Manage
+VM
+OS
+Runtime
+Application
 Docker on VM
-Cloud manages:
-- Infrastructure
-
-You manage:
-- VM
-- OS
-- Docker
-- Containers
-- App
+Cloud Manages
+Infrastructure
+You Manage
+VM
+OS
+Docker
+Containers
+Application
 Managed Kubernetes
-Cloud manages:
-- Infrastructure
-- Kubernetes Control Plane
-
-You manage:
-- Pods
-- Deployments
-- Containers
-- App
+Cloud Manages
+Infrastructure
+Kubernetes Control Plane
+You Manage
+Pods
+Deployments
+Containers
+Application
 PaaS
-Cloud manages:
-- Infrastructure
-- OS
-- Runtime
-- Scaling
-
-You manage:
-- App
+Cloud Manages
+Infrastructure
+OS
+Runtime
+Scaling
+You Manage
+Application
 FaaS
-Cloud manages:
-- Everything except function code
-
-You manage:
-- Function code
+Cloud Manages
+Everything except function code
+You Manage
+Function code
 Cloud Service Models Mapping
 Deployment Style	Service Model
 Physical Server	On-Premises
@@ -484,4 +432,18 @@ What changes is:
 
 How many of those layers are managed by you versus the cloud provider.
 
-As you move from On-Prem → IaaS → Kubernetes → PaaS → FaaS → SaaS, more responsibility shifts from you to the cloud provider.
+As you move from:
+
+On-Prem
+   ↓
+IaaS
+   ↓
+Kubernetes
+   ↓
+PaaS
+   ↓
+FaaS
+   ↓
+SaaS
+
+More responsibility shifts from you to the cloud provider.
