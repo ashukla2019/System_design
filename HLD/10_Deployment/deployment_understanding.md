@@ -207,7 +207,7 @@ VM
  └─ Kubernetes Node
       └─ Containers
 ```
-
+```
 Data Center
 │
 ├─ Power Systems
@@ -260,10 +260,9 @@ Data Center
                                         ├─ Libraries
                                         └─ Dependencies
 
----
-```
 ```
 
+```
 # Deployment Evolution
 
 ## Option 1: On-Premises
