@@ -208,7 +208,61 @@ VM
       └─ Containers
 ```
 
+Data Center
+│
+├─ Power Systems
+├─ Cooling Systems
+├─ Network Infrastructure
+│   ├─ Routers
+│   ├─ Switches
+│   └─ Cables
+│
+└─ Physical Servers
+    │
+    ├─ CPU
+    ├─ RAM
+    ├─ Disk (SSD/HDD)
+    ├─ Network Interface Card (NIC)
+    │
+    └─ Hypervisor
+        │
+        ├─ VM 1
+        ├─ VM 2
+        ├─ VM 3
+        └─ VM N
+            │
+            └─ Operating System
+                │
+                ├─ Linux
+                └─ Windows
+                    │
+                    └─ Kubernetes Node Components
+                        │
+                        ├─ kubelet
+                        ├─ kube-proxy
+                        └─ Container Runtime
+                            │
+                            ├─ containerd
+                            ├─ CRI-O
+                            └─ Docker (historically)
+                                │
+                                └─ Pod
+                                    │
+                                    ├─ Container A
+                                    │   ├─ Application
+                                    │   ├─ Runtime
+                                    │   ├─ Libraries
+                                    │   └─ Dependencies
+                                    │
+                                    └─ Container B
+                                        ├─ Application
+                                        ├─ Runtime
+                                        ├─ Libraries
+                                        └─ Dependencies
+
 ---
+```
+```
 
 # Deployment Evolution
 
