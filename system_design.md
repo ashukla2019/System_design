@@ -791,6 +791,765 @@ Virtual Machine
 Container
  ↓
 Application
+
+---------------------
+
+
+Delegated Authorization without Password Sharing is exactly what OAuth solves.
+
+The Problem
+Suppose your application wants access to a user's Google Drive.
+
+Bad approach:
+
+User
+ ↓
+Gives Google Username + Password
+ ↓
+Your Application
+ ↓
+Logs into Google
+Problems:
+
+Application sees the user's password.
+
+If the application is compromised, the password is exposed.
+
+User must trust every application with their credentials.
+
+OAuth Solution
+Instead of sharing the password, the user authorizes Google to grant limited access.
+
+User
+ ↓
+Redirect to Google
+ ↓
+Login on Google
+ ↓
+Google asks:
+"Allow this app to read your Drive?"
+ ↓
+User Approves
+ ↓
+Google issues Access Token
+ ↓
+Application uses Token
+The application never sees the password.
+
+Real Example: "Login with Google"
+User
+ ↓
+Click "Login with Google"
+ ↓
+Google Authentication
+ ↓
+User Approves
+ ↓
+Google returns Access Token
+ ↓
+Application gets user information
+Your application receives:
+
+{
+  "access_token": "xyz123"
+}
+Not:
+
+{
+  "username": "user@gmail.com",
+  "password": "secret123"
+}
+Why It's Called "Delegated Authorization"
+The user delegates specific permissions to an application.
+
+Example:
+
+User
+ ↓
+Google
+ ↓
+Delegates Permission:
+   ✓ Read Email
+   ✓ Read Profile
+   ✗ Delete Account
+   ✗ Change Password
+The application gets only the permissions (scopes) that the user approved.
+
+Simple Memory Trick
+Authentication
+=
+Who are you?
+
+Authorization
+=
+What can you do?
+
+OAuth
+=
+Let another application do something
+on your behalf without knowing your password.
+Example:
+
+Spotify accessing Google account
+Slack accessing Google Calendar
+GitHub login to a website
+Login with Google
+Login with Microsoft
+Login with Facebook
+All of these use OAuth's delegated authorization model: permission is delegated via tokens, not by sharing passwords.
+
+
+How oauth diff from jwt in terms of reqiirement
+
+This is one of the most commonly confused topics.
+
+OAuth and JWT solve different problems.
+
+Question	OAuth	JWT
+Purpose	Delegated Authorization	Stateless Authentication
+Problem Solved	"Can this app access my resources?"	"Who is this user?"
+Used For	Third-party access	User sessions
+Token Format	Usually uses access tokens (often JWT, but not required)	JWT token
+Login with Google?	Yes	No
+Microservice authentication?	Usually No	Yes
+User session management?	No	Yes
+JWT Requirement
+Problem
+After login, how does the server remember the user?
+
+Traditional way:
+
+User Login
+ ↓
+Session Stored in Server Memory
+ ↓
+Future Requests Use Session ID
+Problems:
+
+Session storage needed
+
+Hard to scale
+
+Sticky sessions required
+
+Solution
+Store identity inside token.
+
+Login
+ ↓
+JWT Created
+ ↓
+Client Stores JWT
+ ↓
+JWT Sent With Every Request
+Requirement Trigger
+When interviewer says:
+
+Millions of users
+Microservices
+Stateless system
+REST APIs
+Mobile apps
+Think:
+
+JWT
+Example:
+
+Netflix
+Amazon
+Swiggy
+Uber
+User logs in and receives JWT.
+
+OAuth Requirement
+Problem
+Application needs access to another service.
+
+Example:
+
+Canva wants Google Drive access.
+Without OAuth:
+
+User gives Google password to Canva
+Very dangerous.
+
+Solution
+Google gives Canva a limited access token.
+
+User
+ ↓
+Google Login
+ ↓
+Approve Access
+ ↓
+Google Issues Token
+ ↓
+Canva Uses Token
+Password never shared.
+
+Requirement Trigger
+When interviewer says:
+
+Login with Google
+Login with GitHub
+Third-party integration
+Access user data from another platform
+Think:
+
+OAuth
+Real Example
+JWT
+User
+ ↓
+My Application
+ ↓
+Login
+ ↓
+JWT Generated
+ ↓
+JWT Used For Future Requests
+JWT is between:
+
+User ↔ My Application
+OAuth
+User
+ ↓
+Google
+ ↓
+Permission Granted
+ ↓
+Token Issued
+ ↓
+My Application
+OAuth is between:
+
+User ↔ Google ↔ My Application
+Can OAuth and JWT Work Together?
+Yes, very often.
+
+Example:
+
+Login with Google
+Flow:
+
+User
+ ↓
+Google OAuth
+ ↓
+Google Verifies User
+ ↓
+Application Receives User Info
+ ↓
+Application Creates JWT
+ ↓
+JWT Used For Future Requests
+So:
+
+OAuth
+=
+Initial Login
+
+JWT
+=
+Subsequent Requests
+This is how many modern systems work.
+
+Interview Decision Tree
+Need user login?
+      ↓
+JWT
+
+Need stateless authentication?
+      ↓
+JWT
+
+Need scalable session management?
+      ↓
+JWT
+
+Need Login with Google/GitHub?
+      ↓
+OAuth
+
+Need third-party access?
+      ↓
+OAuth
+
+Need one application to access another service?
+      ↓
+OAuth
+Easy Memory Trick
+JWT
+=
+"I already know who you are."
+
+OAuth
+=
+"Google/Microsoft will tell me who you are."
+Or even shorter:
+
+JWT
+=
+Maintain Login
+
+OAuth
+=
+Obtain Permission
+In a typical production system:
+
+User
+ ↓
+OAuth (Google Login)
+ ↓
+Application
+ ↓
+JWT Issued
+ ↓
+Future API Requests
+So OAuth is often used to establish identity, and JWT is then used to carry that identity efficiently on every request.
+
+
+Wjy we need ssl/tls, jwt and oauth
+
+Think of them as solving three completely different problems in the request flow.
+
+TLS/SSL
+   ↓
+Protects Data In Transit
+
+OAuth
+   ↓
+Obtains Identity / Permission
+
+JWT
+   ↓
+Maintains Identity Across Requests
+Example: Login with Google
+A user opens your application and clicks Login with Google.
+
+Step 1: TLS/SSL
+Problem
+Data travels through the internet.
+
+Without TLS:
+
+User
+ ↓
+Username
+Password
+Cookies
+Tokens
+Anyone intercepting traffic could read it.
+
+Solution
+User
+ ↓ HTTPS
+Application
+Everything is encrypted.
+
+Requirement:
+Whenever data travels over a network.
+
+Step 2: OAuth
+Problem
+Your application wants to know who the user is.
+
+You do not want:
+
+User gives Google password
+to your application
+Solution
+Google authenticates the user.
+
+User
+ ↓
+Google
+ ↓
+User Approves
+ ↓
+Application Receives Access
+Password never reaches your application.
+
+Requirement:
+When using:
+
+Login with Google
+Login with GitHub
+Login with Microsoft
+Third-party integrations
+Step 3: JWT
+Problem
+After login, every request needs user identity.
+
+Without JWT:
+
+Request 1
+Check Database
+
+Request 2
+Check Database
+
+Request 3
+Check Database
+Expensive and hard to scale.
+
+Solution
+Store identity in token.
+
+JWT
+{
+  userId: 123
+  role: Admin
+}
+Client sends JWT with every request.
+
+Request
+ ↓
+JWT
+ ↓
+Server validates
+No session lookup required.
+
+Requirement:
+When building:
+
+REST APIs
+Microservices
+Mobile Apps
+SPAs
+Distributed Systems
+Why All Three Together?
+Consider:
+
+https://myapp.com
+User clicks:
+
+Login with Google
+Full flow:
+
+User
+ ↓ HTTPS (TLS)
+Application
+ ↓
+Redirect to Google (OAuth)
+ ↓
+Google Verifies User
+ ↓
+Application Receives Identity
+ ↓
+Application Creates JWT
+ ↓
+JWT Sent On Future Requests
+What Happens If One Is Missing?
+No TLS
+OAuth Token Stolen
+JWT Stolen
+Passwords Exposed
+System insecure.
+
+No OAuth
+Cannot Login with Google
+Cannot Use Third-Party Identity
+Need your own login system.
+
+No JWT
+Server Must Store Sessions
+More Database Lookups
+Harder Horizontal Scaling
+Interview Cheat Sheet
+Requirement	Use
+Encrypt network traffic	TLS/SSL
+Login with Google/GitHub	OAuth
+Third-party authorization	OAuth
+Stateless authentication	JWT
+Microservices authentication	JWT
+Secure communication	TLS/SSL
+Maintain user login after authentication	JWT
+Easy Memory Trick
+TLS
+=
+Protect the Message
+
+OAuth
+=
+Get Permission / Identity
+
+JWT
+=
+Carry Identity
+Or in one line:
+
+TLS secures the connection,
+OAuth obtains the identity,
+JWT carries the identity.
+
+Explain it how it links with system design? # 6. Compute Layer
+
+### Problem
+Applications need CPU, memory, storage and runtime environments.
+
+### Solution
+
+#### Physical Server
+- Actual hardware.
+
+#### Virtual Machine
+- Virtualized operating system.
+
+#### Container
+- Lightweight isolated runtime.
+
+#### Kubernetes
+- Container orchestration platform.
+
+### Flow
+
+text
+Physical Server
+ ↓
+Virtual Machine
+ ↓
+Container
+ ↓
+Application
+
+This layer is important in System Design because it answers:
+
+"Where will my application actually run?"
+
+All the layers before this (DNS, CDN, Load Balancer, API Gateway, Security) help requests reach your application. The Compute Layer is where the application executes.
+
+6. Compute Layer
+Problem
+Your application needs:
+
+CPU
+Memory (RAM)
+Disk
+Network
+Operating System
+Runtime Environment
+Without compute resources:
+
+User Request
+ ↓
+Application
+ ❌ Cannot Run
+How It Connects To System Design
+Imagine designing a system like Netflix.
+
+Users generate requests:
+
+User
+ ↓
+DNS
+ ↓
+CDN
+ ↓
+Load Balancer
+ ↓
+Application
+The question becomes:
+
+Where is this application running?
+
+Answer:
+
+Physical Server
+ ↓
+Virtual Machine
+ ↓
+Container
+ ↓
+Application
+The Compute Layer provides the execution environment.
+
+1. Physical Server
+What It Is
+Real hardware.
+
+CPU
+RAM
+Disk
+Network Card
+Motherboard
+Examples:
+
+Servers in data centers
+
+Cloud provider hardware
+
+Problem Solved
+Need actual hardware to execute code.
+
+System Design View
+Users
+ ↓
+Application
+ ↓
+Physical Server
+Everything ultimately runs on hardware.
+
+Limitation
+One application consuming all resources affects others.
+
+App A
+App B
+App C
+All sharing one machine.
+
+Poor isolation.
+
+2. Virtual Machine (VM)
+Problem
+Need multiple isolated environments on the same hardware.
+
+Without VM:
+
+Physical Server
+ ├── App A
+ ├── App B
+ └── App C
+Apps can interfere with each other.
+
+Solution
+Virtualization.
+
+Physical Server
+ ↓
+Hypervisor
+ ├── VM 1
+ ├── VM 2
+ └── VM 3
+Each VM has:
+
+Own OS
+Own Memory
+Own CPU Allocation
+Own Storage
+Example
+Physical Server
+ ├── Ubuntu VM
+ ├── Windows VM
+ └── RedHat VM
+System Design Trigger
+When you need:
+
+Strong Isolation
+Multiple Operating Systems
+Legacy Applications
+Use:
+
+Virtual Machines
+3. Containers
+Problem
+VMs are heavy.
+
+Each VM contains:
+
+Application
+Operating System
+Libraries
+Consumes lots of memory.
+
+Solution
+Containers share the host OS.
+
+Host OS
+ ├── Container A
+ ├── Container B
+ └── Container C
+Each container contains:
+
+Application
+Libraries
+Dependencies
+But not a full OS.
+
+Why System Designers Love Containers
+Portable:
+
+Developer Laptop
+ ↓
+QA
+ ↓
+Production
+Same container everywhere.
+
+Example
+User Service
+Order Service
+Payment Service
+Each packaged separately.
+
+Container 1
+Container 2
+Container 3
+System Design Trigger
+When interviewer says:
+
+Microservices
+Fast Deployment
+Scalability
+Cloud Native
+Think:
+
+Containers
+4. Kubernetes
+Problem
+Managing hundreds or thousands of containers manually is impossible.
+
+Imagine:
+
+500 Containers
+Across 50 Servers
+Questions:
+
+Which server runs container?
+What if container crashes?
+How to scale?
+How to update?
+Solution
+Kubernetes orchestrates containers.
+
+Kubernetes
+ ├── Scheduling
+ ├── Scaling
+ ├── Self-Healing
+ ├── Service Discovery
+ └── Rolling Updates
+Example
+Need 10 instances:
+
+User Service × 10
+Kubernetes creates:
+
+Pod 1
+Pod 2
+Pod 3
+...
+Pod 10
+If Pod 5 crashes:
+
+Kubernetes
+ ↓
+Creates New Pod
+Automatically.
+
+Scaling Example
+Traffic increases:
+
+100 Requests/sec
+ ↓
+10,000 Requests/sec
+Kubernetes:
+
+5 Pods
+ ↓
+50 Pods
+Automatically.
+
+
 ```
 
 ### Next Problem
