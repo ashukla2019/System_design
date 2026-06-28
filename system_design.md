@@ -123,44 +123,430 @@ Traffic Layer
 
 # 3. Traffic Layer
 
-### Problem
-Millions of users can overload servers and malicious traffic can reach applications.
+## Problem
+Millions of users can overload servers, malicious traffic can reach applications, and requests must be routed efficiently to the correct backend services.
 
-### Solution
+## Solution
 
-#### CDN
-- Caches content closer to users.
+### 1. CDN (Content Delivery Network)
 
-#### WAF
-- Protects against SQL Injection, XSS and web attacks.
+#### Purpose
+Bring content closer to users.
 
-#### Rate Limiting
-- Prevents abuse and traffic spikes.
+#### What Problem It Solves
+- High latency
+- Global users
+- Origin server overload
 
-#### API Gateway
-- Central entry point for APIs.
+#### How It Works
+User → CDN Edge Server → Origin Server
 
-#### Reverse Proxy
-- SSL termination, routing and caching.
+If content is cached:
+- Served directly from CDN
 
-#### Load Balancer
-- Distributes requests across servers.
+If not cached:
+- CDN fetches from origin and stores copy
 
-### Flow
+#### Common Use Cases
+- Images
+- Videos
+- CSS/JS files
+- Downloads
+- Static websites
 
-```text
-User
- ↓
-CDN
- ↓
+---
+
+### 2. WAF (Web Application Firewall)
+
+#### Purpose
+Protect web applications from attacks.
+
+#### What Problem It Solves
+Attackers send malicious requests such as:
+- SQL Injection
+- XSS
+- CSRF
+- Path Traversal
+- Bot Attacks
+
+#### How It Works
+
+User Request
+↓
 WAF
- ↓
+↓
+Application
+
+WAF inspects HTTP requests before they reach servers.
+
+#### Common Use Cases
+- Internet-facing applications
+- Banking systems
+- E-commerce websites
+
+---
+
+### 3. Rate Limiting
+
+#### Purpose
+Control request volume.
+
+#### What Problem It Solves
+- API abuse
+- DDoS amplification
+- Cost explosion
+- Resource starvation
+
+#### How It Works
+
+User
+↓
 Rate Limiter
- ↓
+↓
+Application
+
+Example:
+- 100 requests/minute/user
+- Extra requests return 429 Too Many Requests
+
+#### Common Algorithms
+- Token Bucket
+- Leaky Bucket
+- Fixed Window
+- Sliding Window
+
+#### Common Use Cases
+- Login APIs
+- Public APIs
+- Payment APIs
+
+---
+
+### 4. API Gateway
+
+#### Purpose
+Single entry point for APIs and microservices.
+
+#### What Problem It Solves
+
+Without API Gateway:
+
+Client
+├── User Service
+├── Order Service
+├── Payment Service
+├── Inventory Service
+
+Client must know:
+- All service locations
+- Authentication methods
+- API versions
+
+Complex and difficult to maintain.
+
+#### How It Works
+
+Client
+↓
 API Gateway
- ↓
+├── User Service
+├── Order Service
+├── Payment Service
+└── Inventory Service
+
+Gateway handles:
+- Authentication
+- Authorization
+- Rate limiting
+- Request validation
+- API versioning
+- Logging
+- Monitoring
+- Request aggregation
+- Routing
+
+#### Example
+
+Client requests:
+
+GET /dashboard
+
+Gateway internally calls:
+
+User Service
+Order Service
+Payment Service
+
+Combines responses and returns one response.
+
+#### Common Use Cases
+- Microservices
+- Mobile applications
+- Public APIs
+- SaaS platforms
+
+#### Examples
+- :contentReference[oaicite:0]{index=0}
+- :contentReference[oaicite:1]{index=1}
+- :contentReference[oaicite:2]{index=2}
+
+---
+
+### 5. Reverse Proxy
+
+#### Purpose
+Acts on behalf of backend servers.
+
+#### What Problem It Solves
+
+Without Reverse Proxy:
+
+Client
+↓
+Application Server
+
+Application server exposed directly.
+
+Problems:
+- Security risk
+- SSL overhead
+- No caching
+- Difficult routing
+
+#### How It Works
+
+Client
+↓
+Reverse Proxy
+↓
+Backend Servers
+
+Client never directly sees backend servers.
+
+#### Responsibilities
+
+##### SSL Termination
+
+Client
+↓ HTTPS
+Reverse Proxy
+↓ HTTP
+Backend
+
+Backend servers avoid encryption overhead.
+
+##### Routing
+
+/api → API Servers
+
+/static → Static Servers
+
+/admin → Admin Servers
+
+##### Caching
+
+Stores frequently requested content.
+
+##### Compression
+
+Compresses responses before sending.
+
+##### Security
+
+Hides internal infrastructure.
+
+#### Common Use Cases
+- Web applications
+- Internal services
+- SSL offloading
+
+#### Examples
+- :contentReference[oaicite:3]{index=3}
+- :contentReference[oaicite:4]{index=4}
+- :contentReference[oaicite:5]{index=5}
+
+---
+
+### 6. Load Balancer
+
+#### Purpose
+Distribute traffic across multiple servers.
+
+#### What Problem It Solves
+
+Without Load Balancer:
+
+Users
+↓
+Server A
+
+Server A overloaded while others idle.
+
+Single point of failure.
+
+#### How It Works
+
+Users
+↓
 Load Balancer
-```
+├── Server A
+├── Server B
+├── Server C
+└── Server D
+
+Requests distributed automatically.
+
+#### Load Balancing Algorithms
+
+##### Round Robin
+
+Req1 → A
+
+Req2 → B
+
+Req3 → C
+
+##### Least Connections
+
+Send request to server with fewest active connections.
+
+##### Weighted Round Robin
+
+More traffic sent to stronger servers.
+
+#### Health Checks
+
+Load Balancer continuously checks:
+
+- CPU
+- Memory
+- Network
+- Service availability
+
+Failed servers are removed automatically.
+
+#### Common Use Cases
+- High availability
+- Horizontal scaling
+- Fault tolerance
+
+#### Examples
+- :contentReference[oaicite:6]{index=6}
+- :contentReference[oaicite:7]{index=7}
+- :contentReference[oaicite:8]{index=8}
+
+---
+
+# API Gateway vs Reverse Proxy vs Load Balancer
+
+| Feature | API Gateway | Reverse Proxy | Load Balancer |
+|----------|------------|---------------|---------------|
+| Primary Goal | Manage APIs | Protect & route servers | Distribute traffic |
+| Authentication | Yes | Limited | No |
+| Rate Limiting | Yes | Basic | No |
+| API Versioning | Yes | No | No |
+| Request Aggregation | Yes | No | No |
+| SSL Termination | Sometimes | Yes | Yes |
+| Caching | Sometimes | Yes | Limited |
+| Routing | API-based | URL-based | Server-based |
+| Health Checks | Sometimes | Limited | Yes |
+| Load Distribution | Sometimes | Limited | Yes |
+
+---
+
+# When To Use Which?
+
+## Use API Gateway When
+
+- Microservices architecture
+- Public APIs
+- Mobile applications
+- Need authentication
+- Need API versioning
+- Need request aggregation
+
+Flow:
+
+Client
+↓
+API Gateway
+↓
+Microservices
+
+---
+
+## Use Reverse Proxy When
+
+- Need SSL termination
+- Need caching
+- Need URL routing
+- Want to hide backend servers
+
+Flow:
+
+Client
+↓
+Reverse Proxy
+↓
+Application Servers
+
+---
+
+## Use Load Balancer When
+
+- Multiple server instances exist
+- High availability required
+- Horizontal scaling required
+- Need failover support
+
+Flow:
+
+Users
+↓
+Load Balancer
+├── Server A
+├── Server B
+└── Server C
+
+---
+
+# Real Production Architecture
+
+User
+↓
+CDN
+↓
+WAF
+↓
+Rate Limiter
+↓
+Load Balancer
+↓
+API Gateway
+↓
+Reverse Proxy (optional)
+↓
+Microservices
+
+OR
+
+User
+↓
+CDN
+↓
+WAF
+↓
+Reverse Proxy (NGINX)
+↓
+Load Balancer
+↓
+Application Servers
+
+The key distinction:
+
+- **Load Balancer decides "Which server?"**
+- **Reverse Proxy decides "Where should this request go?"**
+- **API Gateway decides "How should this API request be handled?"**
 
 ### Next Problem
 Traffic has reached the datacenter. How does it travel reliably between machines?
