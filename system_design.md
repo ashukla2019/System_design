@@ -1253,4 +1253,27 @@ Data Retrieved / Stored
 Response Generated
  ↓
 Returned To User
+
+
+--------------------------------
+url routing: 
+Different URLs should go to different services.
+
+Example:
+
+/api/*
+/images/*
+/payments/*
+/admin/*
+
+------------------------
+ssl termination:
+The reverse proxy:
+
+Receives HTTPS request
+Decrypts SSL/TLS traffic
+Reads HTTP request
+Forwards request to backend
+
+This process is called SSL Termination because the SSL connection "terminates" at the proxy.
 ```
