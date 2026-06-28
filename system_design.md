@@ -713,6 +713,31 @@ Verify Device
 Verify Context
  ↓
 Grant Access
+
+---------------------
+Secure communication?
+    → TLS/SSL
+
+Who is the user?
+    → Authentication
+
+What can the user do?
+    → Authorization
+
+Need stateless auth?
+    → JWT
+
+Need Google/GitHub login?
+    → OAuth
+
+Permissions based on roles?
+    → RBAC
+
+Permissions based on context?
+    → ABAC
+
+Need maximum security?
+    → Zero Trust
 ```
 
 ### Next Problem
