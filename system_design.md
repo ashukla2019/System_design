@@ -738,6 +738,20 @@ Permissions based on context?
 
 Need maximum security?
     → Zero Trust
+
+User
+ ↓ HTTPS (TLS)
+Application
+ ↓
+Redirect to Google (OAuth)
+ ↓
+Google Verifies User
+ ↓
+Application Receives Identity
+ ↓
+Application Creates JWT
+ ↓
+JWT Sent On Future Requests.
 ```
 
 ### Next Problem
