@@ -171,12 +171,14 @@ Attackers send malicious requests such as:
 
 #### How It Works
 
+```
 User Request
 ↓
 WAF
 ↓
 Application
 
+```
 WAF inspects HTTP requests before they reach servers.
 
 #### Common Use Cases
@@ -199,12 +201,14 @@ Control request volume.
 
 #### How It Works
 
+```
 User
 ↓
 Rate Limiter
 ↓
 Application
 
+```
 Example:
 - 100 requests/minute/user
 - Extra requests return 429 Too Many Requests
@@ -320,24 +324,27 @@ Problems:
 
 #### How It Works
 
+```
 Client
 ↓
 Reverse Proxy
 ↓
 Backend Servers
-
+```
 Client never directly sees backend servers.
 
 #### Responsibilities
 
 ##### SSL Termination
 
+```
 Client
 ↓ HTTPS
 Reverse Proxy
 ↓ HTTP
 Backend
 
+```
 Backend servers avoid encryption overhead.
 
 ##### Routing
@@ -472,12 +479,14 @@ Failed servers are removed automatically.
 
 Flow:
 
+```
 Client
 ↓
 API Gateway
 ↓
 Microservices
 
+```
 ---
 
 ## Use Reverse Proxy When
@@ -489,12 +498,14 @@ Microservices
 
 Flow:
 
+```
 Client
 ↓
 Reverse Proxy
 ↓
 Application Servers
 
+```
 ---
 
 ## Use Load Balancer When
@@ -517,6 +528,7 @@ Load Balancer
 
 # Real Production Architecture
 
+```
 User
 ↓
 CDN
@@ -533,8 +545,11 @@ Reverse Proxy (optional)
 ↓
 Microservices
 
+```
 OR
 
+
+```
 User
 ↓
 CDN
@@ -547,6 +562,7 @@ Load Balancer
 ↓
 Application Servers
 
+```
 The key distinction:
 
 - **Load Balancer decides "Which server?"**
