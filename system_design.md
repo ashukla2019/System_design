@@ -231,11 +231,14 @@ Single entry point for APIs and microservices.
 
 Without API Gateway:
 
+```
 Client
 ├── User Service
 ├── Order Service
 ├── Payment Service
 ├── Inventory Service
+
+```
 
 Client must know:
 - All service locations
