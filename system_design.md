@@ -249,6 +249,7 @@ Complex and difficult to maintain.
 
 #### How It Works
 
+```
 Client
 ↓
 API Gateway
@@ -257,6 +258,7 @@ API Gateway
 ├── Payment Service
 └── Inventory Service
 
+```
 Gateway handles:
 - Authentication
 - Authorization
