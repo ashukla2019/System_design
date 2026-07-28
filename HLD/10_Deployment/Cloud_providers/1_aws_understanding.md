@@ -704,31 +704,48 @@ KMS
 # Final AWS Mental Model
 
 ```text
-Physical Servers
-      ↓
-Availability Zones
-      ↓
-Region
-      ↓
-VPC
-      ↓
-Public / Private Subnets
-      ↓
-Route Tables
-      ↓
-Internet Gateway / NAT Gateway
-      ↓
-NACL
-      ↓
+AWS
+│
+├── Regions
+│     │
+│     ├── Availability Zone A
+│     ├── Availability Zone B
+│     └── Availability Zone C
+│
+└── VPC
+      │
+      ├── Internet Gateway
+      │
+      ├── Public Subnet
+      │      ├── Route Table
+      │      ├── NACL
+      │      ├── NAT Gateway
+      │      ├── ALB
+      │      ├── Bastion Host
+      │      └── EC2 / ECS / EKS
+      │
+      └── Private Subnet
+             ├── Route Table
+             ├── NACL
+             ├── EC2
+             ├── ECS
+             ├── EKS
+             ├── RDS
+             └── ElastiCache
+
 Security Groups
-      ↓
-EC2 / ECS / EKS / Lambda
-      ↓
-RDS / DynamoDB
-      ↓
-S3
-      ↓
-CloudWatch / IAM / Route53
+     └── Attached to EC2, RDS, ECS, EKS ENIs
+
+Regional Services
+     ├── S3
+     ├── DynamoDB
+     ├── Lambda
+     ├── CloudWatch
+     ├── IAM
+     ├── Route 53
+     ├── SNS
+     ├── SQS
+     └── Secrets Manager
 ```
 
 ## One-Line Summary
