@@ -665,7 +665,14 @@ API Gateway
 
 ## Purpose
 
-Receives client requests and forwards them to backend servers.
+Receives client requests and forwards them to backend servers. 
+
+**Common responsibilities**
+Hide internal servers
+SSL/TLS termination (HTTPS)
+Compression
+Caching
+URL rewriting
 
 Examples:
 
@@ -1767,3 +1774,120 @@ Storage
 
 Each layer solves a specific problem and allows independent scaling, maintenance, and evolution.
 
+----------------------------------------------------------------------------------------------------------
+
+# System Design Components Cheat Sheet
+
+A quick reference for when to use common system design components and how they work.
+
+| Component | When to Use | How It Works (Short) |
+|-----------|-------------|----------------------|
+| **CDN (Content Delivery Network)** | Users are distributed globally and you serve static files (images, CSS, JS, videos). | Caches static content at edge locations close to users, reducing latency. |
+| **WAF (Web Application Firewall)** | Your application is exposed to the Internet. | Inspects HTTP requests and blocks common attacks like SQL Injection, XSS, and bots. |
+| **Rate Limiter** | Prevent API abuse, brute-force attacks, or excessive requests. | Limits how many requests a client can make within a specific time window. |
+| **Load Balancer** | You have multiple instances of the same application. | Distributes incoming requests across healthy servers to improve scalability and availability. |
+| **API Gateway** | You have multiple APIs or microservices. | Acts as a single entry point for APIs, handling authentication, authorization, routing, and rate limiting. |
+| **Reverse Proxy** | You need a frontend server before your application. | Receives client requests, terminates TLS, caches, compresses, and forwards requests to backend servers. |
+| **Router** | Traffic needs to move between different networks. | Reads the destination IP address and forwards packets toward the next network. |
+| **Firewall** | You need network-level security. | Allows or blocks incoming and outgoing traffic based on security rules. |
+| **TLS/SSL** | Sensitive data travels over the Internet. | Encrypts communication between clients and servers to protect data in transit. |
+| **Authentication** | Users must prove their identity. | Verifies who the user is using passwords, OAuth, biometrics, MFA, etc. |
+| **Authorization** | Different users have different permissions. | Determines what an authenticated user is allowed to access or perform. |
+| **OAuth/JWT** | Building stateless APIs or supporting third-party login. | Uses tokens to authenticate and authorize requests without storing server-side sessions. |
+| **Container (Docker)** | Package applications consistently across environments. | Bundles the application and its dependencies into an isolated runtime environment. |
+| **Kubernetes** | You run many containers in production. | Deploys, scales, restarts, and manages containers automatically. |
+| **REST** | Building standard web APIs. | Uses HTTP methods (GET, POST, PUT, DELETE, etc.) to expose resources. |
+| **gRPC** | Fast service-to-service communication is required. | Uses HTTP/2 and Protocol Buffers for efficient binary communication. |
+| **GraphQL** | Clients need flexible data retrieval. | Allows clients to request exactly the fields they need in a single query. |
+| **WebSocket** | Real-time communication is required (chat, gaming, live updates). | Maintains a persistent two-way connection between client and server. |
+| **Kafka / RabbitMQ** | Services communicate asynchronously. | Producers publish messages that consumers process independently. |
+| **Redis** | Frequently accessed data must be retrieved quickly. | Stores data in memory for extremely low-latency access. |
+| **ORM (Object Relational Mapping)** | Reduce handwritten SQL in applications. | Maps programming language objects/classes to database tables. |
+| **SQL Database** | Structured data requiring ACID transactions and relationships. | Stores data in relational tables queried using SQL. |
+| **NoSQL Database** | Flexible schema, high scalability, or unstructured data. | Stores data as documents, key-value pairs, columns, or graphs. |
+| **Object Storage** | Store large files like images, videos, documents, and backups. | Stores objects with metadata instead of traditional file systems. |
+| **Retry** | Temporary failures may succeed later. | Automatically retries failed operations after a configurable delay. |
+| **Circuit Breaker** | A dependent service is repeatedly failing. | Stops sending requests to unhealthy services until they recover. |
+| **Logs** | Debugging, auditing, and troubleshooting. | Records application and system events for later analysis. |
+| **Metrics** | Monitor system performance and health. | Collects numerical measurements like CPU, memory, latency, and request rate. |
+| **Tracing** | Requests span multiple services. | Tracks a request's path through distributed systems to identify bottlenecks. |
+| **Horizontal Scaling** | One server cannot handle increasing traffic. | Adds more servers to share the workload. |
+| **Vertical Scaling** | A single server needs more resources. | Increases CPU, memory, or storage of an existing server. |
+| **Auto Scaling** | Traffic fluctuates throughout the day. | Automatically adds or removes servers based on demand. |
+| **CI/CD** | Frequent and automated deployments are required. | Automatically builds, tests, and deploys code changes. |
+| **Blue-Green Deployment** | Zero-downtime deployments are required. | Switches traffic from the old environment to the new one after validation. |
+| **Canary Deployment** | Minimize deployment risk. | Releases a new version to a small percentage of users before a full rollout. |
+
+---
+
+## Typical Production Request Flow
+
+```text
+Client
+   │
+   ▼
+CDN
+   │
+   ▼
+WAF
+   │
+   ▼
+Rate Limiter
+   │
+   ▼
+Load Balancer
+   │
+   ▼
+API Gateway / Reverse Proxy
+   │
+   ▼
+Authentication & Authorization
+   │
+   ▼
+Application Services
+   │
+   ▼
+Redis Cache
+   │
+Cache Hit ─────────► Return Response
+   │
+Cache Miss
+   ▼
+ORM / Repository
+   │
+   ▼
+SQL / NoSQL Database
+   │
+   ▼
+Object Storage (if needed)
+```
+
+## Quick Selection Guide
+
+| If you need... | Use |
+|----------------|-----|
+| Faster static content delivery | CDN |
+| Protection from web attacks | WAF |
+| Prevent API abuse | Rate Limiter |
+| Distribute traffic across servers | Load Balancer |
+| Single entry point for microservices | API Gateway |
+| HTTPS termination, caching, request forwarding | Reverse Proxy |
+| Secure communication | TLS/SSL |
+| Verify user identity | Authentication |
+| Control user permissions | Authorization |
+| Stateless authentication | JWT / OAuth |
+| Package applications | Docker Containers |
+| Manage containers | Kubernetes |
+| Standard APIs | REST |
+| High-performance internal communication | gRPC |
+| Flexible client queries | GraphQL |
+| Real-time communication | WebSocket |
+| Asynchronous messaging | Kafka / RabbitMQ |
+| Fast data access | Redis |
+| Relational data | SQL |
+| Flexible or massive-scale data | NoSQL |
+| Store files | Object Storage |
+| Automatic failure recovery | Retry + Circuit Breaker |
+| Observe system behavior | Logs + Metrics + Tracing |
+| Handle increasing traffic | Horizontal / Vertical / Auto Scaling |
+| Safe software releases | CI/CD + Blue-Green + Canary |
