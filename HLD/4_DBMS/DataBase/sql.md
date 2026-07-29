@@ -10,16 +10,17 @@ SQL (**Structured Query Language**) is used to:
 - Delete data
 - Manage relational databases
 
-For senior embedded developers, SQL interviews usually focus on:
+For senior embedded developers, SQL interviews focus on:
 
-- Database fundamentals
+- SQL fundamentals
+- Database design
 - Query optimization
-- Storage design
-- Transactions
 - Indexing
+- Transactions
 - Concurrency
-- SQLite usage
-- Designing data storage for embedded systems
+- SQLite internals
+- Data storage design for embedded systems
+- Reliability during failures
 
 ---
 
@@ -36,13 +37,13 @@ SELECT *
 FROM sensors;
 ```
 
-This retrieves all records from the `sensors` table.
+This retrieves all sensor records.
 
 ---
 
 # 2. Relational Database Concepts
 
-A relational database organizes data into:
+A relational database organizes data as:
 
 ```
 Database
@@ -56,7 +57,7 @@ Database
 
 Example:
 
-### Device Table
+## Device Table
 
 | device_id | model | status |
 |-----------|-------|--------|
@@ -65,11 +66,44 @@ Example:
 
 ---
 
-# 3. Primary Key
+# 3. SQL Command Categories
 
-A primary key uniquely identifies each row.
+SQL commands are divided into five categories:
 
-Example:
+```
+SQL Commands
+     |
+     ├── DDL  → Data Definition Language
+     |
+     ├── DML  → Data Manipulation Language
+     |
+     ├── DQL  → Data Query Language
+     |
+     ├── DCL  → Data Control Language
+     |
+     └── TCL  → Transaction Control Language
+```
+
+---
+
+# 4. DDL - Data Definition Language
+
+## Purpose
+
+Defines and modifies database structure.
+
+Commands:
+
+| Command | Purpose |
+|-|-|
+| CREATE | Create database objects |
+| ALTER | Modify existing objects |
+| DROP | Delete objects |
+| TRUNCATE | Remove all rows |
+
+---
+
+## CREATE
 
 ```sql
 CREATE TABLE devices
@@ -79,116 +113,98 @@ CREATE TABLE devices
 );
 ```
 
-Properties:
+Creates:
 
-- Unique
-- Cannot be NULL
-- Usually indexed automatically
+```
+devices table
 
-Embedded examples:
-
-- Device ID
-- MAC address
-- Serial number
+device_id
+model
+```
 
 ---
 
-# 4. Foreign Key
+## ALTER
 
-A foreign key creates relationships between tables.
-
-Example:
-
-Device table:
-
-| device_id |
-|-----------|
-|101|
-|102|
-
-Sensor readings:
-
-|reading_id|device_id|value|
-|-|-|-|
-|1|101|25.5|
-|2|101|26.1|
-
-Relationship:
-
-```
-Device
-  |
-  |
-Sensor Reading
-```
-
-SQL:
+Add a column:
 
 ```sql
-CREATE TABLE readings
-(
-    id INT PRIMARY KEY,
-    device_id INT,
-    value FLOAT,
-
-    FOREIGN KEY(device_id)
-    REFERENCES devices(device_id)
-);
+ALTER TABLE devices
+ADD status VARCHAR(20);
 ```
 
 ---
 
-# 5. SQL Command Categories
+## DROP
 
-## DDL (Data Definition Language)
+Deletes complete object:
 
-Defines database structure.
+```sql
+DROP TABLE devices;
+```
+
+---
+
+## TRUNCATE
+
+Deletes all rows but keeps structure:
+
+```sql
+TRUNCATE TABLE devices;
+```
+
+---
+
+# 5. DML - Data Manipulation Language
+
+## Purpose
+
+Works with data inside tables.
 
 Commands:
 
-```
-CREATE
-ALTER
-DROP
-TRUNCATE
-```
-
-Example:
-
-```sql
-CREATE TABLE logs
-(
-    id INT,
-    message VARCHAR(100)
-);
-```
+| Command | Purpose |
+|-|-|
+| INSERT | Add data |
+| UPDATE | Modify data |
+| DELETE | Remove data |
 
 ---
 
-## DML (Data Manipulation Language)
-
-Changes data.
-
-Commands:
-
-```
-INSERT
-UPDATE
-DELETE
-```
-
-Example:
+## INSERT
 
 ```sql
 INSERT INTO devices
-VALUES(101,'Sensor-A');
+VALUES
+(101,'Sensor-A');
 ```
 
 ---
 
-## DQL (Data Query Language)
+## UPDATE
 
-Reads data.
+```sql
+UPDATE devices
+SET status='ACTIVE'
+WHERE device_id=101;
+```
+
+---
+
+## DELETE
+
+```sql
+DELETE FROM devices
+WHERE device_id=101;
+```
+
+---
+
+# 6. DQL - Data Query Language
+
+## Purpose
+
+Retrieve data.
 
 Command:
 
@@ -203,52 +219,270 @@ SELECT *
 FROM devices;
 ```
 
----
-
-# 6. SELECT Queries
-
-## Select specific columns
+Filtering:
 
 ```sql
 SELECT model
-FROM devices;
-```
-
----
-
-## Filtering
-
-```sql
-SELECT *
 FROM devices
-WHERE status='Active';
+WHERE device_id=101;
 ```
 
 ---
 
-## Sorting
+# 7. DCL - Data Control Language
+
+## Purpose
+
+Controls user permissions.
+
+Commands:
+
+| Command | Purpose |
+|-|-|
+| GRANT | Give permissions |
+| REVOKE | Remove permissions |
+
+---
+
+## GRANT
+
+Example:
 
 ```sql
-SELECT *
-FROM devices
-ORDER BY device_id DESC;
+GRANT SELECT
+ON devices
+TO developer;
+```
+
+Allows:
+
+```
+Developer
+    |
+    |
+ Read devices table
 ```
 
 ---
 
-## Limit results
+## REVOKE
 
 ```sql
-SELECT *
-FROM logs
-LIMIT 10;
+REVOKE SELECT
+ON devices
+FROM developer;
 ```
 
-Useful for embedded logs.
+Removes access.
 
 ---
 
-# 7. SQL Joins
+## Embedded Example
+
+```
+Device Database
+
+Admin
+ |
+ Full access
+
+
+Firmware Service
+ |
+ Read access
+
+
+Logger Service
+ |
+ Insert access
+```
+
+---
+
+# 8. TCL - Transaction Control Language
+
+## Purpose
+
+Controls database transactions.
+
+Commands:
+
+| Command | Purpose |
+|-|-|
+| COMMIT | Save changes permanently |
+| ROLLBACK | Undo changes |
+| SAVEPOINT | Create checkpoint |
+
+---
+
+## COMMIT
+
+```sql
+BEGIN;
+
+UPDATE device
+SET status='ACTIVE'
+WHERE id=101;
+
+COMMIT;
+```
+
+---
+
+## ROLLBACK
+
+```sql
+BEGIN;
+
+DELETE FROM logs;
+
+ROLLBACK;
+```
+
+---
+
+## SAVEPOINT
+
+```sql
+BEGIN;
+
+INSERT INTO logs
+VALUES(1,'Boot');
+
+SAVEPOINT checkpoint1;
+
+INSERT INTO logs
+VALUES(2,'Error');
+
+ROLLBACK TO checkpoint1;
+
+COMMIT;
+```
+
+Result:
+
+```
+Boot log saved
+
+Error log removed
+```
+
+---
+
+# 9. Primary Key
+
+A primary key uniquely identifies a row.
+
+Example:
+
+```sql
+CREATE TABLE devices
+(
+ device_id INT PRIMARY KEY,
+ model VARCHAR(50)
+);
+```
+
+Properties:
+
+- Unique
+- Cannot be NULL
+- Indexed automatically
+
+Embedded examples:
+
+- Device ID
+- Serial number
+- MAC address
+
+---
+
+# 10. Foreign Key
+
+Creates relationships between tables.
+
+Example:
+
+Device:
+
+|device_id|
+|-|
+|101|
+
+Reading:
+
+|reading_id|device_id|value|
+|-|-|-|
+|1|101|25.5|
+
+SQL:
+
+```sql
+FOREIGN KEY(device_id)
+REFERENCES devices(device_id);
+```
+
+---
+
+# 11. SQL Constraints
+
+Constraints enforce data correctness.
+
+## NOT NULL
+
+Value cannot be empty.
+
+```sql
+name VARCHAR(50) NOT NULL;
+```
+
+---
+
+## UNIQUE
+
+No duplicate values.
+
+```sql
+email VARCHAR(100) UNIQUE;
+```
+
+---
+
+## DEFAULT
+
+Provides default value.
+
+```sql
+status VARCHAR(20)
+DEFAULT 'ACTIVE';
+```
+
+---
+
+## CHECK
+
+Validates conditions.
+
+```sql
+temperature FLOAT
+CHECK(temperature > -50);
+```
+
+---
+
+## PRIMARY KEY
+
+Unique row identifier.
+
+---
+
+## FOREIGN KEY
+
+Maintains relationships.
+
+---
+
+# 12. SQL Joins
 
 Joins combine data from multiple tables.
 
@@ -258,10 +492,8 @@ Joins combine data from multiple tables.
 
 Returns matching records.
 
-Example:
-
 ```sql
-SELECT 
+SELECT
 d.model,
 r.value
 
@@ -272,42 +504,24 @@ INNER JOIN readings r
 ON d.device_id=r.device_id;
 ```
 
-Output:
-
-```
-Sensor-A 25.5
-Sensor-A 26.1
-```
-
 ---
 
 ## LEFT JOIN
 
-Returns all records from the left table.
+Returns all records from left table.
 
-Example:
-
-```sql
-SELECT *
-FROM devices d
-
-LEFT JOIN readings r
-
-ON d.device_id=r.device_id;
-```
-
-Used to find devices without readings.
+Useful for finding missing relationships.
 
 ---
 
-# 8. Indexing
+# 13. Indexing
 
-## Why use indexes?
+## Why indexes?
 
 Without index:
 
 ```
-1 million records
+1 Million rows
 
 Search
  |
@@ -319,7 +533,7 @@ With index:
 ```
 Index
  |
-Direct lookup
+Fast lookup
 ```
 
 Create index:
@@ -333,19 +547,17 @@ ON readings(device_id);
 
 ## Advantages
 
-- Faster SELECT queries
+- Faster SELECT
 - Faster searching
 
 ## Disadvantages
 
-- Requires storage
-- Slows INSERT/UPDATE operations
-
-Because indexes must also be updated.
+- Extra storage
+- Slower INSERT/UPDATE
 
 ---
 
-# 9. Query Optimization
+# 14. Query Optimization
 
 Avoid:
 
@@ -354,7 +566,7 @@ SELECT *
 FROM logs;
 ```
 
-Better:
+Prefer:
 
 ```sql
 SELECT timestamp,message
@@ -362,17 +574,17 @@ FROM logs
 WHERE device_id=101;
 ```
 
-Reasons:
+Benefits:
 
-- Less data transfer
 - Less memory usage
+- Less CPU usage
 - Faster execution
 
 ---
 
-# 10. Transactions
+# 15. Transactions and ACID
 
-A transaction is a group of SQL operations executed as one unit.
+Transactions ensure reliable database operations.
 
 Example:
 
@@ -380,50 +592,19 @@ Bank transfer:
 
 ```
 Account A
--100
+ -100
 
 Account B
-+100
-```
-
-Either everything succeeds or everything fails.
-
-Example:
-
-```sql
-BEGIN;
-
-UPDATE account
-SET balance=balance-100;
-
-UPDATE account
-SET balance=balance+100;
-
-COMMIT;
-```
-
-Failure:
-
-```sql
-ROLLBACK;
+ +100
 ```
 
 ---
 
-# 11. ACID Properties
+# ACID Properties
 
 ## Atomicity
 
-All operations succeed or none succeed.
-
-Example:
-
-```
-Debit successful
-Credit failed
-
-Rollback
-```
+All or nothing.
 
 ---
 
@@ -431,24 +612,11 @@ Rollback
 
 Database remains valid.
 
-Example:
-
-- No duplicate primary keys
-- Constraints maintained
-
 ---
 
 ## Isolation
 
-Transactions do not interfere with each other.
-
-Example:
-
-```
-Transaction A updating data
-
-Transaction B reading data
-```
+Transactions do not interfere.
 
 ---
 
@@ -456,17 +624,9 @@ Transaction B reading data
 
 Committed data survives failures.
 
-Example:
-
-```
-Power failure
-
-Data remains stored
-```
-
 ---
 
-# 12. Database Normalization
+# 16. Database Normalization
 
 Purpose:
 
@@ -475,7 +635,7 @@ Purpose:
 
 ---
 
-## Bad Design
+Bad design:
 
 ```
 Device
@@ -486,22 +646,19 @@ owner_phone
 owner_address
 ```
 
-Owner data repeats.
-
 ---
 
-## Better Design
-
-Device table:
+Better:
 
 ```
+Device
+
 device_id
 owner_id
-```
 
-Owner table:
 
-```
+Owner
+
 owner_id
 phone
 address
@@ -509,80 +666,42 @@ address
 
 ---
 
-# 13. Normal Forms
+# 17. Normal Forms
 
 ## 1NF
 
 Atomic values.
 
-Wrong:
-
-```
-Phone:
-123,456
-```
-
-Correct:
-
-```
-Phone1
-Phone2
-```
-
 ---
 
 ## 2NF
 
-Remove partial dependencies.
+Remove partial dependency.
 
 ---
 
 ## 3NF
 
-Remove transitive dependencies.
+Remove transitive dependency.
 
 Interview answer:
 
-> Normalization reduces redundancy and improves data consistency.
+> Normalization reduces redundancy and improves consistency.
 
 ---
 
-# 14. SQL vs NoSQL
+# 18. SQL vs NoSQL
 
 | SQL | NoSQL |
 |-|-|
 | Tables | Documents |
 | Fixed schema | Flexible schema |
 | Strong consistency | Eventual consistency |
-| Complex queries | High scalability |
+| Complex queries | Large-scale data |
 
 ---
 
-## Embedded Examples
-
-SQL:
-
-```
-Device
- |
-Configuration
- |
-Calibration
-```
-
-NoSQL:
-
-```json
-{
- "device":101,
- "temperature":25.5,
- "timestamp":123456
-}
-```
-
----
-
-# 15. SQLite for Embedded Systems
+# 19. SQLite for Embedded Systems
 
 SQLite architecture:
 
@@ -598,9 +717,9 @@ Application
 
 Advantages:
 
-- No database server required
+- No database server
 - Small footprint
-- ACID transactions
+- ACID support
 - Single file database
 
 Used in:
@@ -608,14 +727,72 @@ Used in:
 - IoT devices
 - Automotive systems
 - Mobile devices
+- Edge devices
 
 ---
 
-# 16. Embedded Database Design
+# 20. SQLite Important Interview Topics
 
-## Sensor Data Storage
+## WAL Mode
 
-Example table:
+Write-Ahead Logging improves concurrency.
+
+Traditional:
+
+```
+Write
+ |
+Database File
+```
+
+WAL:
+
+```
+Write
+ |
+WAL File
+ |
+Checkpoint
+ |
+Database
+```
+
+Benefits:
+
+- Faster writes
+- Better concurrency
+
+---
+
+## Journal Modes
+
+SQLite supports:
+
+- DELETE
+- TRUNCATE
+- PERSIST
+- MEMORY
+- WAL
+
+Used for recovery after crashes.
+
+---
+
+## Database Locking
+
+SQLite supports:
+
+- Shared locks
+- Reserved locks
+- Exclusive locks
+
+Important for multiple threads/processes.
+
+---
+
+# 21. Embedded Database Design
+
+Example sensor table:
 
 ```
 Sensor_Data
@@ -637,7 +814,7 @@ ON Sensor_Data(timestamp);
 
 ---
 
-# 17. Handling Limited Storage
+# 22. Handling Limited Storage
 
 Techniques:
 
@@ -645,19 +822,49 @@ Techniques:
 - Compress data
 - Store aggregated values
 - Circular buffers
-- Data retention policies
+- Data retention policy
 
 Example:
 
 ```
-Keep last 30 days data
+Keep last 30 days
 
 Delete older records
 ```
 
 ---
 
-# 18. SQL Security
+# 23. Power Failure Handling
+
+Important for embedded systems.
+
+Approaches:
+
+- Use transactions
+- Enable WAL mode
+- Use journal files
+- Commit small batches
+- Verify database integrity
+
+Example:
+
+```sql
+BEGIN;
+
+INSERT sensor_data;
+
+COMMIT;
+```
+
+If power fails before COMMIT:
+
+```
+Data rollback
+```
+
+---
+
+# 24. SQL Security
 
 ## SQL Injection
 
@@ -671,7 +878,7 @@ query =
 
 Problem:
 
-User input can modify SQL commands.
+User input changes SQL command.
 
 Solution:
 
@@ -682,9 +889,7 @@ Use:
 
 ---
 
-# 19. Common Senior Interview Questions
-
----
+# 25. Common Interview Questions
 
 ## DELETE vs TRUNCATE vs DROP
 
@@ -692,7 +897,7 @@ Use:
 |-|-|-|
 |DELETE|Remove rows|Yes|
 |TRUNCATE|Remove all rows|Usually no|
-|DROP|Remove complete table|No|
+|DROP|Remove table|No|
 
 ---
 
@@ -700,11 +905,11 @@ Use:
 
 WHERE:
 
-- Filters rows before grouping
+Filters before grouping.
 
 HAVING:
 
-- Filters after GROUP BY
+Filters after GROUP BY.
 
 Example:
 
@@ -731,16 +936,16 @@ Data stored physically according to index
 Non-clustered:
 
 ```
-Separate index pointing to actual data
+Separate index pointing to data
 ```
 
 ---
 
-## Debugging Slow SQL Queries
+## Debug Slow Query
 
 Steps:
 
-### 1. Check execution plan
+1. Use execution plan
 
 ```sql
 EXPLAIN QUERY PLAN
@@ -748,19 +953,17 @@ SELECT *
 FROM readings;
 ```
 
-### 2. Check indexes
+2. Check indexes
 
-### 3. Reduce unnecessary columns
+3. Reduce unnecessary columns
 
-### 4. Optimize joins
+4. Optimize joins
 
-### 5. Improve schema design
+5. Improve schema
 
 ---
 
 # Senior Embedded Developer SQL Checklist
-
-Before interview, prepare:
 
 ## SQL Basics
 
@@ -770,10 +973,19 @@ Before interview, prepare:
 - DELETE
 - Joins
 
+## SQL Categories
+
+- DDL
+- DML
+- DQL
+- DCL
+- TCL
+
 ## Database Design
 
 - Primary keys
 - Foreign keys
+- Constraints
 - Normalization
 
 ## Performance
@@ -782,19 +994,23 @@ Before interview, prepare:
 - Query optimization
 - Execution plans
 
-## Reliability
+## Transactions
 
-- Transactions
-- ACID properties
-- Recovery
+- ACID
+- COMMIT
+- ROLLBACK
+- SAVEPOINT
 
 ## Embedded Specific
 
 - SQLite architecture
+- WAL mode
+- Journal modes
+- Locking
 - Flash storage limitations
 - Sensor data storage
 - Log management
-- Data retention strategies
+- Power failure recovery
 
 ## Security
 
@@ -808,10 +1024,12 @@ Before interview, prepare:
 For a Senior Embedded Developer, prioritize:
 
 1. SQLite internals
-2. Transactions
+2. Transactions and ACID
 3. Indexing
 4. Query optimization
-5. Storing telemetry/log data efficiently
-6. Handling limited storage
-7. Database reliability after power failures
-8. Data consistency in embedded systems
+5. Sensor/telemetry data design
+6. Flash storage limitations
+7. Recovery after power failures
+8. Database consistency
+9. Concurrency handling
+10. Prepared statements
