@@ -1,23 +1,5 @@
 # Senior Embedded Networking Interview Notes
 
-## Target Companies
-
-This document is designed for Senior Embedded Networking interviews at:
-
-- Cisco
-- Juniper Networks
-- Arista Networks
-- Broadcom
-- NVIDIA Networking
-- Qualcomm
-- Intel
-- Marvell
-- Nokia
-- Ericsson
-- AWS Networking
-- Google Networking
-- Microsoft Azure Networking
-
 ---
 
 # Table of Contents
