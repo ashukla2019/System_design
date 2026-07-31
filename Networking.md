@@ -1,9 +1,5 @@
 # Networking Interview Handbook
 
-# Table of Contents
-
-1. Networking Fundamentals 2. OSI and TCP/IP Models 3. Ethernet 4. MAC Addresses 5. ARP 6. IP Addressing 7. Subnetting 8. IPv4 9. IPv6 10. Routing 11. Routing Tables 12. ICMP 13. UDP 14. TCP 15. TCP Connection Establishment 16. TCP Data Transfer 17. TCP Reliability 18. TCP Flow Control 19. TCP Congestion Control 20. TCP Connection Termination 21. TCP States 22. TCP Timers 23. TCP Retransmission 24. TCP Keepalive 25. UDP vs TCP 26. Ports and Sockets 27. Linux Socket Programming 28. Blocking vs Non-Blocking Sockets 29. `select()`, `poll()`, `epoll()` 30. Socket Buffers 31. Linux Network Stack 32. Network Device Driver 33. Interrupts and NAPI 34. DMA and Networking 35. Packet Receive Path 36. Packet Transmit Path 37. DNS 38. DHCP 39. NAT 40. HTTP 41. HTTPS 42. TLS 43. Certificates 44. HTTP/1.1, HTTP/2, HTTP/3 45. QUIC 46. Proxy and Reverse Proxy 47. Load Balancer 48. CDN 49. Firewall 50. VLAN 51. MTU and Fragmentation 52. Network Performance 53. Common Network Debugging Commands 54. Network Troubleshooting 55. Senior Interview Questions 56. Final Mental Models
-
 ---
 
 # 1. Networking Fundamentals
