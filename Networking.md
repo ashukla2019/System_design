@@ -1,35 +1,4 @@
-# Senior Linux / C++ Networking Interview Handbook
-
-## Target Roles
-
-This handbook is designed for senior-level interviews involving:
-
-* C / C++
-* Linux
-* Embedded Linux
-* Systems
-* Networking
-* Infrastructure
-* Storage
-* Performance
-* Device / Platform software
-
-Target companies include:
-
-* Qualcomm
-* NVIDIA
-* AMD
-* Intel
-* Cisco
-* Arista
-* Broadcom
-* Microsoft
-* Google
-* Amazon
-* Meta
-* Cloud/infrastructure companies
-
----
+# Networking Interview Handbook
 
 # Table of Contents
 
