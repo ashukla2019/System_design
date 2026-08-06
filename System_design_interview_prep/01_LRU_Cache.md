@@ -2,17 +2,6 @@
 
 ## Senior System Design Interview Notes
 
-Target Companies:
-
-- Qualcomm
-- NVIDIA
-- AMD
-- Broadcom
-- Cisco
-- NetApp
-- VMware
-- Intel
-
 ---
 
 # 1. Problem Statement
