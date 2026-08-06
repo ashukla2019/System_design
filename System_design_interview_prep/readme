@@ -1,1 +1,23 @@
-a
+Senior_System_Design_Preparation/
+
+├── 01_LRU_Cache.md
+├── 02_Hash_Table.md
+├── 03_Thread_Pool.md
+├── 04_Circular_Buffer.md
+├── 05_Producer_Consumer.md
+├── 06_Memory_Pool_Allocator.md
+├── 07_Read_Write_Lock.md
+├── 08_Lock_Free_Queue.md
+├── 09_BPlus_Tree.md
+├── 10_Key_Value_Store.md
+├── 11_RAID_Design.md
+├── 12_Snapshot_Design.md
+├── 13_Deduplication_Engine.md
+├── 14_Replication_System.md
+├── 15_Distributed_File_System.md
+├── 16_Metadata_Service.md
+├── 17_Write_Ahead_Log.md
+├── 18_Cache_Design.md
+├── 19_Storage_Controller.md
+├── 20_System_Recovery_Design.md
+└── 21_Distributed_System_Fundamentals.md
