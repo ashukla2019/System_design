@@ -21,3 +21,14 @@ Senior_System_Design_Preparation/
 ├── 19_Storage_Controller.md
 ├── 20_System_Recovery_Design.md
 └── 21_Distributed_System_Fundamentals.md
+22_Object_Storage_Design.md
+23_Block_Storage_Design.md
+24_Database_Storage_Engine.md
+25_Distributed_Database_Design.md
+26_Message_Queue_Design.md
+27_Search_Engine_Design.md
+28_Load_Balancer_Design.md
+29_URL_Shortener_Design.md
+30_Rate_Limiter_Design.md
+31_Monitoring_and_Logging_System.md
+
