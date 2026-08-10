@@ -1,22 +1,27 @@
-Control Plane vs Data Plane — AWS & Azure
-1. Simple Definition
+# Control Plane vs Data Plane — AWS & Azure
+
+## 1. Simple Definition
 
 The easiest way to remember:
 
-Control Plane = Manage the infrastructure
-
-Data Plane = Use the infrastructure
+> **Control Plane = Manage the infrastructure**
+>
+> **Data Plane = Use the infrastructure**
 
 Think of a restaurant:
 
-Control Plane = The manager who decides what tables, staff, menu, etc. should exist.
-Data Plane = The actual restaurant operation where customers order and receive food.
-2. Control Plane
+- **Control Plane** = The manager who decides what tables, staff, menu, etc. should exist.
+- **Data Plane** = The actual restaurant operation where customers order and receive food.
 
-The control plane is responsible for creating, modifying, configuring, and deleting cloud resources.
+---
+
+## 2. Control Plane
+
+The **control plane** is responsible for creating, modifying, configuring, and deleting cloud resources.
 
 Typical control-plane operations:
 
+```text
 Create
 Update
 Delete
@@ -26,10 +31,11 @@ Start
 Stop
 Attach
 Detach
-
+```
 
 Examples:
 
+```text
 Create an EC2 instance
 Delete an S3 bucket
 Create a VPC
@@ -38,21 +44,25 @@ Create an Azure VM
 Create an Azure Storage Account
 Configure networking
 Change resource settings
+```
 
-Simple question
+### Simple question
 
 Ask:
 
-"Am I managing or changing the resource?"
+> **"Am I managing or changing the resource?"**
 
-If yes, it is usually the control plane.
+If yes, it is usually the **control plane**.
 
-3. Data Plane
+---
 
-The data plane is responsible for the actual workload or data operations performed using the resource.
+## 3. Data Plane
+
+The **data plane** is responsible for the actual workload or data operations performed using the resource.
 
 Examples:
 
+```text
 Application receives HTTP requests
 Application sends database queries
 Upload a file to S3
@@ -60,16 +70,21 @@ Download a file from S3
 Read/write Azure Blob Storage
 Application processes user requests
 Network traffic flows through a service
+```
 
-Simple question
+### Simple question
 
 Ask:
 
-"Am I actually using the resource or processing data through it?"
+> **"Am I actually using the resource or processing data through it?"**
 
-If yes, it is usually the data plane.
+If yes, it is usually the **data plane**.
 
-4. The Most Important Difference
+---
+
+## 4. The Most Important Difference
+
+```text
                     CLOUD
                       |
              +--------+--------+
@@ -84,33 +99,39 @@ If yes, it is usually the data plane.
         Configure VM       Read/write data
         Create database    Query database
         Create bucket      Upload/download
-
+```
 
 Remember:
 
+```text
 CONTROL PLANE = What should exist and how should it be configured?
 
 DATA PLANE    = How is the existing resource actually being used?
+```
 
-5. AWS Example — EC2
+---
+
+## 5. AWS Example — EC2
 
 Suppose you want to deploy a web application.
 
-Control Plane
+### Control Plane
 
 You run:
 
+```bash
 aws ec2 run-instances ...
-
+```
 
 You are telling AWS:
 
-"Create an EC2 instance for me."
+> "Create an EC2 instance for me."
 
-This is a control-plane operation.
+This is a **control-plane operation**.
 
 Conceptually:
 
+```text
 You
  |
  | Create EC2
@@ -125,16 +146,17 @@ AWS Control Plane
  |
  v
 EC2 Instance
+```
 
+The management activities are the **control plane**.
 
-The management activities are the control plane.
-
-Data Plane
+### Data Plane
 
 Now the EC2 instance is running your application.
 
 A user sends an HTTP request:
 
+```text
 User
  |
  | HTTPS request
@@ -149,49 +171,59 @@ HTTP Response
  |
  v
 User
+```
 
-
-This is the data plane.
+This is the **data plane**.
 
 The application is now doing the actual work.
 
-EC2 Summary
-Operation	Plane
-Create EC2	Control Plane
-Delete EC2	Control Plane
-Start EC2	Control Plane
-Stop EC2	Control Plane
-Change configuration	Control Plane
-Application running	Data Plane
-User sends HTTP request	Data Plane
-Application processes request	Data Plane
-Application returns response	Data Plane
-6. AWS Example — S3
+### EC2 Summary
 
-S3 is one of the best examples for understanding control plane vs data plane.
+| Operation | Plane |
+|---|---|
+| Create EC2 | Control Plane |
+| Delete EC2 | Control Plane |
+| Start EC2 | Control Plane |
+| Stop EC2 | Control Plane |
+| Change configuration | Control Plane |
+| Application running | Data Plane |
+| User sends HTTP request | Data Plane |
+| Application processes request | Data Plane |
+| Application returns response | Data Plane |
+
+---
+
+## 6. AWS Example — S3
+
+S3 is one of the **best examples** for understanding control plane vs data plane.
 
 Suppose you create an S3 bucket:
 
+```bash
 aws s3api create-bucket --bucket my-company-data
-
+```
 
 Creating the bucket is:
 
+```text
 CONTROL PLANE
-
+```
 
 Then you upload a file:
 
+```bash
 aws s3 cp report.pdf s3://my-company-data/
-
+```
 
 Uploading the file is:
 
+```text
 DATA PLANE
-
+```
 
 Think of it like this:
 
+```text
                     AWS S3
                       |
              +--------+--------+
@@ -202,74 +234,93 @@ Think of it like this:
       Delete bucket       Download file
       Configure bucket    Read object
       Change settings     Write object
+```
 
-Easy rule
+### Easy rule
+
+```text
 Create/manage S3 bucket = Control Plane
 
 Upload/download S3 object = Data Plane
+```
 
-7. AWS Example — Route 53
+---
+
+## 7. AWS Example — Route 53
 
 Suppose you create this DNS record:
 
+```text
 www.example.com -> 10.20.30.40
-
+```
 
 Creating or modifying the DNS record is:
 
+```text
 CONTROL PLANE
-
+```
 
 Now users ask:
 
+```text
 "What IP address is www.example.com?"
-
+```
 
 Route 53 responds:
 
+```text
 10.20.30.40
-
+```
 
 Handling DNS queries is:
 
+```text
 DATA PLANE
-
+```
 
 Therefore:
 
+```text
 Create DNS record = Control Plane
 
 DNS query from users = Data Plane
+```
 
-8. Azure Example — Virtual Machine
+---
+
+## 8. Azure Example — Virtual Machine
 
 Azure has the same basic concept.
 
-Azure Resource Manager (ARM) is the primary management layer for Azure resources.
+**Azure Resource Manager (ARM)** is the primary management layer for Azure resources.
 
 Suppose you create an Azure VM.
 
 You can use:
 
+```text
 Azure Portal
 Azure CLI
 PowerShell
 Terraform
 REST API
-
+```
 
 For example:
 
+```bash
 az vm create ...
-
+```
 
 Creating the VM is:
 
+```text
 CONTROL PLANE
-
+```
 
 Conceptually:
 
+```text
 You
  |
  v
@@ -280,11 +331,13 @@ Azure Compute
  |
  v
 Virtual Machine
+```
 
-Data Plane
+### Data Plane
 
 Once the VM exists, you connect to it:
 
+```text
 Your Laptop
      |
      | SSH / RDP
@@ -293,26 +346,32 @@ Azure VM
      |
      v
 Your Application
+```
 
+Using the VM is the **data plane**.
 
-Using the VM is the data plane.
+### Azure VM Summary
 
-Azure VM Summary
-Operation	Plane
-Create VM	Control Plane
-Delete VM	Control Plane
-Start VM	Control Plane
-Stop VM	Control Plane
-Change VM configuration	Control Plane
-SSH/RDP into VM	Data Plane
-Application running on VM	Data Plane
-Application processing requests	Data Plane
-9. Azure Example — Storage Account
+| Operation | Plane |
+|---|---|
+| Create VM | Control Plane |
+| Delete VM | Control Plane |
+| Start VM | Control Plane |
+| Stop VM | Control Plane |
+| Change VM configuration | Control Plane |
+| SSH/RDP into VM | Data Plane |
+| Application running on VM | Data Plane |
+| Application processing requests | Data Plane |
 
-This is probably the best Azure example.
+---
+
+## 9. Azure Example — Storage Account
+
+This is probably the **best Azure example**.
 
 First, create a Storage Account:
 
+```text
 Create Storage Account
         |
         v
@@ -320,83 +379,107 @@ Azure Resource Manager
         |
         v
 Storage Account created
-
+```
 
 Creating the Storage Account is:
 
+```text
 CONTROL PLANE
-
+```
 
 Now your application uploads a Blob:
 
+```text
 Application
      |
      | Upload Blob
      v
 Azure Blob Storage
-
+```
 
 Uploading/reading the Blob is:
 
+```text
 DATA PLANE
+```
 
-Easy rule
+### Easy rule
+
+```text
 Create Storage Account = Control Plane
 
 Read/write Blob = Data Plane
+```
 
-10. Azure Example — Cosmos DB
+---
+
+## 10. Azure Example — Cosmos DB
 
 Suppose you create a Cosmos DB account/database.
 
+```text
 Create Cosmos DB
        |
        v
 Azure Resource Manager
-
+```
 
 This is:
 
+```text
 CONTROL PLANE
-
+```
 
 Now your application queries the database:
 
+```text
 Application
      |
      | Query / Read / Write
      v
 Cosmos DB
-
+```
 
 This is:
 
+```text
 DATA PLANE
-
+```
 
 Therefore:
 
+```text
 Create Cosmos DB account = Control Plane
 
 Query database = Data Plane
 
 Read/write data = Data Plane
+```
 
-11. AWS vs Azure
-Concept	AWS	Azure
-Control plane	AWS management/service APIs	Azure Resource Manager
-Create VM	Control	Control
-Delete VM	Control	Control
-Create database	Control	Control
-Create storage	Control	Control
-Upload object/blob	Data	Data
-Download object/blob	Data	Data
-Database queries	Data	Data
-Application traffic	Data	Data
-Resource configuration	Control	Control
-12. Best Examples to Remember
-AWS
-S3
+---
+
+## 11. AWS vs Azure
+
+| Concept | AWS | Azure |
+|---|---|---|
+| Control plane | AWS management/service APIs | Azure Resource Manager |
+| Create VM | Control | Control |
+| Delete VM | Control | Control |
+| Create database | Control | Control |
+| Create storage | Control | Control |
+| Upload object/blob | Data | Data |
+| Download object/blob | Data | Data |
+| Database queries | Data | Data |
+| Application traffic | Data | Data |
+| Resource configuration | Control | Control |
+
+---
+
+## 12. Best Examples to Remember
+
+### AWS — S3
+
+```text
 Create S3 bucket
         ↓
 CONTROL PLANE
@@ -404,8 +487,11 @@ CONTROL PLANE
 Upload/download object
         ↓
 DATA PLANE
+```
 
-EC2
+### AWS — EC2
+
+```text
 Create EC2
         ↓
 CONTROL PLANE
@@ -413,8 +499,11 @@ CONTROL PLANE
 Application runs on EC2
         ↓
 DATA PLANE
+```
 
-Route 53
+### AWS — Route 53
+
+```text
 Create DNS record
         ↓
 CONTROL PLANE
@@ -422,9 +511,11 @@ CONTROL PLANE
 DNS queries
         ↓
 DATA PLANE
+```
 
-Azure
-Storage Account
+### Azure — Storage Account
+
+```text
 Create Storage Account
         ↓
 CONTROL PLANE
@@ -432,8 +523,11 @@ CONTROL PLANE
 Read/write Blob
         ↓
 DATA PLANE
+```
 
-Virtual Machine
+### Azure — Virtual Machine
+
+```text
 Create VM
         ↓
 CONTROL PLANE
@@ -441,8 +535,11 @@ CONTROL PLANE
 Application traffic
         ↓
 DATA PLANE
+```
 
-Cosmos DB
+### Azure — Cosmos DB
+
+```text
 Create Cosmos DB
         ↓
 CONTROL PLANE
@@ -450,60 +547,71 @@ CONTROL PLANE
 Query/read/write data
         ↓
 DATA PLANE
+```
 
-13. Important Interview Question
-Question
+---
 
-If the AWS control plane is down, does my EC2 application necessarily stop working?
+## 13. Important Interview Question
 
-Answer
+### Question
 
-Not necessarily.
+> If the AWS control plane is down, does my EC2 application necessarily stop working?
+
+### Answer
+
+**Not necessarily.**
 
 The control plane is primarily responsible for management operations such as:
 
+```text
 Create
 Delete
 Modify
 Configure
-
+```
 
 The data plane handles the actual workload:
 
+```text
 Application traffic
 Data processing
 Data access
 User requests
-
+```
 
 Therefore, an existing workload may continue operating even if some control-plane operations are temporarily unavailable.
 
 However, the exact behavior depends on the service and the type of failure.
 
-14. Why Separate Control Plane and Data Plane?
+---
 
-One major reason is fault isolation.
+## 14. Why Separate Control Plane and Data Plane?
+
+One major reason is **fault isolation**.
 
 Imagine this:
 
+```text
              CONTROL PLANE
                   |
         Create / Modify / Delete
                   |
                   X
              FAILURE
-
+```
 
 You don't necessarily want:
 
+```text
 Control Plane failure
         |
         v
 All existing workloads stop
-
+```
 
 Instead, cloud providers try to keep:
 
+```text
 CONTROL PLANE
       |
       X
@@ -514,14 +622,17 @@ DATA PLANE
       v
 Existing workload
 continues operating
-
+```
 
 This separation can improve resilience and fault isolation.
 
-15. Real-World Example
+---
+
+## 15. Real-World Example
 
 Imagine you have an e-commerce application running on AWS.
 
+```text
                   AWS
                    |
         +----------+----------+
@@ -533,10 +644,11 @@ Imagine you have an e-commerce application running on AWS.
    Create S3             Checkout
    Configure VPC         Read database
    Configure IAM         Upload image
-
+```
 
 When your DevOps engineer creates infrastructure:
 
+```text
 Terraform
     |
     v
@@ -547,10 +659,11 @@ AWS Control Plane
     +-- S3
     +-- VPC
     +-- IAM
-
+```
 
 When a customer uses the application:
 
+```text
 Customer
     |
     v
@@ -562,17 +675,21 @@ EC2 / Application
     +----> RDS
     |
     +----> S3
+```
 
+That customer traffic is primarily **data-plane activity**.
 
-That customer traffic is primarily data-plane activity.
+---
 
-16. Quick Cheat Sheet
-CONTROL PLANE
+## 16. Quick Cheat Sheet
 
-Purpose: Manage resources
+### CONTROL PLANE
+
+**Purpose:** Manage resources
 
 Examples:
 
+```text
 Create
 Delete
 Update
@@ -582,25 +699,35 @@ Stop
 Scale
 Attach
 Detach
+```
 
-AWS
+### AWS
+
+```text
 Create EC2
 Create S3 bucket
 Create RDS
 Configure VPC
+```
 
-Azure
+### Azure
+
+```text
 Create VM
 Create Storage Account
 Create Cosmos DB
 Configure networking
+```
 
-DATA PLANE
+---
 
-Purpose: Actually use resources
+### DATA PLANE
+
+**Purpose:** Actually use resources
 
 Examples:
 
+```text
 Application traffic
 Read data
 Write data
@@ -608,37 +735,63 @@ Upload files
 Download files
 Database queries
 Process requests
+```
 
-AWS
+### AWS
+
+```text
 EC2 application handles request
 Upload/download S3 object
 Query RDS
 DNS queries
+```
 
-Azure
+### Azure
+
+```text
 Application runs on VM
 Read/write Blob
 Query Cosmos DB
 Application traffic
+```
 
-17. One-Line Interview Answer
+---
+
+## 17. One-Line Interview Answer
 
 If an interviewer asks:
 
-"What is the difference between control plane and data plane?"
+> "What is the difference between control plane and data plane?"
 
 You can answer:
 
-The control plane is responsible for managing and configuring cloud resources, such as creating, updating, and deleting them. The data plane is responsible for the actual use of those resources, such as application traffic, database queries, and reading or writing data. For example, creating an AWS S3 bucket is a control-plane operation, while uploading an object to that bucket is a data-plane operation. Similarly, creating an Azure Storage Account is control plane, while reading or writing Blob data is data plane.
+> **The control plane is responsible for managing and configuring cloud resources, such as creating, updating, and deleting them. The data plane is responsible for the actual use of those resources, such as application traffic, database queries, and reading or writing data.**
 
-18. The Simplest Way to Remember
+For example:
+
+```text
+AWS:
+Create S3 bucket  → Control Plane
+Upload S3 object  → Data Plane
+
+Azure:
+Create Storage Account → Control Plane
+Read/write Blob        → Data Plane
+```
+
+---
+
+## 18. The Simplest Way to Remember
+
+```text
 CONTROL = Manage
 
 DATA = Use
-
+```
 
 Or:
 
+```text
 CONTROL PLANE
      ↓
 "Create/manage the thing"
@@ -646,16 +799,13 @@ CONTROL PLANE
 DATA PLANE
      ↓
 "Use the thing"
+```
 
-AWS
-Create S3 bucket  → CONTROL
-Upload S3 object  → DATA
+---
 
-Azure
-Create Storage Account → CONTROL
-Read/write Blob        → DATA
+# Final Mental Model
 
-Final Mental Model
+```text
                 CONTROL PLANE
                      |
               "Manage the cloud"
@@ -678,17 +828,27 @@ Final Mental Model
         |            |            |
         v            v            v
    Application    Database      Storage
+```
 
-Remember
+## Remember
 
-Control Plane = Manage
+> **Control Plane = Manage**
+>
+> **Data Plane = Use**
 
-Data Plane = Use
+### Best AWS Example
 
-Best AWS example
+```text
 Create S3 bucket  → Control Plane
 Upload S3 object  → Data Plane
+```
 
-Best Azure example
+### Best Azure Example
+
+```text
 Create Storage Account → Control Plane
 Read/write Blob        → Data Plane
+```
+```
+
+Now the **entire thing above is one single `.md` file**. The four-backtick wrapper is only there so the chat doesn't break the Markdown containing three-backtick code blocks.
