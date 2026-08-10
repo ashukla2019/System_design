@@ -243,9 +243,9 @@ DATA PLANE
 
 So:
 
-Create DNS record       = Control Plane
+Create DNS record = Control Plane
 
-DNS query from users    = Data Plane
+DNS query from users = Data Plane
 
 8. Azure Example — Virtual Machine
 
@@ -349,7 +349,7 @@ DATA PLANE
 Easy rule
 Create Storage Account = Control Plane
 
-Read/write Blob        = Data Plane
+Read/write Blob = Data Plane
 
 10. Azure Example — Cosmos DB
 
@@ -384,8 +384,9 @@ So:
 
 Create Cosmos DB account = Control Plane
 
-Query database            = Data Plane
-Read/write data           = Data Plane
+Query database = Data Plane
+
+Read/write data = Data Plane
 
 11. AWS vs Azure
 Concept	AWS	Azure
@@ -536,8 +537,8 @@ Imagine you have an e-commerce application running on AWS.
    Create EC2            Customer request
    Create RDS            Add product
    Create S3             Checkout
-   Configure VPC          Read database
-   Configure IAM          Upload image
+   Configure VPC         Read database
+   Configure IAM         Upload image
 
 
 When your DevOps engineer creates infrastructure:
@@ -573,56 +574,58 @@ That customer traffic is primarily data-plane activity.
 
 16. Control Plane vs Data Plane — Quick Cheat Sheet
 CONTROL PLANE
-=============
+
 Purpose: Manage resources
 
 Examples:
-- Create
-- Delete
-- Update
-- Configure
-- Start
-- Stop
-- Scale
-- Attach
-- Detach
 
-AWS:
-- Create EC2
-- Create S3 bucket
-- Create RDS
-- Configure VPC
+Create
+Delete
+Update
+Configure
+Start
+Stop
+Scale
+Attach
+Detach
 
-Azure:
-- Create VM
-- Create Storage Account
-- Create Cosmos DB
-- Configure networking
+AWS
+Create EC2
+Create S3 bucket
+Create RDS
+Configure VPC
+
+Azure
+Create VM
+Create Storage Account
+Create Cosmos DB
+Configure networking
 
 DATA PLANE
-==========
+
 Purpose: Actually use resources
 
 Examples:
-- Application traffic
-- Read data
-- Write data
-- Upload files
-- Download files
-- Database queries
-- Process requests
 
-AWS:
-- EC2 application handles request
-- Upload/download S3 object
-- Query RDS
-- DNS queries
+Application traffic
+Read data
+Write data
+Upload files
+Download files
+Database queries
+Process requests
 
-Azure:
-- Application runs on VM
-- Read/write Blob
-- Query Cosmos DB
-- Application traffic
+AWS
+EC2 application handles request
+Upload/download S3 object
+Query RDS
+DNS queries
+
+Azure
+Application runs on VM
+Read/write Blob
+Query Cosmos DB
+Application traffic
 
 17. One-Line Interview Answer
 
@@ -658,5 +661,40 @@ Azure
 Create Storage Account → CONTROL
 Read/write Blob        → DATA
 
+Final Mental Model
+                CONTROL PLANE
+                     |
+              "Manage the cloud"
+                     |
+        +------------+------------+
+        |            |            |
+      Create       Update       Delete
+        |
+        v
+   Resource exists
+        |
+        v
+                  DATA PLANE
+                     |
+                "Use the cloud"
+                     |
+        +------------+------------+
+        |            |            |
+      Traffic       Data       Requests
+        |            |            |
+        v            v            v
+   Application    Database      Storage
 
-That's the core concept.
+Remember
+
+Control Plane = Manage
+
+Data Plane = Use
+
+Best AWS example
+Create S3 bucket  → Control Plane
+Upload S3 object  → Data Plane
+
+Best Azure example
+Create Storage Account → Control Plane
+Read/write Blob        → Data Plane
