@@ -125,6 +125,7 @@ Server GetUser()
   ▼
 Response
 ```
+The client calls a generated stub. The stub serializes the request using Protobuf, gRPC sends it over HTTP/2, the server gRPC runtime deserializes it and invokes the server method, then the response comes back through the same path.
 
 **Data:** Protobuf binary
 **Transport:** HTTP/2
