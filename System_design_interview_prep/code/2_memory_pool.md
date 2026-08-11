@@ -1,617 +1,592 @@
-# C Memory Pool — Interview Implementation
+# C++ Memory Pool — Interview Notes
 
-A memory pool pre-allocates a large chunk of memory and divides it
-into fixed-size blocks.
+## 1. What is a Memory Pool?
 
-Instead of calling malloc/free repeatedly, we reuse these blocks.
+A memory pool allocates a **large chunk of memory once** and divides it into fixed-size blocks.
+
+Instead of repeatedly doing:
+
+```text
+new → allocate from heap
+delete → return to heap
+```
+
+we do:
+
+```text
+Allocate large memory
+        ↓
+Divide into blocks
+        ↓
+allocate() → take a free block
+deallocate() → return block to pool
+```
+
+### Benefits
+
+* O(1) allocation
+* O(1) deallocation
+* Less allocator overhead
+* Predictable memory usage
+* Reduced fragmentation
+* Useful in high-performance systems, networking, games, embedded systems, etc.
 
 ---
 
-## Complete Code
+# 2. Basic Memory Pool
 
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <stddef.h>
+```cpp
+#include <iostream>
+#include <cstddef>
 
-    /*
-     * Each free block contains a pointer to the next free block.
-     *
-     * Important:
-     * We reuse the memory of the block itself to store this pointer.
-     */
-    typedef struct Block {
-        struct Block* next;
-    } Block;
+class MemoryPool
+{
+private:
 
-
-    /*
-     * Memory Pool structure
-     */
-    typedef struct {
-        void* memory;       // Pointer to the entire allocated memory
-        Block* freeList;    // First available block
-        size_t blockSize;   // Size of each block
-        size_t numBlocks;   // Number of blocks
-    } MemoryPool;
-
-
-    /*
-     * Create a memory pool.
-     *
-     * blockSize = size of each block
-     * numBlocks = number of blocks
-     */
-    MemoryPool* pool_create(size_t blockSize, size_t numBlocks)
+    // Every free block stores a pointer
+    // to the next free block.
+    struct Block
     {
-        /*
-         * A free block needs enough space to store
-         * the 'next' pointer.
-         *
-         * Example:
-         * If sizeof(Block) = 8 bytes and the user
-         * asks for a 4-byte block, we need at least
-         * 8 bytes.
-         */
-        if (blockSize < sizeof(Block)) {
+        Block* next;
+    };
+
+    void* memory;       // Entire memory allocated for pool
+    Block* freeList;    // First free block
+
+    std::size_t blockSize;
+    std::size_t blockCount;
+
+public:
+
+    MemoryPool(std::size_t blockSize,
+               std::size_t blockCount)
+        : memory(nullptr),
+          freeList(nullptr),
+          blockSize(blockSize),
+          blockCount(blockCount)
+    {
+        // A block must be large enough to store
+        // the next pointer.
+        if (blockSize < sizeof(Block))
             blockSize = sizeof(Block);
-        }
 
+        // Allocate one large raw memory area.
+        memory = ::operator new(blockSize * blockCount);
 
-        /*
-         * Allocate the MemoryPool structure itself.
-         */
-        MemoryPool* pool = malloc(sizeof(MemoryPool));
+        // Divide memory into blocks.
+        char* current = static_cast<char*>(memory);
 
-        if (pool == NULL) {
-            return NULL;
-        }
-
-
-        /*
-         * Allocate one large contiguous memory area.
-         *
-         * Instead of calling malloc() for every object,
-         * we allocate everything upfront.
-         */
-        pool->memory = malloc(blockSize * numBlocks);
-
-        if (pool->memory == NULL) {
-            free(pool);
-            return NULL;
-        }
-
-
-        pool->blockSize = blockSize;
-        pool->numBlocks = numBlocks;
-        pool->freeList = NULL;
-
-
-        /*
-         * Treat the large memory area as a sequence
-         * of fixed-size blocks.
-         */
-        char* current = (char*)pool->memory;
-
-
-        /*
-         * Build the free list.
-         *
-         * After this loop:
-         *
-         * freeList
-         *     |
-         *     v
-         *   B1 -> B2 -> B3 -> B4 -> NULL
-         */
-        for (size_t i = 0; i < numBlocks; i++)
+        for (std::size_t i = 0; i < blockCount; ++i)
         {
-            /*
-             * Calculate the address of this block.
-             */
             Block* block =
-                (Block*)(current + i * blockSize);
+                reinterpret_cast<Block*>(
+                    current + i * blockSize
+                );
 
-
-            /*
-             * Insert the block at the beginning
-             * of the free list.
-             */
-            block->next = pool->freeList;
-
-            pool->freeList = block;
+            // Insert block into free list.
+            block->next = freeList;
+            freeList = block;
         }
-
-
-        return pool;
     }
 
-
-    /*
-     * Allocate one block from the memory pool.
-     *
-     * Time complexity: O(1)
-     */
-    void* pool_allocate(MemoryPool* pool)
+    ~MemoryPool()
     {
-        /*
-         * No free blocks available.
-         */
-        if (pool == NULL || pool->freeList == NULL) {
-            return NULL;
-        }
+        ::operator delete(memory);
+    }
 
+    void* allocate()
+    {
+        if (freeList == nullptr)
+            return nullptr;
 
-        /*
-         * Take the first block from the free list.
-         */
-        Block* block = pool->freeList;
+        // Take first free block.
+        Block* block = freeList;
 
+        // Move freeList to next block.
+        freeList = freeList->next;
 
-        /*
-         * Move freeList to the next available block.
-         */
-        pool->freeList = block->next;
-
-
-        /*
-         * Return the block to the caller.
-         */
         return block;
     }
 
-
-    /*
-     * Return a block to the memory pool.
-     *
-     * Time complexity: O(1)
-     */
-    void pool_deallocate(MemoryPool* pool, void* ptr)
+    void deallocate(void* ptr)
     {
-        /*
-         * Ignore invalid NULL values.
-         */
-        if (pool == NULL || ptr == NULL) {
+        if (ptr == nullptr)
             return;
-        }
 
+        Block* block = static_cast<Block*>(ptr);
 
-        /*
-         * Convert the returned memory back into a Block.
-         */
-        Block* block = (Block*)ptr;
-
-
-        /*
-         * Add this block to the beginning
-         * of the free list.
-         */
-        block->next = pool->freeList;
-
-        pool->freeList = block;
+        // Put block back into free list.
+        block->next = freeList;
+        freeList = block;
     }
+};
 
 
-    /*
-     * Destroy the memory pool.
-     */
-    void pool_destroy(MemoryPool* pool)
-    {
-        if (pool == NULL) {
-            return;
-        }
+int main()
+{
+    MemoryPool pool(sizeof(int), 5);
 
+    int* a = static_cast<int*>(pool.allocate());
+    int* b = static_cast<int*>(pool.allocate());
 
-        /*
-         * Free the entire memory area at once.
-         *
-         * Individual blocks are NOT freed separately.
-         */
-        free(pool->memory);
+    *a = 10;
+    *b = 20;
 
+    std::cout << *a << '\n';
+    std::cout << *b << '\n';
 
-        /*
-         * Finally free the MemoryPool structure.
-         */
-        free(pool);
-    }
+    pool.deallocate(a);
+    pool.deallocate(b);
 
-
-    /*
-     * Example usage
-     */
-    int main(void)
-    {
-        /*
-         * Create a pool containing 5 blocks.
-         *
-         * Each block is large enough to store an int.
-         */
-        MemoryPool* pool =
-            pool_create(sizeof(int), 5);
-
-
-        if (pool == NULL) {
-            printf("Failed to create memory pool\n");
-            return 1;
-        }
-
-
-        /*
-         * Allocate first block.
-         */
-        int* a = (int*)pool_allocate(pool);
-
-
-        /*
-         * Allocate second block.
-         */
-        int* b = (int*)pool_allocate(pool);
-
-
-        /*
-         * Check allocation.
-         */
-        if (a == NULL || b == NULL) {
-            printf("Memory pool is full\n");
-
-            pool_destroy(pool);
-            return 1;
-        }
-
-
-        /*
-         * Use the allocated memory.
-         */
-        *a = 10;
-        *b = 20;
-
-
-        printf("a = %d\n", *a);
-        printf("b = %d\n", *b);
-
-
-        /*
-         * Return the blocks to the pool.
-         *
-         * IMPORTANT:
-         * The memory is NOT actually freed here.
-         *
-         * The blocks become available for reuse.
-         */
-        pool_deallocate(pool, a);
-        pool_deallocate(pool, b);
-
-
-        /*
-         * Destroy the entire pool.
-         */
-        pool_destroy(pool);
-
-
-        return 0;
-    }
-
+    return 0;
+}
+```
 
 ---
 
-## How It Works
+# 3. How the Memory Looks
 
-Initially, the pool looks conceptually like this:
+Suppose:
 
-    freeList
-       |
-       v
-    +------+    +------+    +------+    +------+    +------+
-    |  B1  | -> |  B2  | -> |  B3  | -> |  B4  | -> |  B5  |
-    +------+    +------+    +------+    +------+    +------+
+```text
+blockSize  = 16 bytes
+blockCount = 4
+```
 
+The pool allocates:
 
-Each block contains a pointer to the next free block.
+```text
+┌────────────┬────────────┬────────────┬────────────┐
+│  Block 0   │  Block 1   │  Block 2   │  Block 3   │
+│  16 bytes  │  16 bytes  │  16 bytes  │  16 bytes  │
+└────────────┴────────────┴────────────┴────────────┘
+```
 
-The important structure is:
+Initially all blocks are free:
 
-    typedef struct Block {
-        struct Block* next;
-    } Block;
+```text
+freeList
+   │
+   ▼
+Block 3 → Block 2 → Block 1 → Block 0 → nullptr
+```
 
-
----
-
-## pool_allocate()
-
-Suppose we have:
-
-    freeList
-       |
-       v
-    +------+    +------+    +------+    +------+
-    |  B1  | -> |  B2  | -> |  B3  | -> |  B4  |
-    +------+    +------+    +------+    +------+
-
-
-When we call:
-
-    void* ptr = pool_allocate(pool);
-
-
-B1 is removed:
-
-    freeList
-       |
-       v
-    +------+    +------+    +------+
-    |  B2  | -> |  B3  | -> |  B4  |
-    +------+    +------+    +------+
-
-    B1 ---> returned to caller
-
-
-The important code is:
-
-    Block* block = pool->freeList;
-    pool->freeList = block->next;
-
-    return block;
-
-
-This is O(1).
+The order is reversed because each new block is inserted at the front.
 
 ---
 
-## pool_deallocate()
+# 4. The Important Trick
 
-Suppose B1 is returned:
+A free block uses **its own memory** to store the linked-list pointer.
 
-    pool_deallocate(pool, B1);
+```text
+Free Block
 
+┌──────────────────────┐
+│ Block* next          │
+└──────────────────────┘
+```
 
-Before:
+For example:
 
-    freeList
-       |
-       v
-    +------+    +------+    +------+
-    |  B2  | -> |  B3  | -> |  B4  |
-    +------+    +------+    +------+
+```text
+Block 3
+   │
+   ▼
+Block 2
+   │
+   ▼
+Block 1
+   │
+   ▼
+Block 0
+   │
+   ▼
+nullptr
+```
 
+Once a block is allocated, the `next` pointer is no longer needed.
+
+That same memory becomes available to the caller:
+
+```text
+Free block:
+
+┌──────────────┐
+│ next pointer │
+└──────────────┘
+
+        ↓ allocate()
+
+Allocated block:
+
+┌──────────────┐
+│ user data    │
+└──────────────┘
+```
+
+---
+
+# 5. How `allocate()` Works
+
+Code:
+
+```cpp
+Block* block = freeList;
+freeList = freeList->next;
+
+return block;
+```
+
+Suppose:
+
+```text
+freeList
+   │
+   ▼
+Block A → Block B → Block C
+```
 
 After:
 
-    freeList
-       |
-       v
-    +------+    +------+    +------+    +------+
-    |  B1  | -> |  B2  | -> |  B3  | -> |  B4  |
-    +------+    +------+    +------+    +------+
+```cpp
+Block* block = freeList;
+```
 
+we have:
 
-The important code is:
+```text
+block
+  │
+  ▼
+Block A
 
-    block->next = pool->freeList;
-    pool->freeList = block;
+freeList
+  │
+  ▼
+Block A → Block B → Block C
+```
 
+Then:
 
-This is also O(1).
+```cpp
+freeList = freeList->next;
+```
 
----
+becomes:
 
-## Why Use a Memory Pool?
+```text
+block
+  │
+  ▼
+Block A
 
-Without a memory pool:
+freeList
+  │
+  ▼
+Block B → Block C
+```
 
-    malloc()
-    malloc()
-    malloc()
-    free()
-    malloc()
-    free()
+Return:
 
+```cpp
+return block;
+```
 
-With a memory pool:
+So allocation is:
 
-    Allocate large memory area once
-                |
-                v
-    +------+------+------+------+------+
-    | B1   | B2   | B3   | B4   | B5   |
-    +------+------+------+------+------+
+```text
+1. Take first free block
+2. Move freeList to next block
+3. Return old block
+```
 
+### Complexity
 
-Then we simply reuse the blocks.
-
-This can reduce allocation overhead and can provide more
-predictable allocation performance.
-
----
-
-## Complexity
-
-| Operation | Complexity |
-|-----------|------------|
-| pool_allocate() | O(1) |
-| pool_deallocate() | O(1) |
-| pool_create() | O(N) |
-| pool_destroy() | O(1) |
-
-Where N is the number of blocks.
-
----
-
-## Interview Explanation
-
-A good interview answer:
-
-"I pre-allocate a contiguous chunk of memory and divide it into
-fixed-size blocks. I maintain a singly linked free list containing
-all currently available blocks. Allocation removes the first block
-from the free list, while deallocation adds the block back to the
-front. Therefore both operations are O(1)."
-
+```text
+O(1)
+```
 
 ---
 
-## Common Interview Follow-up Questions
+# 6. How `deallocate()` Works
 
-### 1. Why is it faster than malloc/free?
+Code:
 
-The pool allocates a large memory area once.
+```cpp
+block->next = freeList;
+freeList = block;
+```
 
-Subsequent allocations simply take a block from the free list
-instead of asking the general-purpose allocator for memory each
-time.
+Suppose:
 
+```text
+freeList
+   │
+   ▼
+Block B → Block C
+```
 
----
+We return Block A.
 
-### 2. Why is pool_allocate() O(1)?
+First:
 
-Because we only remove the first block:
+```cpp
+block->next = freeList;
+```
 
-    Block* block = pool->freeList;
-    pool->freeList = block->next;
+Now:
 
+```text
+Block A → Block B → Block C
+```
 
-We don't have to search through the pool.
+Then:
 
+```cpp
+freeList = block;
+```
 
----
+Now:
 
-### 3. Why is pool_deallocate() O(1)?
+```text
+freeList
+   │
+   ▼
+Block A → Block B → Block C
+```
 
-Because we insert the returned block at the front:
+So deallocation is:
 
-    block->next = pool->freeList;
-    pool->freeList = block;
+```text
+1. Convert returned memory to Block*
+2. Point it to current freeList
+3. Make it the new freeList head
+```
 
+### Complexity
 
-Again, there is no traversal.
-
-
----
-
-### 4. What happens when the pool is full?
-
-pool_allocate() returns NULL:
-
-    if (pool == NULL || pool->freeList == NULL) {
-        return NULL;
-    }
-
-
-A production implementation could create another memory chunk.
-
-
----
-
-### 5. Can this handle different object sizes?
-
-This implementation uses fixed-size blocks.
-
-For different sizes, we can maintain multiple pools:
-
-    Pool 16 bytes
-    Pool 32 bytes
-    Pool 64 bytes
-    Pool 128 bytes
-
-
-This is commonly called size classes.
-
+```text
+O(1)
+```
 
 ---
 
-### 6. Is this implementation thread-safe?
+# 7. Why `::operator new`?
 
-No.
+The memory pool uses:
 
-If multiple threads use the same pool, synchronization is needed.
+```cpp
+memory = ::operator new(blockSize * blockCount);
+```
 
-Possible approaches:
+because we need **raw, uninitialized memory**.
 
-- Mutex
-- Spinlock
-- Atomic operations
-- Thread-local pools
-
+We don't want to construct an object for every block immediately.
 
 ---
 
-### 7. What about alignment?
+# 8. `new` vs `::operator new`
 
-This is an important C interview follow-up.
+Normal C++:
 
-A production memory pool must ensure that the returned memory is
-properly aligned for the object being stored.
+```cpp
+MyClass* p = new MyClass;
+```
 
-The simplified implementation above is intended for interview
-discussion and fixed-size basic types.
+does two things:
 
+```text
+new MyClass
+    │
+    ├── allocate memory
+    │
+    └── call MyClass constructor
+```
 
----
+But:
 
-### 8. What happens if someone calls deallocate() with a pointer
-that did not come from the pool?
+```cpp
+::operator new(size);
+```
 
-The simple implementation does not validate this.
+only allocates raw storage:
 
-A production implementation could check whether the pointer belongs
-to the pool before adding it back to the free list.
+```text
+::operator new(size)
+        │
+        ▼
+   raw memory
+        │
+        └── NO constructor
+```
 
-This also helps detect invalid frees and double frees.
-
-
----
-
-## Key Concept
-
-Remember these three steps:
-
-    1. Allocate a large memory area.
-
-    2. Divide it into fixed-size blocks.
-
-    3. Maintain a free list of available blocks.
-
-
-The most important code is:
-
-    // Allocate
-    Block* block = pool->freeList;
-    pool->freeList = block->next;
-
-    // Deallocate
-    block->next = pool->freeList;
-    pool->freeList = block;
-
-
-If you understand these four lines, you understand the core idea
-behind a basic memory pool.
+This is useful for memory pools.
 
 ---
 
-## Interview Cheat Sheet
+# 9. Why the `::`?
 
-Memory Pool:
+```cpp
+::operator new(...)
+```
 
-- Pre-allocate memory
-- Divide memory into fixed-size blocks
-- Maintain a free list
-- pool_allocate() removes from free list
-- pool_deallocate() adds to free list
-- pool_allocate() = O(1)
-- pool_deallocate() = O(1)
-- pool_create() = O(N)
-- Good for frequent fixed-size allocations
-- Basic version is not thread-safe
-- Production version needs alignment
-- Production version should validate ownership
-- Different sizes can use multiple pools
+The `::` means **global scope**.
 
+It explicitly asks for the global allocation function.
+
+This avoids accidentally using a class-specific overloaded `operator new`.
+
+For a memory pool, this makes the intention clear:
+
+```cpp
+::operator new(size);
+```
+
+means:
+
+> Give me raw memory from the global allocation mechanism.
 
 ---
 
-## One-Line Interview Answer
+# 10. `::operator new` vs `malloc`
 
-"A memory pool pre-allocates a large chunk of memory and manages
-fixed-size blocks using a free list, allowing O(1) allocation and
-deallocation without repeatedly calling malloc and free."
+Both can allocate raw memory.
+
+### C style
+
+```cpp
+void* memory = malloc(size);
+
+free(memory);
+```
+
+### C++ style
+
+```cpp
+void* memory = ::operator new(size);
+
+::operator delete(memory);
+```
+
+The C++ version matches the C++ allocation/deallocation mechanism.
+
+For a C++ memory pool, this is often preferable.
+
+---
+
+# 11. `::operator new` + Placement New
+
+This distinction is very important.
+
+```cpp
+::operator new(sizeof(MyClass));
+```
+
+only allocates storage.
+
+It does **not** construct `MyClass`.
+
+We can construct the object separately using placement new:
+
+```cpp
+void* memory = ::operator new(sizeof(MyClass));
+
+MyClass* obj = new (memory) MyClass();
+```
+
+Flow:
+
+```text
+::operator new()
+        ↓
+Allocate raw memory
+        ↓
+Placement new
+        ↓
+Construct MyClass
+```
+
+When finished:
+
+```cpp
+obj->~MyClass();
+
+::operator delete(memory);
+```
+
+Flow:
+
+```text
+Destroy object
+     ↓
+Release raw memory
+```
+
+---
+
+# 12. Complete Memory-Pool Flow
+
+```text
+              MemoryPool
+                  │
+                  ▼
+       ::operator new(large_size)
+                  │
+                  ▼
+          Large raw memory
+                  │
+                  ▼
+        Divide into blocks
+                  │
+                  ▼
+          Build freeList
+                  │
+        ┌─────────┴─────────┐
+        ▼                   ▼
+    allocate()          deallocate()
+        │                   │
+        ▼                   ▼
+ remove head            add to head
+        │                   │
+        ▼                   ▼
+    O(1)                O(1)
+```
+
+---
+
+# 13. Interview Mental Model
+
+Remember these five points:
+
+```text
+1. Allocate a large memory area once.
+
+2. Divide it into fixed-size blocks.
+
+3. Link free blocks using a freeList.
+
+4. allocate()
+      → remove head
+      → O(1)
+
+5. deallocate()
+      → add block to head
+      → O(1)
+```
+
+### Most important concept
+
+```text
+Free block
+    ↓
+uses its own memory to store `next`
+
+Allocated block
+    ↓
+same memory becomes user data
+```
+
+### Interview answer
+
+> A memory pool pre-allocates a large chunk of raw memory and divides it into fixed-size blocks. Free blocks are maintained in a linked list. Allocation removes the head of the free list and deallocation adds the block back to the head, giving O(1) allocation and deallocation. `::operator new` is used to obtain raw storage without constructing objects.
