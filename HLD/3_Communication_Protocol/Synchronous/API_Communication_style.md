@@ -24,10 +24,13 @@ Client
 Typical:
 
 ```text
-GET    /users/10
-POST   /users
-PUT    /users/10
-DELETE /users/10
+| HTTP Method | URL         | CRUD       | Meaning                |
+| ----------- | ----------- | ---------- | ---------------------- |
+| **GET**     | `/users/10` | **Read**   | Get user 10            |
+| **POST**    | `/users`    | **Create** | Create a new user      |
+| **PUT**     | `/users/10` | **Update** | Update/replace user 10 |
+| **DELETE**  | `/users/10` | **Delete** | Delete user 10         |
+
 ```
 
 **Data:** Usually JSON
