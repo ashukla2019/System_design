@@ -6,7 +6,42 @@
 
 Networking allows computers and devices to communicate.
 
-Basic flow: `Application → Transport → Network → Data Link → Physical`
+Basic flow: `1. Browser
+   ↓
+2. DNS → Find IP for google.com
+   ↓
+3. Browser establishes secure connection
+   ↓
+4. HTTP request is created
+   ↓
+5. Application
+   ↓
+6. Transport (TCP/QUIC)
+   ↓
+7. Network (IP)
+   ↓
+8. Data Link (Wi-Fi/Ethernet)
+   ↓
+9. Physical → bits/signals
+   ↓
+   Internet / routers
+   ↓
+10. Physical
+   ↓
+11. Data Link
+   ↓
+12. Network (IP)
+   ↓
+13. Transport
+   ↓
+14. TLS decrypts
+   ↓
+15. HTTP interprets
+   ↓
+16. Google's application processes request
+   ↓
+17. Response travels back the same way
+`
 
 Example: `Application → TCP → IP → Ethernet → NIC → Network`
 
