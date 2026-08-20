@@ -6,7 +6,9 @@
 
 Networking allows computers and devices to communicate.
 
-Basic flow: `1. Browser
+Basic flow: 
+```
+1. Browser
    ↓
 2. DNS → Find IP for google.com
    ↓
@@ -41,8 +43,8 @@ Basic flow: `1. Browser
 16. Google's application processes request
    ↓
 17. Response travels back the same way
-`
 
+```
 Example: `Application → TCP → IP → Ethernet → NIC → Network`
 
 ---
