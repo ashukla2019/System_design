@@ -10,39 +10,90 @@ Basic flow:
 ```
 1. Browser
    ↓
-2. DNS → Find IP for google.com
+2. DNS
+   → Find IP address for google.com
    ↓
-3. Browser establishes secure connection
+3. Secure connection setup
+   → TCP + TLS (HTTPS)
+   OR
+   → QUIC + TLS (HTTP/3)
    ↓
 4. HTTP request is created
+   → GET / ...
    ↓
-5. Application
+5. Application Layer
+   → HTTP
    ↓
-6. Transport (TCP/QUIC)
+6. Transport Layer
+   → TCP segment OR QUIC packet
    ↓
-7. Network (IP)
+7. TLS encryption
+   → Data is encrypted (for HTTPS)
    ↓
-8. Data Link (Wi-Fi/Ethernet)
+8. Network Layer
+   → IP packet
    ↓
-9. Physical → bits/signals
+9. Data Link Layer
+   → Ethernet/Wi-Fi frame
+   → If destination is on the local network and MAC is unknown:
+      ARP resolves IP → MAC
    ↓
-   Internet / routers
+10. Physical Layer
+    → Bits/signals
    ↓
-10. Physical
+        Local network
    ↓
-11. Data Link
+11. Router
+    → Receives Ethernet/Wi-Fi frame
+    → Removes the Data Link header
+    → Looks at destination IP
+    → Chooses next hop
+    → Creates a NEW Data Link frame
    ↓
-12. Network (IP)
+        Internet / multiple routers
    ↓
-13. Transport
+12. Destination network
    ↓
-14. TLS decrypts
+13. Data Link Layer
+   → Frame received by Google's server
    ↓
-15. HTTP interprets
+14. Network Layer
+   → IP packet processed
    ↓
-16. Google's application processes request
+15. Transport Layer
+   → TCP/QUIC processes the data
    ↓
-17. Response travels back the same way
+16. TLS
+   → Decrypts HTTPS data
+   ↓
+17. HTTP
+   → Interprets the request
+   ↓
+18. Google's application/server
+   → Processes the request
+   ↓
+19. HTTP response
+   ↓
+20. TLS encrypts response
+   ↓
+21. Transport
+   → TCP/QUIC
+   ↓
+22. IP
+   ↓
+23. Data Link
+   → New frame for each local hop
+   ↓
+24. Physical
+   → Bits/signals
+   ↓
+        Internet / routers
+   ↓
+25. Your computer
+   → Data Link → IP → TCP/QUIC → TLS → HTTP
+   ↓
+26. Browser
+   → Displays Google's response
 
 ```
 Example: `Application → TCP → IP → Ethernet → NIC → Network`
