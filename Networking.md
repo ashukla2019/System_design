@@ -90,59 +90,55 @@ Basic flow:
                   ▼
           Switch / Router / Internet
 
-Application creates "HELLO"
+1. Application creates "HELLO"
+       User space.
+      
+2. Application calls send()
+       User space → kernel via system call.
 
-User space.
-No NIC driver yet.
-Application calls send()
+3. CPU enters kernel
+       Kernel starts processing the socket operation.
 
-User space → kernel via system call.
-No direct NIC-driver work yet.
-CPU enters kernel
+4.Socket identifies connection
+       Kernel socket/TCP layer.
 
-Kernel starts processing the socket operation.
-Socket identifies connection
+5. TCP adds TCP header
+       Kernel TCP stack.
 
-Kernel socket/TCP layer.
-No direct NIC-driver work.
-TCP adds TCP header
+6. IP adds IP header
+       Kernel IP stack.
 
-Kernel TCP stack.
-IP adds IP header
+7.Routing chooses next hop/interface
+       Kernel routing subsystem determines something like:
+       eth0 → next hop 192.168.1.1
 
-Kernel IP stack.
-Routing chooses next hop/interface
+8. ARP finds next-hop MAC
+       Kernel ARP/neighbor subsystem.
 
-Kernel routing subsystem determines something like:
-eth0 → next hop 192.168.1.1
+9.Ethernet creates frame
+       Kernel networking/link-layer code prepares the Ethernet frame.
 
-ARP finds next-hop MAC
+10. Kernel puts frame in TX queue
+       NIC driver becomes important here.
+       The kernel eventually hands the packet toward the device's transmit path.
 
-Kernel ARP/neighbor subsystem.
-The NIC driver isn't normally doing the ARP lookup.
-Ethernet creates frame
+11. The NIC driver's transmit function is called.
+       NIC driver creates/prepares TX descriptor
+       This is definitely NIC-driver work.
+       The driver prepares something conceptually like:
+       TX descriptor
+       ┌──────────────────────┐
+       │ RAM address           │
+       │ packet length         │
+       │ control/flags         │
+       └──────────────────────┘
 
-Kernel networking/link-layer code prepares the Ethernet frame.
-Kernel puts frame in TX queue
+12. NIC uses DMA to READ frame from RAM
+       The NIC hardware performs the DMA.
+       The driver has configured the descriptor so the NIC knows where the packet is.
 
-NIC driver becomes important here.
-The kernel eventually hands the packet toward the device's transmit path.
-The NIC driver's transmit function is called.
-NIC driver creates/prepares TX descriptor
-This is definitely NIC-driver work.
-The driver prepares something conceptually like:
-TX descriptor
-┌──────────────────────┐
-│ RAM address           │
-│ packet length         │
-│ control/flags         │
-└──────────────────────┘
-
-NIC uses DMA to READ frame from RAM
-The NIC hardware performs the DMA.
-The driver has configured the descriptor so the NIC knows where the packet is.
-NIC gets the frame
-NIC hardware.
+13.NIC gets the frame
+       NIC hardware.
 NIC MAC processes frame
 NIC hardware.
 NIC PHY converts data to physical signals
