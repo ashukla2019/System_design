@@ -90,6 +90,24 @@ Basic flow:
                   ▼
           Switch / Router / Internet
 
+1.  Application creates "HELLO"
+2.  Application calls send()
+3.  CPU enters kernel
+4.  Socket identifies connection
+5.  TCP adds TCP header
+6.  IP adds IP header
+7.  Routing chooses next hop/interface
+8.  ARP finds next-hop MAC
+9.  Ethernet creates frame
+10. Kernel puts frame in TX queue
+11. NIC driver creates TX descriptor
+12. NIC uses DMA to READ frame from RAM
+13. NIC gets the frame
+14. NIC MAC processes frame
+15. NIC PHY converts data to physical signals
+16. Signals travel through network
+
+
 ```
 Example: `Application → TCP → IP → Ethernet → NIC → Network`
 ```
