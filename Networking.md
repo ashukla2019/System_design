@@ -97,6 +97,28 @@ Basic flow:
 
 ```
 Example: `Application → TCP → IP → Ethernet → NIC → Network`
+```
+Application
+     ↓
+Socket API
+     ↓
+System Call
+     ↓
+Kernel Network Stack
+     ├── Socket layer
+     ├── TCP / UDP
+     ├── IP
+     ├── Routing
+     ├── ARP / Neighbor Discovery
+     ├── Queuing
+     └── NIC Driver
+     ↓
+NIC Hardware
+     ↓
+Physical Layer
+     ↓
+Network
+```
 
 ---
 
