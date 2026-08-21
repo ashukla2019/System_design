@@ -8,92 +8,87 @@ Networking allows computers and devices to communicate.
 
 Basic flow: 
 ```
-1. Browser
-   ↓
-2. DNS
-   → Find IP address for google.com
-   ↓
-3. Secure connection setup
-   → TCP + TLS (HTTPS)
-   OR
-   → QUIC + TLS (HTTP/3)
-   ↓
-4. HTTP request is created
-   → GET / ...
-   ↓
-5. Application Layer
-   → HTTP
-   ↓
-6. Transport Layer
-   → TCP segment OR QUIC packet
-   ↓
-7. TLS encryption
-   → Data is encrypted (for HTTPS)
-   ↓
-8. Network Layer
-   → IP packet
-   ↓
-9. Data Link Layer
-   → Ethernet/Wi-Fi frame
-   → If destination is on the local network and MAC is unknown:
-      ARP resolves IP → MAC
-   ↓
-10. Physical Layer
-    → Bits/signals
-   ↓
-        Local network
-   ↓
-11. Router
-    → Receives Ethernet/Wi-Fi frame
-    → Removes the Data Link header
-    → Looks at destination IP
-    → Chooses next hop
-    → Creates a NEW Data Link frame
-   ↓
-        Internet / multiple routers
-   ↓
-12. Destination network
-   ↓
-13. Data Link Layer
-   → Frame received by Google's server
-   ↓
-14. Network Layer
-   → IP packet processed
-   ↓
-15. Transport Layer
-   → TCP/QUIC processes the data
-   ↓
-16. TLS
-   → Decrypts HTTPS data
-   ↓
-17. HTTP
-   → Interprets the request
-   ↓
-18. Google's application/server
-   → Processes the request
-   ↓
-19. HTTP response
-   ↓
-20. TLS encrypts response
-   ↓
-21. Transport
-   → TCP/QUIC
-   ↓
-22. IP
-   ↓
-23. Data Link
-   → New frame for each local hop
-   ↓
-24. Physical
-   → Bits/signals
-   ↓
-        Internet / routers
-   ↓
-25. Your computer
-   → Data Link → IP → TCP/QUIC → TLS → HTTP
-   ↓
-26. Browser
-   → Displays Google's response
+┌─────────────────────────────────────────────────────────────────────┐
+│                         USER SPACE                                  │
+│                                                                     │
+│  Application                                                       │
+│      │                                                              │
+│      │ send(sockfd, data, len, 0)                                  │
+│      ▼                                                              │
+└──────┼──────────────────────────────────────────────────────────────┘
+       │
+       │ System Call
+       ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         KERNEL SPACE                                │
+│                                                                     │
+│  Socket Layer                                                       │
+│      │                                                              │
+│      ▼                                                              │
+│  TCP                                                                  │
+│      │  Add TCP header                                               │
+│      ▼                                                              │
+│  IP                                                                   │
+│      │  Add IP header                                                │
+│      ▼                                                              │
+│  Routing                                                              │
+│      │  Determine next hop/interface                                │
+│      ▼                                                              │
+│  Neighbor / ARP                                                       │
+│      │  Find destination MAC                                         │
+│      ▼                                                              │
+│  Ethernet                                                             │
+│      │  Add Ethernet header                                          │
+│      ▼                                                              │
+│  TX Queue / qdisc                                                     │
+│      │                                                              │
+│      ▼                                                              │
+│  NIC Driver                                                           │
+│      │                                                              │
+│      │ Create/fill TX descriptor                                    │
+│      ▼                                                              │
+└──────┼──────────────────────────────────────────────────────────────┘
+       │
+       │ Descriptor points to packet buffer in RAM
+       │
+       ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                           SYSTEM RAM                                 │
+│                                                                     │
+│  Packet buffer                                                      │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │ Ethernet │ IP │ TCP │ Application Data                       │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                    ▲                                                │
+│                    │                                                │
+│             TX descriptor                                           │
+│                    │                                                │
+└────────────────────┼────────────────────────────────────────────────┘
+                     │
+                     │ DMA READ
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         NIC HARDWARE                                │
+│                                                                     │
+│              DMA Engine                                             │
+│                 │                                                   │
+│                 ▼                                                   │
+│              TX Queue                                               │
+│                 │                                                   │
+│                 ▼                                                   │
+│            NIC MAC logic                                            │
+│                 │                                                   │
+│                 ▼                                                   │
+│              PHY                                                     │
+└─────────────────┼───────────────────────────────────────────────────┘
+                  │
+                  │ Electrical / optical / radio signals
+                  ▼
+              NETWORK
+                  │
+                  ▼
+          Switch / Router / Internet
 
 ```
 Example: `Application → TCP → IP → Ethernet → NIC → Network`
